@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' data:; connect-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Research Administration Dashboard Prototype</title>
+<meta name="description" content="A public-data demonstration of portfolio visibility for a hypothetical biomedical informatics department. All figures are synthetic or public NIH RePORTER data.">
+<style>
+:root{--ink:#1f2933;--ink2:#3e4c59;--mut:#52606d;--bg:#f6f8fa;--card:#fff;--line:#d9e2ec;--crim:#A51C30;--crimbg:#fbe9ec;--blue:#2B5C8A;--bluebg:#e8f0f8;--grn:#2F6B4F;--grnbg:#e5f2ea;--amb:#7a4b06;--ambbg:#fdf1dc;--pur:#5B3A8C;--purbg:#efe9f7;--focus:#1a5fb4;color-scheme:light}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Cambria,Georgia,"Times New Roman",serif;font-size:16px;line-height:1.55}
+a{color:var(--blue)}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:3px}
+.skip{position:absolute;left:-999px;top:0;background:#fff;padding:8px 12px;z-index:50}.skip:focus{left:8px;top:8px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+header.top{background:#fff;border-bottom:1px solid var(--line);padding:14px 20px 0}
+.brand{display:flex;gap:14px;align-items:center;flex-wrap:wrap;max-width:1240px;margin:0 auto}
+.logo{width:44px;height:44px;border-radius:10px;background:var(--crim);color:#fff;display:grid;place-items:center;font-weight:700;font-size:13px;flex:none}
+h1{font-size:22px;margin:0;line-height:1.2}.sub{color:var(--mut);font-size:14px;margin:2px 0 0}
+.toplinks{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}
+.toplinks a{font-size:13px;text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:5px 12px;color:var(--ink2);background:#fff}
+.toplinks a:hover{border-color:var(--blue)}
+.banner{max-width:1240px;margin:12px auto 0;display:flex;gap:10px;align-items:center;flex-wrap:wrap;background:var(--ambbg);border:1px solid #f0d9a8;border-left:5px solid var(--amb);border-radius:8px;padding:8px 12px;font-size:14px}
+.banner b{color:var(--amb)}
+.banner.up{background:var(--grnbg);border-color:#bfdccb;border-left-color:var(--grn)}.banner.up b{color:var(--grn)}
+nav.tabs{max-width:1240px;margin:10px auto 0;display:flex;flex-wrap:wrap;gap:4px 18px;align-items:flex-end}
+.tgroup{display:flex;flex-wrap:wrap;gap:2px;align-items:center}
+.tgl{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);margin-right:6px;font-family:system-ui,sans-serif}
+nav.tabs a{display:inline-block;padding:9px 12px;text-decoration:none;color:var(--ink2);border-bottom:3px solid transparent;font-size:15px}
+nav.tabs a[aria-current="page"]{color:var(--crim);border-bottom-color:var(--crim);font-weight:700}
+main{max-width:1240px;margin:0 auto;padding:20px 20px 60px}
+.phead{margin:0 0 16px}.eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--crim);font-weight:700;font-family:system-ui,sans-serif}
+h2{font-size:26px;margin:4px 0 6px;line-height:1.25}h3{font-size:19px;margin:0 0 8px}h4{font-size:16px;margin:0 0 6px}
+.lead{font-size:17px;color:var(--ink2);max-width:900px;margin:0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;margin:0 0 16px}
+.row{display:flex;gap:16px;flex-wrap:wrap}.row>*{flex:1 1 320px;min-width:0}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;margin:0 0 16px}
+.kpi{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:4px;position:relative}
+.kpi .lab{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--mut);font-family:system-ui,sans-serif;font-weight:600}
+.kpi .val{font-size:32px;font-weight:700;line-height:1.1}
+.kpi .dl{font-size:14px;color:var(--ink2)}
+.kpi .acts{display:flex;gap:8px;margin-top:6px;flex-wrap:wrap}
+.tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.06em;padding:2px 7px;border-radius:5px;font-family:system-ui,sans-serif;vertical-align:middle}
+.t-syn{background:var(--ambbg);color:var(--amb);border:1px solid #f0d9a8}.t-pub{background:var(--grnbg);color:var(--grn);border:1px solid #bfdccb}.t-mod{background:var(--purbg);color:var(--pur);border:1px solid #d8cbea}.t-pro{background:var(--bluebg);color:var(--blue);border:1px solid #c6d8ea}.t-crit{background:var(--crimbg);color:var(--crim);border:1px solid #efc3ca}
+button,select,input{font:inherit}
+.btn{border:1px solid var(--line);background:#fff;border-radius:8px;padding:6px 12px;cursor:pointer;color:var(--ink);font-size:14px}
+.btn:hover{border-color:var(--blue)}.btn.pri{background:var(--blue);color:#fff;border-color:var(--blue)}
+.btn.sm{padding:3px 9px;font-size:13px}
+.filters{display:flex;gap:14px;flex-wrap:wrap;align-items:flex-end;margin:0 0 14px}
+.filters label{display:flex;flex-direction:column;font-size:13px;color:var(--ink2);gap:3px}
+.filters select{padding:6px 8px;border:1px solid #9aa5b1;border-radius:7px;background:#fff;min-width:120px}
+fieldset{border:1px solid var(--line);border-radius:10px;padding:8px 12px;margin:0}
+legend{font-size:13px;color:var(--ink2);padding:0 4px}
+.chk{display:inline-flex;gap:5px;align-items:center;margin:3px 12px 3px 0;font-size:14px}
+.chk input{width:17px;height:17px}
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;font-size:14px;background:#fff}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+thead th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mut);font-family:system-ui,sans-serif;border-bottom:2px solid var(--ink2)}
+tbody th{font-weight:600}
+th[scope=rowgroup]{font-family:system-ui,sans-serif;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mut);background:#f9fafb}
+main:focus{outline:none}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}
+th button{all:unset;cursor:pointer}th button:focus-visible{outline:3px solid var(--focus)}
+caption{caption-side:top;text-align:left;font-size:13px;color:var(--mut);padding:0 0 6px}
+figure{margin:0}figcaption{font-size:13px;color:var(--mut);margin-top:6px}
+svg.chart{width:100%;height:auto;display:block}
+svg text{font-family:Cambria,Georgia,serif}
+details.dt{margin-top:10px}details.dt summary{cursor:pointer;color:var(--blue);font-size:14px}
+.note{font-size:13px;color:var(--mut)}
+.callout{border-left:5px solid var(--blue);background:var(--bluebg);padding:10px 14px;border-radius:8px;margin:0 0 14px;font-size:15px}
+.callout.warn{border-left-color:var(--amb);background:var(--ambbg)}
+.mb{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0 0}
+.mis,.bst{border-radius:10px;padding:12px 14px;font-size:15px}
+.mis{background:#fdeef0;border:1px solid #f2c4cb}.mis h4{color:#8a1c2b}
+.bst{background:#eaf2fb;border:1px solid #c6d8ea}.bst h4{color:#1f4f7a}
+.rulebox{border:2px solid var(--ink2);border-radius:10px;padding:10px 14px;margin:10px 0 0;font-size:15px}
+.rulebox b{font-family:system-ui,sans-serif;font-size:12px;letter-spacing:.1em;text-transform:uppercase;margin-right:6px}
+ol.fx{margin:8px 0 0;padding-left:22px;font-size:15px}ol.fx li{margin:2px 0}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:16px}
+.raci{font-family:system-ui,sans-serif;font-weight:700;text-align:center;width:44px}
+.rR{background:#e8f0f8;color:#1f4f7a}.rA{background:#fbe9ec;color:#8a1c2b}.rC{background:#fdf1dc;color:#7a4b06}.rI{background:#f1f3f5;color:#3e4c59}
+.prog{height:12px;background:#e4e7eb;border-radius:6px;overflow:hidden}.prog>span{display:block;height:100%;background:var(--grn)}
+.cl li{list-style:none;margin:0 0 8px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:#fff;display:grid;grid-template-columns:28px 1fr;gap:4px 8px}
+.cl{padding:0;margin:0}.cl input{width:20px;height:20px;margin-top:3px}
+.cl .meta{grid-column:2;font-size:13px;color:var(--mut)}
+.pass{color:var(--grn);font-weight:700}.fail{color:var(--crim);font-weight:700}
+dialog{border:none;border-radius:14px;padding:0;max-width:min(980px,96vw);width:100%;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+dialog::backdrop{background:rgba(15,23,32,.45)}
+.dh{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px 18px;border-bottom:1px solid var(--line);position:sticky;top:0;background:#fff}
+.db{padding:14px 18px;max-height:70vh;overflow:auto}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;counter-reset:s}
+.step{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:14px}
+.step b{display:block;font-size:15px}
+.tree{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:14px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px 14px;white-space:pre;overflow-x:auto;line-height:1.5}
+.tree a{font-family:inherit}
+.hm{display:grid;grid-template-columns:28px repeat(5,1fr);gap:3px;max-width:420px;font-family:system-ui,sans-serif;font-size:12px}
+.hm div{min-height:40px;border-radius:5px;display:grid;place-items:center;text-align:center;padding:2px}
+.drop{border:2px dashed #9aa5b1;border-radius:10px;padding:14px;background:#fff}
+footer{max-width:1240px;margin:0 auto;padding:0 20px 40px;font-size:13px;color:var(--mut)}
+@media (max-width:700px){h2{font-size:22px}.mb{grid-template-columns:1fr}.kpi .val{font-size:28px}.toplinks{margin-left:0}main{padding:16px 16px 50px}header.top{padding:12px 16px 0}.pgrid{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@media print{nav.tabs,.toplinks,.btn,.skip{display:none!important}.banner{border:2px solid #000}body{background:#fff}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+ <div class="brand">
+  <div class="logo" aria-hidden="true">RA</div>
+  <div><h1>Research Administration Dashboard Prototype</h1><p class="sub">A public-data demonstration of portfolio visibility · hypothetical biomedical informatics department</p></div>
+  <div class="toplinks" aria-label="Companion platforms">
+   <a href="https://narissa-pgm.github.io/HMS_DBMI/DBMI_Operating_Plan.html#/m/60" target="_blank" rel="noopener noreferrer">Operating plan ↗</a>
+   <a href="https://narissa-pgm.github.io/HMS_DBMI/HMS_DBMI_Research.html" target="_blank" rel="noopener noreferrer">Research &amp; Grants ↗</a>
+   <a href="https://narissa-pgm.github.io/HMS_DBMI/DBMI_Finance.html" target="_blank" rel="noopener noreferrer">Finance ↗</a>
+  </div>
+ </div>
+ <div class="banner" id="databanner" role="note"></div>
+ <nav class="tabs" aria-label="Views">
+  <div class="tgroup"><span class="tgl">Dashboard</span><a href="#kpi">KPI summary</a><a href="#trends">Trends</a><a href="#sponsors">Sponsor breakdown</a><a href="#provenance">Data provenance</a><a href="#about">About</a></div>
+  <div class="tgroup"><span class="tgl">Project</span><a href="#charter">Charter</a><a href="#governance">Risks &amp; RACI</a><a href="#practices">Best practices</a><a href="#checklist">Prelaunch checklist</a></div>
+ </nav>
+</header>
+<main id="main" tabindex="-1"></main>
+<div id="live" class="sr" aria-live="polite" aria-atomic="true"></div>
+<dialog id="dlg" aria-labelledby="dlgT"><div class="dh"><h3 id="dlgT" style="margin:0"></h3><div><button class="btn sm" id="dlgCsv" type="button">Download CSV</button> <button class="btn sm" id="dlgX" type="button">Close</button></div></div><div class="db" id="dlgB"></div></dialog>
+<footer>Prototype by a candidate for the DBMI Executive Director role. Not affiliated with or endorsed by Harvard Medical School. Synthetic figures are invented; uploaded figures stay in this browser and are never sent anywhere.</footer>
+<script>
+(()=>{'use strict';
+const $=s=>document.querySelector(s),E=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fm=v=>v>=1e6?'$'+(v/1e6).toFixed(1)+'M':v>=1e3?'$'+Math.round(v/1e3)+'K':'$'+Math.round(v);
+const fi=v=>Math.round(v).toLocaleString('en-US');
+const TODAY=new Date('2026-10-26T12:00:00');
+/* ---------- sources (all checked 26 Oct 2026 unless marked reference) ---------- */
+const SRC={
+ reporter:['NIH RePORTER','NIH','https://reporter.nih.gov/','Public database of NIH-funded projects; exports to CSV.','26 Oct 2026','Covers NIH awards only; non-federal sponsors are not in RePORTER.'],
+ api:['NIH RePORTER API (v2)','NIH','https://api.reporter.nih.gov/','Project search by org_names, fiscal_years, agencies, activity_codes and more. No API key is mentioned. NIH asks for no more than one request per second and large jobs on weekends or 9 PM–5 AM Eastern.','26 Oct 2026','Field names in this prototype follow the API’s project results; confirm against the API documentation before connecting.'],
+ hua11y:['Harvard Digital Accessibility Policy','Harvard University IT','https://accessibility.huit.harvard.edu/digital-accessibility-policy','Websites and web applications for University business are expected to conform to WCAG 2.1 Level AA. Last updated June 1, 2023.','26 Oct 2026',''],
+ wcag22:['Web Content Accessibility Guidelines (WCAG) 2.2','W3C','https://www.w3.org/TR/WCAG22/','W3C Recommendation; adds criteria such as focus not obscured and target size to 2.1.','reference','Harvard’s policy names 2.1 AA; 2.2 AA is the stretch target here.'],
+ gps86:['NIH Grants Policy Statement 8.6: closeout','NIH','https://grants.nih.gov/grants/policy/nihgps/html5/section_8/8.6_closeout.htm','Final reports (Final RPPR, Federal Financial Report, invention statement) are due within 120 days of the end of the period of performance.','26 Oct 2026',''],
+ ghp:['About GitHub Pages','GitHub Docs','https://docs.github.com/en/pages/getting-started-with-github-pages/about-github-pages','Static site hosting from a repository; visitor IP addresses are logged for security.','26 Oct 2026','']
+};
+const sl=(k,l)=>{const s=SRC[k];return `<a href="${E(s[2])}" target="_blank" rel="noopener noreferrer">${E(l||s[0])}</a>`};
+/* ---------- institute codes ---------- */
+const ICN={NLM:'National Library of Medicine',NHGRI:'National Human Genome Research Institute',NHLBI:'National Heart, Lung, and Blood Institute',NIDDK:'National Institute of Diabetes and Digestive and Kidney Diseases',NCI:'National Cancer Institute',NIA:'National Institute on Aging',NIEHS:'National Institute of Environmental Health Sciences',OD:'NIH Office of the Director (incl. Common Fund)',NIGMS:'National Institute of General Medical Sciences',NIMH:'National Institute of Mental Health',NIAID:'National Institute of Allergy and Infectious Diseases',NIBIB:'National Institute of Biomedical Imaging and Bioengineering',NCATS:'National Center for Advancing Translational Sciences',NICHD:'Eunice Kennedy Shriver National Institute of Child Health and Human Development',NINDS:'National Institute of Neurological Disorders and Stroke',NIMHD:'National Institute on Minority Health and Health Disparities',NIDA:'National Institute on Drug Abuse',NEI:'National Eye Institute',NIAMS:'National Institute of Arthritis and Musculoskeletal and Skin Diseases',NIAAA:'National Institute on Alcohol Abuse and Alcoholism',NIDCR:'National Institute of Dental and Craniofacial Research',NIDCD:'National Institute on Deafness and Other Communication Disorders',NINR:'National Institute of Nursing Research',NCCIH:'National Center for Complementary and Integrative Health',FIC:'Fogarty International Center'};
+const IC2={LM:'NLM',HG:'NHGRI',HL:'NHLBI',DK:'NIDDK',CA:'NCI',AG:'NIA',ES:'NIEHS',OD:'OD',GM:'NIGMS',MH:'NIMH',AI:'NIAID',EB:'NIBIB',TR:'NCATS',HD:'NICHD',NS:'NINDS',MD:'NIMHD',DA:'NIDA',EY:'NEI',AR:'NIAMS',AA:'NIAAA',DE:'NIDCR',DC:'NIDCD',NR:'NINR',AT:'NCCIH',TW:'FIC',RM:'OD'};
+const normIC=v=>{v=String(v||'').trim().toUpperCase();if(ICN[v])return v;if(IC2[v])return IC2[v];const m=Object.keys(ICN).find(k=>ICN[k].toUpperCase()===v);return m||v||'Unknown'};
+/* ---------- synthetic data in RePORTER project-result fields ---------- */
+function rng(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+const MECH=[ /* activity, ICs, annual total cost base, years, weight */
+ ['R01',['NLM','NHGRI','NHLBI','NCI','NIA','NIGMS','NIMH','NIDDK'],560e3,4,30],['R21',['NLM','NCI','NIMH','NIBIB'],260e3,2,10],['U01',['NHGRI','NCI','NHLBI','NIA'],950e3,5,8],
+ ['U24',['NHGRI','NCI','NIDDK','NHLBI'],1.9e6,5,6],['U2C',['OD','NIEHS'],2.6e6,5,3],['OT2',['OD'],2.2e6,3,3],['R35',['NIGMS'],720e3,5,4],['K99',['NLM','NHGRI'],140e3,2,4],['R00',['NLM','NHGRI'],250e3,3,3],
+ ['T15',['NLM'],760e3,5,1],['T32',['NHGRI','NIGMS'],420e3,5,2],['U54',['NCATS','NCI'],1.4e6,5,2],['P41',['NIBIB'],1.1e6,5,1]];
+function synth(){const r=rng(20261026),rows=[];let id=1;const totW=MECH.reduce((s,m)=>s+m[4],0);
+ const pick=()=>{let x=r()*totW;for(const m of MECH){x-=m[4];if(x<=0)return m}return MECH[0]};
+ const ser=()=>String(Math.floor(100000+r()*899999)).slice(0,6);
+ for(let fy=2014;fy<=2026;fy++){const n=fy<2018?7:Math.round(9+(fy<2024?fy-2018:6-(fy-2024)*2.5)+r()*4);
+  for(let i=0;i<n;i++){const m=pick(),ic=m[1][Math.floor(r()*m[1].length)],code=Object.keys(IC2).find(k=>IC2[k]===ic)||'OD',yrs=m[3]+(r()<.25?1:0),base=m[2]*(0.75+r()*0.5),pn=`${m[0]}${code}${ser()}`;
+   const st=new Date(fy-1,9+Math.floor(r()*9),1);
+   const end=new Date(st);end.setFullYear(st.getFullYear()+yrs);end.setDate(end.getDate()-1);
+   for(let y=0;y<yrs;y++){const f=fy+y;if(f>2026)break;const cut=f>=2025&&['U24','U2C','OT2','U01'].includes(m[0])&&r()<0.18;const amt=Math.round(base*(1+0.02*y)*(cut?0.6:1)*(m[0]==='OT2'&&y>0?0.9:1)/100)*100;
+    const ind=['K99','T15','T32'].includes(m[0])?Math.round(amt*0.075):Math.round(amt*0.33),dir=amt-ind;
+    rows.push({fiscal_year:f,project_num:`${y?5:1}${pn}-${String(y+1).padStart(2,'0')}`,core_project_num:pn,activity_code:m[0],ic:ic,award_amount:amt,direct_cost_amt:dir,indirect_cost_amt:ind,project_start_date:st.toISOString().slice(0,10),project_end_date:end.toISOString().slice(0,10),org_name:'Hypothetical Department of Biomedical Informatics',title:`${m[0]} project ${String(id).padStart(3,'0')} (synthetic)`})}
+   id++}}
+ return rows.filter(x=>x.fiscal_year>=2018)}
+/* ---------- state ---------- */
+let DATA=synth(),MODE='syn',UPMETA=null;
+const LS={get(k,d){try{const v=localStorage.getItem('radp_'+k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem('radp_'+k,JSON.stringify(v))}catch(e){}}};
+const FYS=()=>[...new Set(DATA.map(d=>d.fiscal_year))].sort((a,b)=>a-b);
+const st={fy:null,from:null,to:null,ics:null,spFy:null,measure:'funding',sort:{k:'award_amount',d:-1}};
+function resetState(){const f=FYS();st.fy=f[f.length-1];st.spFy=st.fy;st.from=f[0];st.to=f[f.length-1];st.ics=null}
+resetState();
+const LABEL=()=>MODE==='syn'?'<span class="tag t-syn">SYNTHETIC</span>':'<span class="tag t-pub">PUBLIC · RePORTER</span>';
+function banner(){const b=$('#databanner');if(MODE==='syn'){b.className='banner';b.innerHTML=`<b>SYNTHETIC DATA.</b> Every figure describes a hypothetical department and was generated in this page (seed 20261026). It is not DBMI or Harvard data. <a href="#provenance">Load a public RePORTER export →</a>`}
+ else{b.className='banner up';b.innerHTML=`<b>PUBLIC DATA (NIH RePORTER export).</b> ${E(UPMETA.name)} · ${fi(UPMETA.n)} records · loaded ${E(UPMETA.when)} · stays in this browser. <button type="button" class="btn sm" id="backSyn">Return to synthetic data</button>`;$('#backSyn').onclick=()=>{DATA=synth();MODE='syn';UPMETA=null;resetState();banner();render();say('Synthetic data restored.')}}}
+const say=t=>{$('#live').textContent='';setTimeout(()=>$('#live').textContent=t,30)};
+/* ---------- metrics (measurement rules live here and in the About view) ---------- */
+function agg(rows){const p=new Map();for(const r of rows){const k=r.core_project_num||r.project_num;const o=p.get(k)||{k,amt:0,ic:r.ic,act:r.activity_code,end:r.project_end_date,rows:[]};o.amt+=r.award_amount||0;o.rows.push(r);if(r.project_end_date>o.end)o.end=r.project_end_date;p.set(k,o)}
+ const awards=[...p.values()],tot=awards.reduce((s,a)=>s+a.amt,0),ics=new Set(rows.map(r=>r.ic));return {awards,n:awards.length,tot,sp:ics.size,avg:awards.length?tot/awards.length:0,rows}}
+const inFY=f=>DATA.filter(d=>d.fiscal_year===f);
+function ending(rows){const t=TODAY.getTime(),y=365*864e5;return agg(rows).awards.filter(a=>{const e=new Date(a.end).getTime();return e>=t&&e<=t+y})}
+function closeoutDue(){const t=TODAY.getTime();const latest=new Map();DATA.forEach(r=>{const k=r.core_project_num||r.project_num;if(!latest.has(k)||r.project_end_date>latest.get(k).project_end_date)latest.set(k,r)});
+ return [...latest.values()].filter(r=>{const e=new Date(r.project_end_date).getTime();return e<t&&t-e<=120*864e5}).map(r=>({...r,due:new Date(new Date(r.project_end_date).getTime()+120*864e5).toISOString().slice(0,10)}))}
+/* ---------- charts ---------- */
+let UID=0;
+function lineChart(title,desc,pts,fmt,color){const W=760,H=300,l=70,rr=24,t=24,b=44,xs=pts.map(p=>p[0]),max=Math.max(...pts.map(p=>p[1]))*1.15||1,x=i=>l+(pts.length<2?0:(W-l-rr)*i/(pts.length-1)),y=v=>t+(H-t-b)*(1-v/max),id='c'+(++UID);
+ let g='';for(let k=0;k<=4;k++){const v=max*k/4;g+=`<line x1="${l}" x2="${W-rr}" y1="${y(v)}" y2="${y(v)}" stroke="#e4e7eb"/><text x="${l-8}" y="${y(v)+4}" text-anchor="end" font-size="12" fill="#52606d">${fmt(v)}</text>`}
+ g+=`<polyline fill="none" stroke="${color}" stroke-width="3" points="${pts.map((p,i)=>x(i)+','+y(p[1])).join(' ')}"/>`;
+ pts.forEach((p,i)=>{g+=`<g><circle cx="${x(i)}" cy="${y(p[1])}" r="5" fill="#fff" stroke="${color}" stroke-width="2.5"><title>FY${p[0]}: ${fmt(p[1])}</title></circle><text x="${x(i)}" y="${H-b+20}" text-anchor="middle" font-size="12" fill="#3e4c59">FY${String(p[0]).slice(2)}</text>${i===pts.length-1||i===0?`<text x="${x(i)}" y="${y(p[1])-12}" text-anchor="middle" font-size="13" font-weight="700" fill="#1f2933">${fmt(p[1])}</text>`:''}</g>`});
+ return `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-labelledby="${id}t ${id}d"><title id="${id}t">${E(title)}</title><desc id="${id}d">${E(desc)}</desc>${g}</svg>`}
+function barChart(title,desc,rows,fmt,hi){const W=760,rh=34,l=90,rr=90,H=rows.length*rh+16,max=Math.max(...rows.map(r=>r[1]))||1,id='c'+(++UID);let g='';
+ rows.forEach((r,i)=>{const y=8+i*rh,w=(W-l-rr)*r[1]/max;g+=`<g class="bar" data-ic="${E(r[0])}" style="cursor:pointer"><text x="${l-8}" y="${y+21}" text-anchor="end" font-size="13" fill="#1f2933">${E(r[0])}</text><rect x="${l}" y="${y+6}" width="${Math.max(1,w).toFixed(1)}" height="22" rx="3" fill="${i===0&&hi?'#A51C30':'#2B5C8A'}"><title>${E(r[0])}: ${fmt(r[1])}</title></rect><text x="${l+w+6}" y="${y+22}" font-size="13" font-weight="700" fill="#1f2933">${fmt(r[1])}</text></g>`});
+ return `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-labelledby="${id}t ${id}d"><title id="${id}t">${E(title)}</title><desc id="${id}d">${E(desc)}</desc>${g}</svg>`}
+const dtable=(cap,head,rows,num)=>`<details class="dt"><summary>Data table for this chart</summary><div class="tw"><table><caption>${E(cap)}</caption><thead><tr>${head.map((h,i)=>`<th scope="col"${num&&num.includes(i)?' class="n"':''}>${E(h)}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map((c,i)=>i===0?`<th scope="row">${c}</th>`:`<td${num&&num.includes(i)?' class="n"':''}>${c}</td>`).join('')}</tr>`).join('')}</tbody></table></div></details>`;
+/* ---------- drill-down dialog ---------- */
+let DLROWS=[];
+function drill(title,awards){DLROWS=awards.slice();$('#dlgT').textContent=title;paintDrill();const d=$('#dlg');d.showModal();$('#dlgX').focus()}
+function paintDrill(){const k=st.sort.k,dir=st.sort.d;const key={award_amount:a=>a.amt,project:a=>a.k,ic:a=>a.ic,act:a=>a.act,end:a=>a.end};
+ const rows=DLROWS.slice().sort((a,b)=>{const x=key[k](a),y=key[k](b);return (x>y?1:x<y?-1:0)*dir});
+ const th=(k2,l,n)=>`<th scope="col"${n?' class="n"':''} aria-sort="${k===k2?(dir>0?'ascending':'descending'):'none'}"><button type="button" data-sort="${k2}">${l}${k===k2?(dir>0?' ▲':' ▼'):''}</button></th>`;
+ $('#dlgB').innerHTML=`<p class="note">${LABEL()} ${rows.length} awards · ${fm(rows.reduce((s,a)=>s+a.amt,0))} total. Investigator names are not shown by design. Select a column heading to sort.</p><div class="tw"><table><caption class="sr">Awards in this selection</caption><thead><tr>${th('project','Core project number')}${th('act','Activity')}${th('ic','Administering IC')}${th('award_amount','Funding in selection',1)}${th('end','Project end')}</tr></thead><tbody>${rows.map(a=>`<tr><th scope="row">${E(a.k)}</th><td>${E(a.act)}</td><td>${E(a.ic)}</td><td class="n">${fm(a.amt)}</td><td>${E(a.end)}</td></tr>`).join('')}</tbody></table></div>`;
+ $('#dlgB').querySelectorAll('[data-sort]').forEach(b=>b.onclick=()=>{const s=b.dataset.sort;st.sort=st.sort.k===s?{k:s,d:-st.sort.d}:{k:s,d:s==='award_amount'?-1:1};paintDrill();$(`#dlgB [data-sort="${s}"]`).focus()})}
+$('#dlgX').onclick=()=>$('#dlg').close();
+$('#dlg').addEventListener('click',e=>{if(e.target.id==='dlg')$('#dlg').close()});
+const csvq=v=>{v=String(v??'');return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v};
+function download(name,text){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type:'text/csv'}));a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500)}
+$('#dlgCsv').onclick=()=>download('ra_dashboard_selection.csv',`# ${MODE==='syn'?'SYNTHETIC DATA - hypothetical department, not DBMI or Harvard data':'PUBLIC NIH RePORTER export: '+UPMETA.name}\n`+['core_project_num,activity_code,administering_ic,funding,project_end_date'].concat(DLROWS.map(a=>[a.k,a.act,a.ic,a.amt,a.end].map(csvq).join(','))).join('\n'));
+/* ---------- shared bits ---------- */
+const head=(eb,t,p)=>`<div class="phead"><div class="eyebrow">${eb}</div><h2>${t}</h2><p class="lead">${p}</p></div>`;
+const mb=(m,b,rule,fx)=>`<div class="mb"><div class="mis"><h4>✕ Common mistake</h4>${m}</div><div class="bst"><h4>✓ Best practice</h4>${b}</div></div><div class="rulebox"><b>Rule</b>${rule}</div>${fx?`<ol class="fx">${fx.map(x=>`<li>${x}</li>`).join('')}</ol>`:''}`;
+const fySel=(id,val,lab)=>`<label for="${id}">${lab}<select id="${id}">${FYS().map(f=>`<option value="${f}"${f===val?' selected':''}>FY${f}</option>`).join('')}</select></label>`;
+const delta=(c,p,fmt)=>{if(!p)return 'no prior year';const d=(c-p)/p*100;return `${d>=0?'▲ up':'▼ down'} ${Math.abs(d).toFixed(0)}% from ${fmt(p)}`};
+/* ================= VIEWS ================= */
+const V={};
+V.kpi=()=>{const f=st.fy,c=agg(inFY(f)),p=agg(inFY(f-1)),end=ending(DATA),co=closeoutDue();
+ const card=(lab,val,dl,rule,act)=>`<div class="kpi"><div class="lab">${lab} ${LABEL()}</div><div class="val">${val}</div><div class="dl">${dl}</div><div class="acts">${act||''}<button type="button" class="btn sm" data-rule="${E(rule)}" aria-label="How ${E(lab)} is computed">How computed</button></div></div>`;
+ return head('Dashboard · KPI summary','Where the portfolio stands',`Federal fiscal year (October–September), as RePORTER reports it. Select a figure’s button to see the awards behind it.`)+
+ `<div class="filters">${fySel('kfy',f,'Fiscal year')}</div>
+ <div class="kpis">
+ ${card('Total awards',fi(c.n),delta(c.n,p.n,fi),'Distinct core project numbers with funding in the fiscal year. Supplements and yearly records of the same project count once.',`<button type="button" class="btn sm" data-drill="all">View ${c.n} awards</button>`)}
+ ${card('Total funding',fm(c.tot),delta(c.tot,p.tot,fm),'Sum of award amount (total cost: direct plus indirect) for the fiscal year. When RePORTER shows sub-project costs, use the project total or the sub-projects, never both.')}
+ ${card('Sponsor count',fi(c.sp),`${delta(c.sp,p.sp,fi)}<br><span class="note">NIH Institutes and Centers (administering)</span>`,'Distinct administering NIH Institutes or Centers. RePORTER covers NIH only, so foundations and industry are not counted here.',`<button type="button" class="btn sm" data-go="sponsors">By sponsor →</button>`)}
+ ${card('Average award size',fm(c.avg),delta(c.avg,p.avg,fm),'Total funding divided by total awards, for the same fiscal year. A few large cooperative agreements raise the average; read it with the activity mix.')}
+ </div>
+ <div class="row">
+  <div class="card"><h3>Compliance deadlines</h3><p class="note" style="margin-top:0">As of ${TODAY.toISOString().slice(0,10)}. Closeout reports are due within 120 days of the end of the period of performance (${sl('gps86','NIH GPS 8.6')}).</p>
+   <div class="kpis" style="margin:0"><div class="kpi"><div class="lab">Projects ending in 12 months ${LABEL()}</div><div class="val">${end.length}</div><div class="acts"><button type="button" class="btn sm" data-drill="ending">View</button></div></div>
+   <div class="kpi"><div class="lab">Closeouts due now ${LABEL()}</div><div class="val">${co.length}</div><div class="dl">${co.length?'Earliest due '+co.map(r=>r.due).sort()[0]:'None open'}</div></div></div></div>
+  <div class="card"><h3>Activity mix, FY${f}</h3>${(()=>{const m={};agg(inFY(f)).awards.forEach(a=>{m[a.act]=m[a.act]||{n:0,t:0};m[a.act].n++;m[a.act].t+=a.amt});const rows=Object.entries(m).sort((a,b)=>b[1].t-a[1].t);return `<div class="tw"><table><caption>Awards and funding by activity code ${MODE==='syn'?'(synthetic)':''}</caption><thead><tr><th scope="col">Activity</th><th scope="col" class="n">Awards</th><th scope="col" class="n">Funding</th><th scope="col" class="n">Share</th></tr></thead><tbody>${rows.map(([k,v])=>`<tr><th scope="row">${E(k)}</th><td class="n">${v.n}</td><td class="n">${fm(v.t)}</td><td class="n">${(v.t/c.tot*100).toFixed(0)}%</td></tr>`).join('')}</tbody></table></div>`})()}</div>
+ </div>`};
+V.trends=()=>{const f=FYS().filter(x=>x>=st.from&&x<=st.to),a=f.map(x=>[x,agg(inFY(x))]);
+ const fp=a.map(([x,g])=>[x,g.tot]),np=a.map(([x,g])=>[x,g.n]);
+ const desc=a.length?`From FY${f[0]} to FY${f[f.length-1]}, funding moved from ${fm(fp[0][1])} to ${fm(fp[fp.length-1][1])}; awards from ${np[0][1]} to ${np[np.length-1][1]}.`:'No years selected.';
+ return head('Dashboard · Trends','How the portfolio has moved',desc)+`<div class="filters">${fySel('tfrom',st.from,'From')}${fySel('tto',st.to,'To')}<button type="button" class="btn" id="tall">All years</button></div>
+ <div class="row"><div class="card"><figure>${lineChart('Total funding by fiscal year',desc,fp,fm,'#A51C30')}<figcaption>${LABEL()} Total funding (award amount), federal fiscal years.</figcaption></figure></div>
+ <div class="card"><figure>${lineChart('Total awards by fiscal year','Distinct core projects funded each year.',np,fi,'#2B5C8A')}<figcaption>${LABEL()} Distinct core projects funded each year. Two charts, not one with two axes.</figcaption></figure></div></div>
+ ${dtable('Funding and awards by fiscal year',['Fiscal year','Total funding','Total awards','Average award','Sponsors'],a.map(([x,g])=>['FY'+x,fm(g.tot),fi(g.n),fm(g.avg),g.sp]),[1,2,3,4])}`};
+V.sponsors=()=>{const f=st.spFy,rows=inFY(f),all=[...new Set(DATA.map(d=>d.ic))].sort(),sel=st.ics||all;
+ const m={};rows.filter(r=>sel.includes(r.ic)).forEach(r=>{m[r.ic]=m[r.ic]||[];m[r.ic].push(r)});
+ const byIC=Object.entries(m).map(([k,v])=>{const g=agg(v);return [k,st.measure==='funding'?g.tot:g.n,g]}).sort((a,b)=>b[1]-a[1]);
+ const fmt=st.measure==='funding'?fm:fi,tot=byIC.reduce((s,r)=>s+r[1],0);
+ const desc=byIC.length?`${byIC[0][0]} leads with ${fmt(byIC[0][1])} (${(byIC[0][1]/tot*100).toFixed(0)}% of the selection) in FY${f}.`:'No sponsors selected.';
+ return head('Dashboard · Sponsor breakdown','Who funds the portfolio',desc)+`<div class="filters">${fySel('sfy',f,'Fiscal year')}<label for="smeas">Measure<select id="smeas"><option value="funding"${st.measure==='funding'?' selected':''}>Funding</option><option value="awards"${st.measure==='awards'?' selected':''}>Award count</option></select></label></div>
+ <fieldset style="margin-bottom:14px"><legend>Institutes and Centers (IC filter)</legend>${all.map(ic=>`<label class="chk"><input type="checkbox" value="${E(ic)}"${sel.includes(ic)?' checked':''} class="icf"><span title="${E(ICN[ic]||ic)}">${E(ic)}</span></label>`).join('')}<div><button type="button" class="btn sm" id="icall">Select all</button> <button type="button" class="btn sm" id="icnone">Clear</button></div></fieldset>
+ <div class="card"><figure>${byIC.length?barChart(`${st.measure==='funding'?'Funding':'Awards'} by administering IC, FY${f}`,desc,byIC.map(r=>[r[0],r[1]]),fmt,true):'<p>No sponsors selected.</p>'}<figcaption>${LABEL()} Sorted largest first. Select a bar, or a button in the table, to see its awards.</figcaption></figure>
+ <div class="tw" style="margin-top:12px"><table><caption>Sponsors in FY${f}</caption><thead><tr><th scope="col">IC</th><th scope="col">Name</th><th scope="col" class="n">Awards</th><th scope="col" class="n">Funding</th><th scope="col" class="n">Share</th><th scope="col">Drill down</th></tr></thead><tbody>${byIC.map(r=>`<tr><th scope="row">${E(r[0])}</th><td>${E(ICN[r[0]]||'')}</td><td class="n">${r[2].n}</td><td class="n">${fm(r[2].tot)}</td><td class="n">${(r[1]/tot*100).toFixed(0)}%</td><td><button type="button" class="btn sm" data-ic="${E(r[0])}">View awards</button></td></tr>`).join('')}</tbody></table></div></div>
+ ${mb('One colour per sponsor in a pie of 12 slices.','Sorted bars with direct labels; the largest highlighted; a table beside it.','Compare sponsors with sorted bars; never with area or colour alone.')}`};
+V.provenance=()=>{const prov=[[MODE==='syn'?'Synthetic dataset (in-browser generator, seed 20261026)':'Uploaded RePORTER export: '+E(UPMETA.name),MODE==='syn'?'This page':'Local file (not uploaded anywhere)',MODE==='syn'?'Generated on load, '+new Date().toISOString().slice(0,10):E(UPMETA.when),MODE==='syn'?`${fi(DATA.length)} project-year records, FY${FYS()[0]}–FY${FYS().slice(-1)[0]}, for a hypothetical department. Modeled on RePORTER project results; amounts invented.`:`${fi(UPMETA.n)} records kept; ${fi(UPMETA.skip)} skipped (no fiscal year or amount). Investigator names dropped on load.`]].concat(Object.keys(SRC).map(k=>{const s=SRC[k];return [E(s[0])+' · '+E(s[1]),`<a href="${E(s[2])}" target="_blank" rel="noopener noreferrer">${E(s[2].replace('https://',''))}</a>`,s[4]==='reference'?'Reference (not retrieved for figures)':'Checked '+s[4],E(s[3])+(s[5]?' <i>'+E(s[5])+'</i>':'')]}));
+ return head('Dashboard · Data provenance','Where every figure comes from','Each view names its data label. This table names every source, when it was retrieved, and what was done to it.')+
+ `<div class="card"><div class="tw"><table><caption>Sources, retrieval dates and notes</caption><thead><tr><th scope="col">Source</th><th scope="col">URL</th><th scope="col">Retrieval date</th><th scope="col">Notes</th></tr></thead><tbody>${prov.map(r=>`<tr><th scope="row">${r[0]}</th><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td></tr>`).join('')}</tbody></table></div></div>
+ <div class="row"><div class="card"><h3>Load real public data</h3><p>Export a department’s awards from ${sl('reporter','NIH RePORTER')} (Search → Export → CSV), then load the file here. It is read in this browser only.</p>
+  <div class="drop"><label for="csvf"><b>RePORTER CSV export or API JSON</b></label><br><input type="file" id="csvf" accept=".csv,.json,text/csv,application/json"><p class="note" id="csvmsg" role="status"></p></div>
+  <p class="note">Columns read: Fiscal Year, Project Number (or Core Project Number), Activity, Administering IC, Total Cost (or award amount), Direct Cost IC, Indirect Cost IC, Project Start Date, Project End Date. Contact PI and other personal fields are discarded.</p></div>
+ <div class="card"><h3>Same query from the RePORTER API</h3><p class="note" style="margin-top:0">For a scheduled refresh outside this page. The API needs no key; keep to one request a second and run large jobs off-hours (${sl('api','RePORTER API')}).</p>
+ <pre class="tree" aria-label="Example API request">POST https://api.reporter.nih.gov/v2/projects/search
+{
+  "criteria": {
+    "org_names": ["&lt;ORGANIZATION NAME&gt;"],
+    "fiscal_years": [2022, 2023, 2024, 2025, 2026]
+  },
+  "include_fields": ["FiscalYear","ProjectNum","CoreProjectNum",
+    "ActivityCode","AgencyIcAdmin","AwardAmount",
+    "DirectCostAmt","IndirectCostAmt",
+    "ProjectStartDate","ProjectEndDate"],
+  "offset": 0, "limit": 500
+}</pre><p class="note">Department-level filtering needs care: RePORTER lists organizations and sometimes departments, not DBMI’s internal unit codes. Reconcile counts with the department’s own award list before relying on them.</p></div></div>
+ <div class="card"><h3>Data dictionary</h3><div class="tw"><table><caption>Fields used and what each feeds</caption><thead><tr><th scope="col">Field</th><th scope="col">Meaning</th><th scope="col">Feeds</th></tr></thead><tbody>
+ ${[['fiscal_year','Federal fiscal year of the funding record (Oct–Sep)','FY filters, trends'],['core_project_num','Project number without type prefix and year suffix; groups yearly records and supplements','Total awards (distinct count)'],['activity_code','NIH activity code, e.g. R01, U24, T15','Activity mix'],['administering IC','Institute or Center administering the award','Sponsor count, sponsor breakdown'],['award_amount','Total cost for the record (direct plus indirect)','Total funding, average award size'],['direct / indirect cost','Split of total cost','Drill-down; F&amp;A checks'],['project_end_date','End of the project period','Ending in 12 months; closeout due (120 days)']].map(r=>`<tr><th scope="row"><code>${r[0]}</code></th><td>${r[1]}</td><td>${r[2]}</td></tr>`).join('')}</tbody></table></div></div>`};
+V.about=()=>head('Dashboard · About','Scope, data disclosure and accessibility','What this prototype is, what it is not, and how it meets accessibility standards.')+
+ `<div class="pgrid"><div class="card"><h3>Scope</h3><p>A static, single-file prototype showing how a research administration leader could see sponsored-program activity, compliance deadlines and sponsor mix in one place. It demonstrates KPI cards, drill-downs and accessible charts using public or synthetic data.</p><p><b>Not in scope:</b> connections to institutional systems (GMAS, Harvard financial systems, eRA Commons), non-NIH sponsors, salary or effort data, or any data about named people.</p></div>
+ <div class="card"><h3>Synthetic-data disclosure</h3><p>Unless a RePORTER export has been loaded, every figure here is <b>synthetic</b>: generated in your browser for a hypothetical biomedical informatics department. Award numbers follow NIH formats but are random. Nothing describes DBMI, Harvard Medical School or any real investigator.</p><p>Labels on every view (<span class="tag t-syn">SYNTHETIC</span> or <span class="tag t-pub">PUBLIC · RePORTER</span>), the banner, and a header line in every CSV download carry the same disclosure.</p></div>
+ <div class="card"><h3>Accessibility statement</h3><p><b>Target:</b> WCAG 2.1 Level AA, the standard named in ${sl('hua11y','Harvard’s Digital Accessibility Policy')}; WCAG 2.2 AA where practical (${sl('wcag22','W3C')}).</p><ul><li>Full keyboard use; visible focus; skip link.</li><li>Every chart has a text description and a data table.</li><li>Text contrast of at least 4.5:1; meaning never carried by colour alone (labels, arrows and words).</li><li>Filter changes are announced to screen readers.</li><li>Reflows to 320px wide without horizontal scrolling; honours reduced motion.</li></ul><p><b>Known limits:</b> chart bars are mouse targets; keyboard users reach the same drill-downs through the table buttons. Report a barrier through the portfolio repository’s issues page.</p></div>
+ <div class="card"><h3>Measurement rules</h3><table><caption class="sr">Measurement rules</caption><tbody>
+ <tr><th scope="row">Total awards</th><td>Distinct core project numbers funded in the fiscal year</td></tr><tr><th scope="row">Total funding</th><td>Sum of total cost for the fiscal year; project total or sub-projects, never both</td></tr><tr><th scope="row">Sponsor count</th><td>Distinct administering NIH ICs</td></tr><tr><th scope="row">Average award size</th><td>Total funding ÷ total awards</td></tr><tr><th scope="row">Closeout due</th><td>Project end plus 120 days, per ${sl('gps86','NIH GPS 8.6')}</td></tr></tbody></table></div></div>`;
+/* ---------- project views ---------- */
+const BEN=[['Portfolio summarization','Time to answer five standard portfolio questions (total, trend, top sponsor, ending soon, closeouts due)','Timed task test, 5 users, before and after','Under 2 minutes each; baseline recorded first','Test log'],
+ ['Portfolio summarization','KPI totals match the source','Recompute totals from the raw export; compare','Within 0.5% of the RePORTER export for every fiscal year','Reconciliation sheet in the provenance log'],
+ ['Accessibility compliance','Automated violations','axe or equivalent on every view','Zero critical or serious','Scan report'],
+ ['Accessibility compliance','Keyboard and screen-reader completion','All five standard tasks with keyboard only, and with NVDA or VoiceOver','100% of tasks','Manual audit notes'],
+ ['Accessibility compliance','Text contrast','Measured on every text and background pair','≥ 4.5:1 text; ≥ 3:1 graphics','Self-check in the prelaunch list'],
+ ['Data provenance discipline','Figures traceable to a source row','Sample 20 figures; trace each to the provenance table','100%','Audit sample'],
+ ['Data provenance discipline','Data label on every view and export','Check each view, the CSV header and print','100%','Self-check']];
+V.charter=()=>head('Project · Charter','Research Administration Dashboard Prototype: a public-data demonstration of portfolio visibility','A work sample for the Executive Director role. It shows how the department’s research portfolio, deadlines and resource questions could be made visible, using only public or synthetic data.')+
+ `<div class="pgrid"><div class="card"><h3>Problem statement</h3><p>Research administration leaders in academic departments need one consolidated view of sponsored-program activity, compliance deadlines and resource allocation across faculty and cores. Today the picture is usually rebuilt by hand from several systems each month, so questions from the Chair (how much, from whom, what ends soon, what is overdue) take days instead of minutes.</p><p>Public data can show the logic of such a dashboard, and test its definitions and accessibility, <b>without touching institutional systems or confidential data</b>.</p></div>
+ <div class="card"><h3>Objectives</h3><ol><li>Answer five standard portfolio questions in under two minutes each.</li><li>Define every KPI with a written measurement rule that reconciles to the source.</li><li>Meet WCAG 2.1 AA, tested by keyboard, screen reader and automated scan.</li><li>Label every figure as synthetic or public, with a retrieval date.</li><li>Publish as a static page with no credentials or personal data.</li></ol></div>
+ <div class="card"><h3>Scope</h3><p><b>In:</b> NIH RePORTER fields for one hypothetical biomedical informatics department, FY2018–FY2026; KPI summary, trends, sponsor breakdown, provenance, about; drill-downs; CSV export; prelaunch checks.</p><p><b>Out:</b> institutional systems and credentials; non-NIH sponsors; salary, effort or personnel data; investigator names; production hosting decisions.</p><p><b>Assumptions:</b> RePORTER totals are an adequate proxy for NIH activity; synthetic data shows the logic, not the department’s position.</p></div>
+ <div class="card"><h3>Deliverables and timeline <span class="tag t-pro">PROPOSED</span></h3><div class="steps"><div class="step"><b>Week 1</b>Questions, KPI definitions, data dictionary</div><div class="step"><b>Week 2</b>Wireframes; synthetic data; first build</div><div class="step"><b>Week 3</b>Accessibility audit and fixes; reconciliation</div><div class="step"><b>Week 4</b>User test (5 people); prelaunch checklist; go/no-go</div></div></div></div>
+ <div class="card"><h3>Expected benefits and measurement rules</h3><div class="tw"><table><caption>Each benefit has a measure, a rule for computing it, a target and evidence</caption><thead><tr><th scope="col">Benefit</th><th scope="col">Measure</th><th scope="col">Measurement rule</th><th scope="col">Target</th><th scope="col">Evidence</th></tr></thead><tbody>${BEN.map(r=>`<tr><th scope="row">${r[0]}</th><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td><td>${r[4]}</td></tr>`).join('')}</tbody></table></div></div>
+ <div class="card"><h3>UX architecture</h3><div class="tree">Research Administration Dashboard
+├── <a href="#kpi">KPI Summary</a>        cards: Total Awards · Sponsor Count · Avg Award Size (+ Total Funding, deadlines)
+├── <a href="#trends">Trends</a>             line charts, FY range filter
+├── <a href="#sponsors">Sponsor Breakdown</a>  bar chart, IC filter, drill-down
+├── <a href="#provenance">Data Provenance</a>    table: source URL · retrieval date · notes; CSV/JSON loader
+└── <a href="#about">About</a>              scope · synthetic-data disclosure · accessibility statement</div></div>
+ <div class="card"><h3>How this relates to the Executive Director role</h3><div class="tw"><table><caption class="sr">Role link</caption><thead><tr><th scope="col">Role responsibility</th><th scope="col">What the prototype shows</th><th scope="col">Where it continues</th></tr></thead><tbody>
+ <tr><th scope="row">Research administration portfolio (pre- and post-award)</th><td>Awards, funding, sponsor mix, awards ending</td><td><a href="https://narissa-pgm.github.io/HMS_DBMI/HMS_DBMI_Research.html#inventory" target="_blank" rel="noopener noreferrer">Research &amp; Grants platform</a></td></tr>
+ <tr><th scope="row">Compliance with federal sponsors</th><td>Closeout deadlines at 120 days</td><td><a href="https://narissa-pgm.github.io/HMS_DBMI/DBMI_Operating_Plan.html#/m/62" target="_blank" rel="noopener noreferrer">Plan module 62: work samples</a></td></tr>
+ <tr><th scope="row">Resource allocation with faculty</th><td>Funding by sponsor and activity, as facts for allocation decisions</td><td><a href="https://narissa-pgm.github.io/HMS_DBMI/DBMI_Operating_Plan.html#/m/61" target="_blank" rel="noopener noreferrer">Plan module 61: space &amp; resources</a></td></tr>
+ <tr><th scope="row">Oversight of units</th><td>One view the Chair and unit leads share</td><td><a href="https://narissa-pgm.github.io/HMS_DBMI/DBMI_Operating_Plan.html#/m/60" target="_blank" rel="noopener noreferrer">Plan module 60: unit platform map</a></td></tr></tbody></table></div></div>`;
+const RISKS=[['R1','Viewer mistakes synthetic data for real DBMI data','Realistic award numbers; no label on screenshots or exports',3,5,'Banner on every view; label on every KPI and chart caption; hypothetical department name; disclosure line in every CSV and print; no DBMI or HMS logo','Executive Director','Anyone quotes a figure as DBMI’s','Mitigated'],
+ ['R2','Accessibility failures (contrast, keyboard navigation)','Charts built mouse-first; colour-only meaning',3,4,'AA contrast tokens; tables for every chart; keyboard path for every drill-down; automated scan plus manual screen-reader test','Accessibility reviewer','Any critical scan finding; a task not possible by keyboard','Mitigated; audit pending'],
+ ['R3','GitHub Pages deployment exposes secrets','API keys or tokens pasted into client code or commit history',2,5,'No credentials needed (RePORTER API has no key); static file only; Content-Security-Policy blocks outbound calls; secret scanning and push protection on the repository; in-page self-check','Data analyst / developer','Self-check fails; scanning alert','Mitigated'],
+ ['R4','KPIs misread RePORTER counting','Yearly records, supplements and sub-projects double counted',3,4,'Count distinct core projects; written measurement rules; reconcile to export within 0.5%','Research administration lead','Totals differ from RePORTER by more than 0.5%','Open'],
+ ['R5','Stale data presented as current','No refresh cadence',3,3,'Retrieval date on every view; monthly refresh; data older than 45 days flagged','Data analyst / developer','Provenance date older than 45 days','Open'],
+ ['R6','Personal data exposed','PI names in an export carried into the page',2,4,'Personal fields dropped on load; roles only in documents','Data analyst / developer','A name appears in any view','Mitigated'],
+ ['R7','Scope creep into institutional systems','Requests to connect live systems before governance is agreed',3,3,'Out-of-scope list in the charter; changes approved by the Executive Director','Executive Director','Request for credentials or internal data','Open']];
+const ROLES=[['ED','Executive Director (sponsor)'],['RA','Research administration lead'],['FIN','Finance & grants administration'],['DEV','Data analyst / developer'],['UX','UX designer'],['A11Y','Accessibility reviewer (independent)'],['IT','HMS IT / web security'],['FAC','Faculty advisory group']];
+const RACI=[['Data sourcing','Define KPIs and measurement rules',{ED:'A',RA:'R',FIN:'C',DEV:'C',FAC:'C'}],['Data sourcing','Extract RePORTER data or generate synthetic data',{RA:'A',DEV:'R',FIN:'I'}],['Data sourcing','Reconcile totals and keep the provenance log',{RA:'A',DEV:'R',FIN:'C'}],
+ ['UX design','User questions and wireframes',{ED:'A',UX:'R',RA:'C',FAC:'C'}],['UX design','Chart choices and visual design',{UX:'A',DEV:'R',A11Y:'C',RA:'C'}],['UX design','Usability test with five users',{ED:'A',UX:'R',FAC:'C',RA:'I'}],
+ ['Accessibility audit','Automated scan of every view',{A11Y:'A',DEV:'R',UX:'I'}],['Accessibility audit','Manual keyboard and screen-reader test',{A11Y:'A',UX:'R',DEV:'C'}],['Accessibility audit','Fix and retest',{A11Y:'A',DEV:'R',UX:'C'}],
+ ['Deployment','Security review (no secrets, CSP, no personal data)',{IT:'A',DEV:'R',ED:'I'}],['Deployment','Go/no-go decision against the prelaunch checklist',{ED:'A',RA:'R',A11Y:'C',IT:'C',FAC:'I'}],['Deployment','Publish to GitHub Pages and monitor',{RA:'A',DEV:'R',ED:'I',FAC:'I'}]];
+V.governance=()=>{const hm=[];for(let i=5;i>=1;i--){hm.push(`<div style="background:none;font-weight:700">${i}</div>`);for(let l=1;l<=5;l++){const rs=RISKS.filter(r=>r[4]===i&&r[3]===l).map(r=>r[0]);const s=i*l;hm.push(`<div style="background:${s>=15?'#f6d3d8':s>=8?'#fbe7c3':'#e3f1e8'}" aria-label="Likelihood ${l}, impact ${i}: ${rs.join(', ')||'none'}">${rs.join(' ')}</div>`)}}hm.push('<div></div>');for(let l=1;l<=5;l++)hm.push(`<div style="background:none;font-weight:700;min-height:0">${l}</div>`);
+ const chk=RACI.map(r=>Object.values(r[2]).filter(v=>v==='A').length===1&&Object.values(r[2]).includes('R'));
+ return head('Project · Risks & RACI','Risk register and who does what','Governance for the prototype as a work sample: the risks named in the charter, scored and owned, and a RACI for data sourcing, UX design, accessibility audit and deployment. Roles, not names.')+
+ `<div class="card"><h3>Risk register</h3><div class="row" style="align-items:flex-start"><div style="flex:0 1 440px"><p class="note" style="margin-top:0">Impact (rows) by likelihood (columns), 1–5. Score = likelihood × impact.</p><div class="hm" role="img" aria-label="Risk heat map: ${RISKS.map(r=>r[0]+' likelihood '+r[3]+' impact '+r[4]).join('; ')}">${hm.join('')}</div></div><div class="callout warn" style="flex:1 1 300px">Top risk: <b>${RISKS.slice().sort((a,b)=>b[3]*b[4]-a[3]*a[4])[0][1]}</b>. It gets controls on every view, in every export and in print.</div></div>
+ <div class="tw"><table><caption>Risks, scores, responses and owners</caption><thead><tr><th scope="col">ID</th><th scope="col">Risk</th><th scope="col">Cause</th><th scope="col" class="n">L</th><th scope="col" class="n">I</th><th scope="col" class="n">Score</th><th scope="col">Response</th><th scope="col">Owner (role)</th><th scope="col">Early warning</th><th scope="col">Status</th></tr></thead><tbody>${RISKS.map(r=>`<tr><th scope="row">${r[0]}</th><td><b>${r[1]}</b></td><td>${r[2]}</td><td class="n">${r[3]}</td><td class="n">${r[4]}</td><td class="n"><b>${r[3]*r[4]}</b></td><td>${r[5]}</td><td>${r[6]}</td><td>${r[7]}</td><td>${r[8]}</td></tr>`).join('')}</tbody></table></div></div>
+ <div class="card"><h3>RACI <span class="tag t-pro">WORK SAMPLE</span></h3><p class="note" style="margin-top:0">R = responsible (does the work) · A = accountable (one per row, signs off) · C = consulted · I = informed. ${chk.every(Boolean)?'<span class="pass">✓ Every row has exactly one A and at least one R.</span>':'<span class="fail">✕ A row breaks the one-A rule.</span>'}</p>
+ <div class="tw"><table><caption>Responsibilities by activity and role</caption><thead><tr><th scope="col">Area</th><th scope="col">Activity</th>${ROLES.map(r=>`<th scope="col" class="raci"><abbr title="${E(r[1])}">${r[0]}</abbr></th>`).join('')}</tr></thead><tbody>${RACI.map((r,i)=>`<tr>${i===0||RACI[i-1][0]!==r[0]?`<th scope="rowgroup" rowspan="${RACI.filter(x=>x[0]===r[0]).length}">${r[0]}</th>`:''}<td>${r[1]}</td>${ROLES.map(x=>{const v=r[2][x[0]]||'';return `<td class="raci ${v?'r'+v:''}">${v?`<span aria-label="${{R:'Responsible',A:'Accountable',C:'Consulted',I:'Informed'}[v]}">${v}</span>`:''}</td>`}).join('')}</tr>`).join('')}</tbody></table></div>
+ <p class="note">${ROLES.map(r=>`<b>${r[0]}</b> ${E(r[1])}`).join(' · ')}</p>
+ ${mb('Two people accountable for the go-live decision, so neither makes it.','One accountable role per activity; the Executive Director owns go/no-go; the independent reviewer owns the accessibility verdict.','Exactly one A per row, checked automatically.',['Name the A first','Keep the reviewer independent of the builder','Record the go/no-go decision and its evidence'])}</div>`};
+const BP=[['1. Define before you display','Metrics added because the data had a column for them; “awards” means different things in different meetings.','Each KPI has one written rule, one owner and a reconciliation to the source before any chart is built.','No KPI without a measurement rule and a reconciliation.',['Write the data dictionary first','Count distinct core projects, not records','Reconcile to the export within 0.5%'],'api'],
+ ['2. Give every number context','A big number with no comparison, period or as-of date.','Each card shows the period, the change from last year, and links to the records behind it.','Every figure carries a period, a comparison and a drill-down.',['Show the fiscal year on the card','Add the change from the prior year in words','Offer the records behind it'],''],
+ ['3. Choose the honest chart','Dual axes, truncated bars, pies with many slices, legends far from the data.','Bars start at zero and are sorted; lines for time; small multiples instead of dual axes; labels on the data.','If a chart needs a legend to be read, relabel it.',['Sort bars largest first','Split two measures into two charts','Highlight one thing, grey the rest'],''],
+ ['4. Design for every user','Colour-only status, mouse-only drill-downs, charts with no text alternative.','WCAG 2.1 AA as the floor: keyboard paths, 4.5:1 contrast, a table and a summary for every chart, announced updates.','Every task must be possible by keyboard and by screen reader.',['Test with keyboard only','Test with NVDA or VoiceOver','Run an automated scan on every view'],'hua11y'],
+ ['5. Prove provenance','Figures copied into slides with no source, no date and no note of changes.','A provenance table: source URL, retrieval date, transformation notes, and the data label on every view and export.','Every figure traces to a provenance row.',['Record the retrieval date','Note every transformation','Carry the label into downloads'],'reporter'],
+ ['6. Keep it static and secret-free','API keys in page code; “private” settings trusted to hide a public site.','Static file; no credentials; Content-Security-Policy; secret scanning on the repository; treat anything published as public.','Nothing goes on the page that could not be on a billboard.',['Search the source for keys before every publish','Turn on secret scanning and push protection','Block outbound connections with CSP'],'ghp'],
+ ['7. Tie metrics to action','A dashboard that reports but never prompts a decision.','Deadlines and exceptions first: awards ending, closeouts due in 120 days, sponsors at risk; reviewed monthly.','Every view answers “what should we do next?”',['Put deadlines on the first screen','Review exceptions at the monthly meeting','Assign an owner to each exception'],'gps86'],
+ ['8. Test with real users','Designers judge their own dashboard.','A five-second test and a timed task test with five users before launch; fix, then retest.','No launch without a user test.',['Pick five standard questions','Time each answer','Fix the slowest first'],'']];
+V.practices=()=>head('Project · Industry best practices','Eight practices for research administration dashboards','Each practice: the common mistake, the better way, the rule to hold, and fixes. Sources where a rule comes from a policy.')+`<div class="pgrid">${BP.map(b=>`<div class="card"><h3>${b[0]}</h3>${mb(b[1],b[2],b[3],b[4])}${b[5]?`<p class="note">Source: ${sl(b[5])}</p>`:''}</div>`).join('')}</div>`;
+const CL=[['Data & provenance',[['d1','Every KPI has a written measurement rule','RA','must'],['d2','Totals reconcile to the RePORTER export within 0.5% for each fiscal year','DEV','must'],['d3','Provenance table lists every source with URL, retrieval date and notes','DEV','must','prov'],['d4','Personal fields (investigator names) removed','DEV','must'],['d5','Refresh cadence and owner agreed','RA','should']]],
+ ['Labeling & content',[['c1','Synthetic or public label on every view, chart caption and KPI card','UX','must','label'],['c2','Disclosure line in every CSV export and in print','DEV','must'],['c3','Hypothetical department name; no DBMI or HMS logos','ED','must'],['c4','Plain-language titles that state the finding','UX','should']]],
+ ['Accessibility',[['a1','Automated scan: zero critical or serious issues on every view','A11Y','must'],['a2','All tasks done with keyboard only; focus always visible','A11Y','must','kbd'],['a3','Screen-reader test (NVDA or VoiceOver) passes','A11Y','must'],['a4','Text contrast ≥ 4.5:1; graphics ≥ 3:1','A11Y','must','contrast'],['a5','Every chart has a description and a data table','UX','must','charts'],['a6','Page language set; one h1; headings in order','DEV','must','struct'],['a7','Reflow at 320px wide and 200% zoom without horizontal scrolling','A11Y','should']]],
+ ['Security & deployment',[['s1','No keys, tokens or passwords in the page or commit history','IT','must','secret'],['s2','Content-Security-Policy blocks outbound connections','IT','must','csp'],['s3','No external scripts or fonts loaded','DEV','should','ext'],['s4','External links open with rel="noopener"','DEV','should','links'],['s5','Secret scanning and push protection on the repository','IT','should']]],
+ ['Governance & launch',[['g1','Usability test with five users; fixes made','UX','must'],['g2','Risk register reviewed; top risk controls verified','ED','must'],['g3','Go/no-go recorded by the accountable role','ED','must'],['g4','Rollback plan: previous version tag ready','DEV','should']]]];
+function selfCheck(){const out={},html=document.documentElement.outerHTML,main=$('#main');
+ out.label=/SYNTHETIC|PUBLIC DATA/.test($('#databanner').textContent);
+ out.charts=[...document.querySelectorAll('svg.chart')].every(s=>s.getAttribute('role')==='img'&&s.getAttribute('aria-labelledby'))&&[...document.querySelectorAll('svg.chart')].length>=0;
+ out.struct=document.documentElement.lang==='en'&&document.querySelectorAll('h1').length===1;
+ out.secret=!/(api[_-]?key|secret|token|passw(or)?d)\s*[:=]\s*["'][A-Za-z0-9_\-]{16,}/i.test(html)&&!/\b(ghp_|github_pat_|sk-|AKIA)[A-Za-z0-9_]{12,}/.test(html);
+ out.csp=!!document.querySelector('meta[http-equiv="Content-Security-Policy"]')&&/connect-src 'none'/.test(document.querySelector('meta[http-equiv="Content-Security-Policy"]').content);
+ out.ext=![...document.querySelectorAll('script[src],link[rel=stylesheet]')].length;
+ out.links=[...document.querySelectorAll('a[target=_blank]')].every(a=>/noopener/.test(a.rel));
+ out.kbd=[...document.querySelectorAll('button')].every(b=>(b.textContent.trim()||b.getAttribute('aria-label')))&&[...document.querySelectorAll('select,input')].every(i=>i.labels&&i.labels.length||i.getAttribute('aria-label'));
+ const L=c=>{c=parseInt(c.slice(1),16);const f=v=>{v/=255;return v<=0.03928?v/12.92:Math.pow((v+0.055)/1.055,2.4)};return 0.2126*f(c>>16&255)+0.7152*f(c>>8&255)+0.0722*f(c&255)},cr=(a,b)=>{const x=L(a),y=L(b);return (Math.max(x,y)+0.05)/(Math.min(x,y)+0.05)};
+ const pairs=[['#1f2933','#ffffff'],['#52606d','#ffffff'],['#52606d','#f6f8fa'],['#A51C30','#ffffff'],['#2B5C8A','#ffffff'],['#7a4b06','#fdf1dc'],['#2F6B4F','#e5f2ea'],['#5B3A8C','#efe9f7'],['#2B5C8A','#e8f0f8'],['#8a1c2b','#fdeef0']];
+ out.contrastDetail=pairs.map(p=>[p[0],p[1],cr(p[0],p[1])]);out.contrast=out.contrastDetail.every(p=>p[2]>=4.5);
+ out.prov=Object.keys(SRC).every(k=>SRC[k][2]&&SRC[k][4]);return out}
+V.checklist=()=>{const done=LS.get('check',{}),all=CL.flatMap(g=>g[1]),must=all.filter(i=>i[3]==='must'),n=all.filter(i=>done[i[0]]).length,mn=must.filter(i=>done[i[0]]).length;
+ return head('Project · Prelaunch checklist','Ready to publish?','Tick each item when its evidence exists. Items marked with an automatic check can be tested here. Launch only when every “must” item is ticked.')+
+ `<div class="card"><div class="row" style="align-items:center"><div><b>${n} of ${all.length}</b> items · <b>${mn} of ${must.length}</b> must-haves<div class="prog" role="progressbar" aria-valuemin="0" aria-valuemax="${all.length}" aria-valuenow="${n}" aria-label="Checklist progress"><span style="width:${n/all.length*100}%"></span></div></div><div style="flex:0 1 auto"><span class="tag ${mn===must.length?'t-pub':'t-crit'}" style="font-size:14px;padding:5px 10px">${mn===must.length?'GO: all must-haves done':'NO-GO: '+(must.length-mn)+' must-haves open'}</span></div>
+ <div style="flex:0 1 auto;display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="btn pri" id="runchk">Run automatic checks</button><button type="button" class="btn" id="clcsv">Download checklist</button><button type="button" class="btn" id="clreset">Reset</button></div></div><div id="chkout" role="status"></div></div>
+ ${CL.map(g=>`<div class="card"><h3>${g[0]}</h3><ul class="cl">${g[1].map(i=>`<li><input type="checkbox" id="ck_${i[0]}" data-ck="${i[0]}"${done[i[0]]?' checked':''}><label for="ck_${i[0]}">${E(i[1])} ${i[3]==='must'?'<span class="tag t-crit">MUST</span>':'<span class="tag t-pro">SHOULD</span>'}</label><span class="meta">Owner: ${E(ROLES.find(r=>r[0]===i[2])[1])}${i[4]?` · automatic check: <span id="ac_${i[4]}">not run</span>`:''}</span></li>`).join('')}</ul></div>`).join('')}`};
+/* ---------- router ---------- */
+const ORDER=['kpi','trends','sponsors','provenance','about','charter','governance','practices','checklist'];
+function cur(){const h=location.hash.slice(1);return ORDER.includes(h)?h:'kpi'}
+function render(focus){const p=cur();$('#main').innerHTML=V[p]();document.querySelectorAll('nav.tabs a').forEach(a=>a.getAttribute('href')==='#'+p?a.setAttribute('aria-current','page'):a.removeAttribute('aria-current'));
+ document.title=({kpi:'KPI summary',trends:'Trends',sponsors:'Sponsor breakdown',provenance:'Data provenance',about:'About',charter:'Charter',governance:'Risks & RACI',practices:'Best practices',checklist:'Prelaunch checklist'})[p]+' · Research Administration Dashboard Prototype';wire(p);if(focus)$('#main').focus()}
+function wire(p){const m=$('#main');
+ m.querySelectorAll('[data-rule]').forEach(b=>b.onclick=()=>{$('#dlgT').textContent='How it is computed';DLROWS=[];$('#dlgB').innerHTML=`<p>${E(b.dataset.rule)}</p><p class="note">Full rules: <a href="#about">About → Measurement rules</a>.</p>`;$('#dlg').showModal();$('#dlgX').focus()});
+ m.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>location.hash=b.dataset.go);
+ m.querySelectorAll('[data-drill]').forEach(b=>b.onclick=()=>{const k=b.dataset.drill;if(k==='all')drill(`All awards, FY${st.fy}`,agg(inFY(st.fy)).awards);if(k==='ending')drill('Projects ending in the next 12 months',ending(DATA))});
+ const on=(id,fn)=>{const e=m.querySelector('#'+id);if(e)e.onchange=fn};
+ on('kfy',e=>{st.fy=+e.target.value;render();const g=agg(inFY(st.fy));say(`FY${st.fy}: ${g.n} awards, ${fm(g.tot)}, ${g.sp} sponsors.`);$('#kfy').focus()});
+ on('tfrom',e=>{st.from=+e.target.value;if(st.from>st.to)st.to=st.from;render();say(`Trends from FY${st.from} to FY${st.to}.`);$('#tfrom').focus()});
+ on('tto',e=>{st.to=+e.target.value;if(st.to<st.from)st.from=st.to;render();say(`Trends from FY${st.from} to FY${st.to}.`);$('#tto').focus()});
+ const ta=m.querySelector('#tall');if(ta)ta.onclick=()=>{const f=FYS();st.from=f[0];st.to=f[f.length-1];render();say('All years shown.');$('#tall').focus()};
+ on('sfy',e=>{st.spFy=+e.target.value;render();say(`Sponsors for FY${st.spFy}.`);$('#sfy').focus()});
+ on('smeas',e=>{st.measure=e.target.value;render();say(`Measure: ${st.measure}.`);$('#smeas').focus()});
+ m.querySelectorAll('.icf').forEach(c=>c.onchange=()=>{st.ics=[...m.querySelectorAll('.icf:checked')].map(x=>x.value);const v=c.value;render();say(`${st.ics.length} institutes selected.`);const n=$(`.icf[value="${v}"]`);if(n)n.focus()});
+ const ia=m.querySelector('#icall');if(ia)ia.onclick=()=>{st.ics=null;render();say('All institutes selected.');$('#icall').focus()};
+ const inn=m.querySelector('#icnone');if(inn)inn.onclick=()=>{st.ics=[];render();say('No institutes selected.');$('#icnone').focus()};
+ m.querySelectorAll('[data-ic]').forEach(b=>b.onclick=()=>{const ic=b.dataset.ic;drill(`${ic}: awards in FY${st.spFy}`,agg(inFY(st.spFy).filter(r=>r.ic===ic)).awards)});
+ const cf=m.querySelector('#csvf');if(cf)cf.onchange=loadFile;
+ m.querySelectorAll('[data-ck]').forEach(c=>c.onchange=()=>{const d=LS.get('check',{});d[c.dataset.ck]=c.checked;LS.set('check',d);const id=c.id;render();$('#'+id).focus()});
+ const rc=m.querySelector('#runchk');if(rc)rc.onclick=()=>{const r=selfCheck();Object.keys(r).forEach(k=>{const el=$('#ac_'+k);if(el)el.innerHTML=r[k]?'<span class="pass">✓ pass</span>':'<span class="fail">✕ fail</span>'});
+  const ks=['label','charts','struct','secret','csp','ext','links','kbd','contrast','prov'],np=ks.filter(k=>r[k]).length;$('#chkout').innerHTML=`<p><b>${np} of ${ks.length} automatic checks passed.</b> Automatic checks support, but do not replace, the manual audit.</p><details class="dt"><summary>Contrast ratios measured</summary><div class="tw"><table><caption class="sr">Contrast</caption><thead><tr><th scope="col">Text</th><th scope="col">Background</th><th scope="col" class="n">Ratio</th></tr></thead><tbody>${r.contrastDetail.map(p=>`<tr><th scope="row"><span style="color:${p[0]}">■</span> ${p[0]}</th><td>${p[1]}</td><td class="n ${p[2]>=4.5?'pass':'fail'}">${p[2].toFixed(2)}:1</td></tr>`).join('')}</tbody></table></div></details>`;say(`${np} of ${ks.length} automatic checks passed.`)};
+ const cc=m.querySelector('#clcsv');if(cc)cc.onclick=()=>{const d=LS.get('check',{});download('prelaunch_checklist.csv',['group,item,owner,priority,done'].concat(CL.flatMap(g=>g[1].map(i=>[g[0],i[1],ROLES.find(r=>r[0]===i[2])[1],i[3],d[i[0]]?'yes':'no'].map(csvq).join(',')))).join('\n'))};
+ const cr=m.querySelector('#clreset');if(cr)cr.onclick=()=>{LS.set('check',{});render();say('Checklist reset.');$('#clreset').focus()};
+ m.querySelectorAll('g.bar').forEach(g=>g.onclick=()=>{const ic=g.dataset.ic;drill(`${ic}: awards in FY${st.spFy}`,agg(inFY(st.spFy).filter(r=>r.ic===ic)).awards)});}
+/* ---------- CSV / JSON loader ---------- */
+function parseCSV(t){const rows=[];let r=[],f='',q=false;for(let i=0;i<t.length;i++){const c=t[i];if(q){if(c==='"'){if(t[i+1]==='"'){f+='"';i++}else q=false}else f+=c}else if(c==='"')q=true;else if(c===','){r.push(f);f=''}else if(c==='\n'||c==='\r'){if(c==='\r'&&t[i+1]==='\n')i++;r.push(f);rows.push(r);r=[];f=''}else f+=c}if(f||r.length){r.push(f);rows.push(r)}return rows.filter(x=>x.some(v=>v.trim()))}
+const num=v=>{const n=parseFloat(String(v??'').replace(/[$,\s]/g,''));return isFinite(n)?n:0};
+const dt=v=>{if(!v)return '';const d=new Date(v);return isNaN(d)?'':d.toISOString().slice(0,10)};
+const core=pn=>String(pn||'').trim().replace(/^\d/,'').replace(/-\S*$/,'');
+function fromRecords(recs){const out=[];let skip=0;recs.forEach(o=>{const fy=parseInt(o.fy,10),amt=num(o.amt)||num(o.dir)+num(o.ind);if(!fy||!amt){skip++;return}
+ out.push({fiscal_year:fy,project_num:String(o.pn||''),core_project_num:o.core||core(o.pn),activity_code:String(o.act||String(o.pn||'').replace(/^\d/,'').slice(0,3)||'—').trim(),ic:normIC(o.ic||String(o.pn||'').replace(/^\d?\w{3}/,'').slice(0,2)),award_amount:amt,direct_cost_amt:num(o.dir),indirect_cost_amt:num(o.ind),project_start_date:dt(o.st),project_end_date:dt(o.en)||'',org_name:String(o.org||''),title:''})});return {out,skip}}
+function loadFile(e){const file=e.target.files[0],msg=$('#csvmsg');if(!file)return;if(file.size>25e6){msg.textContent='File is larger than 25 MB; export fewer years.';return}
+ const rd=new FileReader();rd.onload=()=>{try{let recs=[];const txt=String(rd.result);
+  if(/\.json$/i.test(file.name)||/^\s*[\[{]/.test(txt)){const j=JSON.parse(txt),arr=Array.isArray(j)?j:(j.results||[]);recs=arr.map(o=>({fy:o.fiscal_year,pn:o.project_num,core:o.core_project_num,act:o.activity_code,ic:o.agency_ic_admin&&(o.agency_ic_admin.abbreviation||o.agency_ic_admin.code)||'',amt:o.award_amount,dir:o.direct_cost_amt,ind:o.indirect_cost_amt,st:o.project_start_date,en:o.project_end_date,org:o.organization&&o.organization.org_name}))}
+  else{const rows=parseCSV(txt);let h=-1;for(let i=0;i<Math.min(rows.length,15);i++){if(rows[i].some(c=>/fiscal year|^fy$/i.test(c.trim()))){h=i;break}}if(h<0)throw new Error('No “Fiscal Year” column found.');
+   const H=rows[h].map(c=>c.trim().toLowerCase()),col=(...n)=>{for(const x of n){const i=H.indexOf(x);if(i>=0)return i}return -1};
+   const c={fy:col('fiscal year','fy','fiscal_year'),pn:col('project number','project_num','full project number'),core:col('core project number','core_project_num'),act:col('activity','activity code','activity_code'),ic:col('administering ic','agency_ic_admin','ic','funding ic'),amt:col('total cost','award amount','award_amount','total cost ic','funding'),sub:col('total cost (sub projects)'),dir:col('direct cost ic','direct_cost_amt','direct cost'),ind:col('indirect cost ic','indirect_cost_amt','indirect cost'),st:col('project start date','project_start_date'),en:col('project end date','project_end_date'),org:col('organization name','org_name')};
+   recs=rows.slice(h+1).map(r=>{const g=k=>c[k]>=0?r[c[k]]:'';return {fy:g('fy'),pn:g('pn'),core:g('core'),act:g('act'),ic:g('ic'),amt:num(g('amt'))||num(g('sub')),dir:g('dir'),ind:g('ind'),st:g('st'),en:g('en'),org:g('org')}})}
+  const {out,skip}=fromRecords(recs);if(!out.length)throw new Error('No rows with a fiscal year and an amount.');
+  DATA=out;MODE='up';UPMETA={name:file.name,n:out.length,skip,when:new Date().toLocaleString('en-US')};resetState();banner();render();say(`Loaded ${out.length} public records from ${file.name}.`);
+ }catch(err){msg.textContent='Could not read the file: '+err.message}};rd.readAsText(file)}
+window.addEventListener('hashchange',()=>render(true));
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('#dlg').open)$('#dlg').close()});
+banner();render();
+window.radpQA={selfCheck,agg,DATA:()=>DATA};
+})();
+</script>
+</body>
+</html>
