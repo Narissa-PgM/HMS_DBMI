@@ -1,0 +1,706 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HMS DBMI Gift & Development</title>
+<meta name="description" content="Gift and development management for the HMS Department of Biomedical Informatics, in partnership with HMS Alumni Affairs and Development: prospects, the gift lifecycle, stewardship, compliance and a gift forecast. Published anchors, a sample ledger and a Monte Carlo model, each labeled.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%239d2235'/%3E%3Ctext x='32' y='41' font-family='Georgia,serif' font-size='22' font-weight='700' fill='white' text-anchor='middle'%3EG%26D%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#eef1f1;--card:#ffffff;--ink:#152430;--mute:#4a5560;--line:#dfe4e6;--soft:#f4f6f6;
+  --crim:#9d2235;--crim2:#7d1a2a;--blue:#2b5c8a;--teal:#0f766e;--amber:#b45309;--green:#2f7d4f;--violet:#6d28d9;--grey:#94a3b8;
+  --serif:Cambria,Georgia,"Times New Roman",serif;--sans:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  --shadow:0 1px 2px rgba(21,36,48,.06),0 6px 18px rgba(21,36,48,.06);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){--bg:#0e161b;--card:#152028;--ink:#e8eef2;--mute:#9aacb4;--line:#314049;--soft:#1c282f;--crim:#e05a6c;--crim2:#f08a98;--blue:#7fb0dc;--teal:#4fc1b4;--amber:#e6a35a;--green:#6cc497;--violet:#b49af2;--grey:#6b7d89}
+}
+:root[data-theme="dark"]{--bg:#0e161b;--card:#152028;--ink:#e8eef2;--mute:#9aacb4;--line:#314049;--soft:#1c282f;--crim:#e05a6c;--crim2:#f08a98;--blue:#7fb0dc;--teal:#4fc1b4;--amber:#e6a35a;--green:#6cc497;--violet:#b49af2;--grey:#6b7d89}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+a{color:var(--blue)}
+button,input,select{font:inherit;color:inherit}
+h1,h2,h3{font-family:var(--serif);font-weight:700;letter-spacing:0;margin:0}
+.skip{position:absolute;left:-999px;top:0;background:var(--card);padding:8px 12px;z-index:50}
+.skip:focus{left:12px;top:12px}
+/* header */
+header.top{position:sticky;top:0;z-index:20;background:var(--card);border-bottom:1px solid var(--line)}
+.topin{max-width:1240px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.logo{width:44px;height:44px;border-radius:10px;background:var(--crim);color:#fff;display:grid;place-items:center;font:700 13px/1 var(--serif);flex:0 0 auto}
+.brand h1{font-size:21px;line-height:1.15}
+.brand small{display:block;color:var(--mute);font-size:12.5px;margin-top:2px}
+.toplinks{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--card);border-radius:999px;padding:7px 14px;font-size:13px;font-weight:600;text-decoration:none;color:var(--ink);cursor:pointer;min-height:36px}
+.btn:hover{border-color:var(--crim)}
+.btn.pri{background:var(--crim);border-color:var(--crim);color:#fff}
+nav.tabs{max-width:1240px;margin:0 auto;padding:0 24px 10px;display:flex;gap:6px;overflow-x:auto;scrollbar-width:thin}
+@media (min-width:1000px){nav.tabs{flex-wrap:wrap;overflow:visible}}
+nav.tabs a{flex:0 0 auto;text-decoration:none;color:var(--mute);font-weight:600;font-size:13.5px;padding:8px 13px;border-radius:999px;border:1px solid transparent;white-space:nowrap}
+nav.tabs a:hover{color:var(--ink);border-color:var(--line)}
+nav.tabs a[aria-current="page"]{background:var(--crim);color:#fff}
+main{max-width:1240px;margin:0 auto;padding:22px 24px 60px}
+/* page head */
+.phead{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--crim);border-radius:12px;padding:18px 22px;margin-bottom:18px;box-shadow:var(--shadow)}
+.eyebrow{font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--crim)}
+.phead h2{font-size:26px;margin-top:4px}
+.phead p{margin:6px 0 0;color:var(--mute);max-width:900px}
+/* cards */
+.sec{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin-bottom:16px;box-shadow:var(--shadow)}
+.sec h3{font-size:19px}
+.why{color:var(--mute);margin:4px 0 14px;font-size:14px;max-width:900px}
+.grid{display:grid;gap:12px}
+.g4{grid-template-columns:repeat(4,minmax(0,1fr))}.g3{grid-template-columns:repeat(3,minmax(0,1fr))}.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media (max-width:980px){.g4{grid-template-columns:repeat(2,minmax(0,1fr))}.g3{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:640px){.g4,.g3,.g2{grid-template-columns:1fr}.topin,nav.tabs,main{padding-left:16px;padding-right:16px}.phead h2{font-size:22px}}
+.kpi{border:1px solid var(--line);border-radius:10px;padding:13px 14px;background:var(--card);position:relative;min-width:0}
+.kpi .k{display:flex;justify-content:space-between;gap:8px;align-items:flex-start;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:var(--mute)}
+.kpi .v{font:700 27px/1.15 var(--serif);margin-top:6px;font-variant-numeric:tabular-nums}
+.kpi small{display:block;color:var(--mute);font-size:12.5px;margin-top:4px}
+.kpi.click{cursor:pointer}.kpi.click:hover{border-color:var(--crim)}
+/* provenance chips */
+.tag{display:inline-block;font:700 10px/1 var(--sans);letter-spacing:.08em;text-transform:uppercase;padding:4px 6px;border-radius:4px;border:1px solid;white-space:nowrap;vertical-align:middle}
+.t-pub{background:#e7f4ec;color:#15803d;border-color:#bfe3cc}
+.t-smp{background:#fff1dc;color:#9a4b07;border-color:#f3cf98}
+.t-mod{background:#f1ebfd;color:#6d28d9;border-color:#d9c9f7}
+.t-asm{background:#eef1f4;color:#475569;border-color:#d7dde3}
+.t-doc{background:#e8effd;color:#1d4ed8;border-color:#c6d6f7}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .tag{filter:saturate(.9) brightness(.92)}}
+.legend{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:13px;color:var(--mute);align-items:center}
+/* tables */
+.tw{overflow-x:auto;border:1px solid var(--line);border-radius:10px}
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+th,td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{background:var(--soft);font-weight:600;color:var(--mute);font-size:12px;letter-spacing:.04em;text-transform:uppercase;position:sticky;top:0}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}
+tr:last-child td{border-bottom:0}
+tbody tr:hover{background:var(--soft)}
+.pill{display:inline-block;padding:2px 8px;border-radius:999px;font-size:12px;font-weight:600;border:1px solid var(--line)}
+.ok{color:var(--green)}.warn{color:var(--amber)}.bad{color:var(--crim)}
+.p-ok{background:#e7f4ec;color:#15803d;border-color:#bfe3cc}.p-warn{background:#fff1dc;color:#9a4b07;border-color:#f3cf98}.p-bad{background:#fbe9ec;color:#9d2235;border-color:#f1c2ca}
+/* charts */
+svg.ch{width:100%;height:auto;display:block}
+svg.ch text{font-family:var(--sans);fill:var(--mute);font-size:11px}
+svg.ch .lab{font-weight:600;font-size:12px}
+.cap{font-size:12.5px;color:var(--mute);margin-top:8px}
+/* controls */
+.ctrls{display:flex;flex-wrap:wrap;gap:14px 22px;align-items:flex-end;margin-bottom:14px}
+.ctrl label{display:block;font-size:12px;font-weight:600;color:var(--mute);margin-bottom:4px}
+.ctrl input[type=number],.ctrl select{border:1px solid var(--line);background:var(--card);border-radius:8px;padding:7px 10px;min-width:120px}
+.ctrl input[type=range]{width:200px;accent-color:var(--crim)}
+.ctrl output{font-weight:700;margin-left:6px;font-variant-numeric:tabular-nums}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden}
+.seg button{border:0;background:var(--card);padding:7px 13px;font-size:13px;font-weight:600;cursor:pointer;color:var(--mute)}
+.seg button[aria-pressed="true"]{background:var(--crim);color:#fff}
+/* map cards */
+.map a{display:block;text-decoration:none;color:inherit;border:1px solid var(--line);border-radius:10px;padding:14px;background:var(--card);transition:border-color .15s}
+.map a:hover,.map a:focus-visible{border-color:var(--crim)}
+.map b{font-family:var(--serif);font-size:16.5px;display:block}
+.map span{display:block;font-size:13px;color:var(--mute);margin-top:3px}
+.map i{font-style:normal;font-size:11px;font-weight:700;letter-spacing:.1em;color:var(--crim)}
+.note{border-left:4px solid var(--amber);background:var(--soft);padding:10px 14px;border-radius:6px;font-size:13.5px;margin:0 0 14px}
+.note.blue{border-color:var(--blue)}
+.callout{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@media (max-width:640px){.callout{grid-template-columns:1fr}}
+.mis{border:1px solid #f1c2ca;background:#fbf2f4;border-radius:10px;padding:12px 14px}
+.best{border:1px solid #c6d6f7;background:#f1f6fd;border-radius:10px;padding:12px 14px}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .mis{background:#2a1a1f;border-color:#5a2a33}:root:not([data-theme="light"]) .best{background:#17243a;border-color:#2d4a72}}
+.mis b{color:var(--crim)}.best b{color:var(--blue)}
+.small{font-size:13px}.muted{color:var(--mute)}
+.list{margin:6px 0 0;padding-left:18px}.list li{margin:3px 0}
+.foot{max-width:1240px;margin:0 auto;padding:0 24px 40px;color:var(--mute);font-size:12.5px}
+.cal{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px}
+@media (max-width:980px){.cal{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:640px){.cal{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.mo{border:1px solid var(--line);border-radius:10px;padding:10px;min-height:120px;background:var(--card)}
+.mo h4{margin:0 0 6px;font:700 13px/1.2 var(--sans);color:var(--mute);letter-spacing:.06em;text-transform:uppercase}
+.mo.now{border-color:var(--crim);box-shadow:inset 0 0 0 1px var(--crim)}
+.ev{font-size:12px;padding:4px 6px;border-radius:6px;margin-bottom:4px;background:var(--soft);border-left:3px solid var(--blue)}
+.ev.nih{border-left-color:var(--crim)}.ev.rep{border-left-color:var(--teal)}.ev.pol{border-left-color:var(--violet)}
+.dlg{position:fixed;inset:0;background:rgba(10,18,24,.5);display:none;align-items:center;justify-content:center;z-index:60;padding:16px}
+.dlg.on{display:flex}
+.dlg .box{background:var(--card);border-radius:12px;max-width:640px;width:100%;max-height:85vh;overflow:auto;padding:20px 22px;border:1px solid var(--line)}
+.dlg .box h3{font-size:20px;margin-bottom:6px}
+.close{float:right}
+:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+main:focus,main:focus-visible{outline:none}
+@media print{header.top,nav.tabs,.toplinks{display:none}.sec,.phead{box-shadow:none;break-inside:avoid}}
+.t-usr{background:#e0f2f1;color:#0f766e;border-color:#a7d9d4}
+nav.tabs a .tn{display:inline-grid;place-items:center;width:18px;height:18px;border-radius:50%;background:var(--soft);color:var(--mute);font-size:10.5px;margin-right:6px}
+nav.tabs a[aria-current="page"] .tn{background:rgba(255,255,255,.25);color:#fff}
+code{background:var(--soft);padding:1px 5px;border-radius:4px;font-size:12.5px}
+.pslinks{display:flex;flex-wrap:wrap;gap:6px}.pslinks a{font-size:12.5px;padding:4px 9px;border:1px solid var(--line,#D5DAE0);border-radius:999px;text-decoration:none;color:inherit;max-width:100%}.pslinks a:hover,.pslinks a:focus-visible{border-color:#0F766E;color:#0F766E}
+.grid>*{min-width:0}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <div class="topin">
+    <div class="logo" aria-hidden="true">HMS</div>
+    <div class="brand"><h1>Gift &amp; Development</h1><small>Department of Biomedical Informatics · philanthropy with HMS Alumni Affairs and Development, in 13 sections (demo)</small></div>
+    <div class="toplinks">
+      <a class="btn" href="https://narissa-pgm.github.io/HMS_DBMI/HMS_DBMI_Research.html#command" target="_blank" rel="noopener">Research &amp; Grants ↗</a>
+      <a class="btn" href="https://narissa-pgm.github.io/HMS_DBMI/HMS_OFA.html#index" target="_blank" rel="noopener">Faculty Affairs ↗</a>
+      <a class="btn" href="https://narissa-pgm.github.io/HMS_DBMI/HMS_Advancement.html#command" target="_blank" rel="noopener">HMS Advancement ↗</a>
+      <a class="btn" href="https://narissa-pgm.github.io/HMS_DBMI/DBMI_Operating_Plan.html" target="_blank" rel="noopener">Operating plan ↗</a>
+      <button class="btn" id="theme" type="button" aria-label="Switch light or dark theme">◐ Theme</button>
+    </div>
+  </div>
+  <nav class="tabs" aria-label="Pages" id="tabs"></nav>
+</header>
+<main id="main" tabindex="-1"></main>
+<div class="foot" id="foot"></div>
+<script>
+
+'use strict';
+/* =====================================================================
+   HMS DBMI · Gift & Development (demo)
+   Layers: PUBLISHED (quoted with a source) · SAMPLE (invented, for shape)
+           MODEL (computed from stated inputs) · ASSUMPTION (an input you can change)
+   No donor names, no HMS internal data, no API keys. Donors appear only as codes.
+   ===================================================================== */
+const SRC={
+ hufy26:['Harvard University Financial Overview, FY2026','Harvard Financial Administration','Oct 2026','https://finance.harvard.edu/fy26-financial-overview','Total gifts received more than $1.5 billion; current-use gifts received $684 million, up 9% and the highest in Harvard’s history; gifts to the endowment more than $525 million. Endowment distribution $2.6 billion; endowment value about $68 billion; return 27.1%. Endowment distribution 39% and current-use gifts 10% of operating revenue (philanthropy 48%, up from 46%). More than 80% of the distribution carries donor restrictions.'],
+ hmag26:['Harvard stabilizes finances with strong endowment returns, philanthropy (FY2026)','Harvard Magazine','15 Oct 2026','https://www.harvardmagazine.com/university-finances/fy26-annual-financial-report','The endowment tax rises from 1.4% to 8% from FY2027 (about $300 million a year), and the FY2027 endowment distribution is flat.'],
+ hmsmix:['HMS faces deficit; revenue mix','The Harvard Crimson','2 Dec 2024','https://www.thecrimson.com/article/2024/12/2/hms-funding-deficit-trump-nih/','HMS revenue: sponsored support 38%, education 11%, gifts 8%, other 15%, and endowment income slightly more than a quarter; a $37M shortfall.'],
+ sos26:['HMS Dean outlines strategic plan amid federal funding cuts','The Harvard Crimson','17 Sep 2026','https://www.thecrimson.com/article/2026/9/17/hms-dean-strategic-plan/','HMS federal revenue fell 17% in FY2026; the Dean’s plan includes an “AI-enabled campus” and deeper industry partnerships.'],
+ alum26:['Your giving impact: HMS alumni','HMS Office of Alumni Affairs and Development','FY2026','https://impact.hms.harvard.edu/alumni','In FY2026, 1,964 alumni gave more than $19 million. On average 22% of alumni give each year, against 7% at peer institutions. 92% of MD alumni giving went to flexible funds for the dean, financial aid and research initiatives; leadership donors gave 93% of annual funds raised.'],
+ honor25:['Honor Roll of Donors, fiscal year 2025','HMS Alumni','FY2025','https://alumni.hms.harvard.edu/give/honor-roll-donors','In fiscal year 2025, 2,339 alumni gave to HMS.'],
+ aad:['Contact Alumni Affairs and Development','Harvard Medical School','accessed 26 Oct 2026','https://hms.harvard.edu/departments/giving/contact-aad','The HMS Office of Alumni Affairs and Development (AAD) includes principal and major gifts, gift planning, donor relations and stewardship, development communications, development services and operations, development research, and alumni engagement.'],
+ vse25:['CASE Insights on Voluntary Support of Education, FY2025','CASE','14 Apr 2026','https://www.case.org/resources/insights-voluntary-support-education-2025','Giving to U.S. colleges and universities reached an estimated $78.8 billion in FY2025, up 4%. 81% of contributions were designated for specific uses. 670 institutions responded.'],
+ fep25:['AFP Fundraising Effectiveness Project, Q4 2025 (summary)','DonorPerfect, summarizing the FEP','17 Jul 2026','https://www.donorperfect.com/nonprofit-technology-blog/fundraising-software/afp-fep-q4-2025/','Overall donor retention 43.3% in 2025 (43.1% in 2024); dollars up about 5.0%; donor counts down about 3.6%. All U.S. nonprofits, not higher education alone.'],
+ irs:['Charitable contributions: written acknowledgments','IRS','current page','https://www.irs.gov/charities-non-profits/charitable-organizations/charitable-contributions-written-acknowledgments','A gift of $250 or more needs a written acknowledgment with the organization’s name, the cash amount or a description of non-cash property, and a statement of whether any goods or services were provided, with a good-faith estimate of their value.'],
+ p1771:['Publication 1771: Charitable contributions, substantiation and disclosure','IRS','current edition','https://www.irs.gov/pub/irs-pdf/p1771.pdf','A payment over $75 that is partly a gift and partly for goods or services needs a written disclosure. The donor must have the $250 acknowledgment by the earlier of the filing date or the return due date; separate gifts under $250 are not aggregated.'],
+ s117:['Section 117 of the Higher Education Act: reporting of foreign gifts and contracts','Congressional Research Service','25 Mar 2026','https://www.everycrsreport.com/files/2026-03-25_IF12927_9e4e5e294f0adad0cb71eb69f92bbb9dca10fd61.html','Gifts and contracts from one foreign source totaling $250,000 or more in a calendar year are reported by January 31 or July 31. A new reporting portal opened in January 2026. The DETERRENT Act, passed by the House and not law, would lower the threshold to $50,000.'],
+ giftpol:['Gift vs. Sponsored Research Policy: quick reference','Harvard Office for Sponsored Programs','current page','https://osp.finance.harvard.edu/gift-vs-sponsored-research-policy-quick-reference-policy-summary.md','A gift serves the donor’s philanthropic interest, has no deliverables and no period of performance, and is documented by a letter of intent. A sponsored award implements a specific plan with deliverables, required reports and a binding agreement. Questions go to Alumni and Development Services or OSP.'],
+ hmsai:['AI tools at HMS','HMS IT','accessed 25 Oct 2026','https://it.hms.harvard.edu/service/ai-tools','Claude, ChatGPT Edu and Copilot Premium for eligible Quad-based employees after training; use with Level 3 data and below, never Level 4 or 5; meeting assistants only up to Level 2.'],
+ nist:['AI Risk Management Framework (NIST AI 100-1)','NIST','26 Jan 2023','https://www.nist.gov/itl/ai-risk-management-framework','Four functions for managing AI risk: govern, map, measure, manage.'],
+ plan:['DBMI Operating Plan, module 54: Development & Advancement plan','Narissa Khomkhai','Oct 2026','https://narissa-pgm.github.io/HMS_DBMI/DBMI_Operating_Plan.html#/m/54','HMS Advancement leads every ask; DBMI brings the case for support, qualified prospects, open labs and stewardship. Five priorities: trainee fellowships, early-career faculty, computing for AI, a research bridge fund, people and profile.']
+};
+
+/* ---------------- utilities ---------------- */
+const $=s=>document.querySelector(s);
+const E=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fm=(v,d=1)=>(v<0?'−':'')+'$'+Math.abs(v).toFixed(d)+'M';
+const fk=v=>(v<0?'−':'')+'$'+Math.round(Math.abs(v)).toLocaleString()+'K';
+const fK=v=>Math.abs(v)>=1000?fm(v/1000,v>=10000?1:2):fk(v); /* v in $K */
+const pc=(v,d=0)=>(v*100).toFixed(d)+'%';
+const TAG={usr:['Your data','t-usr'],pub:['Published','t-pub'],smp:['Sample','t-smp'],mod:['Model','t-mod'],asm:['Assumption','t-asm'],doc:['Document','t-doc']};
+const tag=t=>`<span class="tag ${TAG[t][1]}" title="${E({usr:'Uploaded in Sources & setup; stays in this browser.',pub:'Quoted from a published source; open Sources for the citation.',smp:'Invented to show the shape of the report. Not DBMI, HMS or Harvard data.',mod:'Calculated from the stated inputs. Not a count and not a decision.',asm:'An input you can change.',doc:'Rule or date taken from a policy page.'}[t])}">${TAG[t][0]}</span>`;
+const sc=(k,label)=>{const s=SRC[k];return s?`<a href="${E(s[3])}" target="_blank" rel="noopener">${E(label||s[1]+', '+s[2])}</a>`:''};
+const kpi=(k,v,t,note,act)=>`<div class="kpi${act?' click':''}"${act?` role="button" tabindex="0" data-go="${act}"`:''}><div class="k"><span>${E(k)}</span>${tag(t)}</div><div class="v">${v}</div><small>${note}</small></div>`;
+function rng(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function norm(r){let u=0,v=0;while(!u)u=r();while(!v)v=r();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v)}
+const LS={get(k,d){try{const v=localStorage.getItem('hmsgd_'+k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{if(v==null)localStorage.removeItem('hmsgd_'+k);else localStorage.setItem('hmsgd_'+k,JSON.stringify(v))}catch(e){}}};
+const TODAY=new Date(2026,9,26); /* demo "as of" date */
+const FY=d=>d.getMonth()>=6?d.getFullYear()+1:d.getFullYear();
+const CURFY=FY(TODAY);
+const dfmt=d=>d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+const days=d=>Math.round((d-TODAY)/864e5);
+const iso=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+const pick=(r,arr)=>arr[Math.floor(r()*arr.length)];
+const wpick=(r,arr)=>{const t=arr.reduce((s,a)=>s+a[1],0);let x=r()*t;for(const a of arr){x-=a[1];if(x<=0)return a[0]}return arr[arr.length-1][0]};
+
+/* ---------------- the case for support (from the operating plan, module 54) ---------------- */
+const PRI=[['fel','Trainee fellowships','#9d2235','PhD (AI in Medicine and Bioinformatics tracks) and MMSc students','Current-use or endowed fellowships'],
+ ['ecf','Early-career faculty','#2b5c8a','Recruitment packages and bridge years for assistant professors','Current-use faculty support; professorships'],
+ ['ai','Computing for AI','#0f766e','GPU and cloud capacity in the Core for Computational Biomedicine','Current-use or capital gifts'],
+ ['bridge','Research bridge fund','#b45309','Flexible funds to carry labs between awards','Unrestricted or flexible current-use'],
+ ['ppl','People and profile','#6d28d9','Staff development, recognition, the annual impact report','Current-use']];
+const PRIN=Object.fromEntries(PRI.map(p=>[p[0],p[1]])),PRIC=Object.fromEntries(PRI.map(p=>[p[0],p[2]]));
+const CAP=[['Under $25K',10],['$25K–$100K',50],['$100K–$1M',400],['$1M–$5M',2500],['$5M and up',7500]];
+const STAGES=['Identify','Qualify','Cultivate','Solicit','Steward'];
+const STC={Identify:'#94a3b8',Qualify:'#6b8bb0',Cultivate:'#2b5c8a',Solicit:'#9d2235',Steward:'#2f7d4f'};
+const MGRS=['Major gifts (AAD)','Principal gifts (AAD)','Gift planning (AAD)','Development strategy & grants (AAD)'];
+const GTYPES=['Current use','Endowment','Pledge payment'];
+const GTC={'Current use':'#9d2235','Endowment':'#2b5c8a','Pledge payment':'#b45309'};
+
+/* ---------------- sample prospects (codes only) ---------------- */
+function buildProspects(){
+ const r=rng(311),out=[];
+ for(let i=0;i<60;i++){
+  const type=wpick(r,[['Individual',30],['DBMI program alumnus/a',14],['Grateful patient family',8],['Family foundation',12],['Private foundation',10],['Corporation',8]]);
+  let cap=wpick(r,[[0,18],[1,30],[2,32],[3,15],[4,5]]);if(/foundation|Corporation/.test(type)&&cap<2&&r()<.6)cap++;
+  const aff=1+Math.floor(r()*5),inc=Math.max(1,Math.min(5,aff+Math.round(norm(r)*1.1)));
+  const stage=wpick(r,[['Identify',12],['Qualify',12],['Cultivate',17+aff*2],['Solicit',6+aff*2],['Steward',8+inc]]);
+  const pri=wpick(r,[['fel',26],['ecf',20],['ai',22],['bridge',18],['ppl',8]]);
+  const mgr=cap>=3?MGRS[1]:/foundation/.test(type)?MGRS[3]:(type==='Individual'&&r()<.22)?MGRS[2]:MGRS[0];
+  const last=stage==='Identify'?null:Math.round(5+r()*(stage==='Cultivate'?260:150));
+  const next=new Date(TODAY.getTime()+Math.round(-35+r()*125)*864e5);
+  const ask=stage==='Solicit'?Math.round(CAP[cap][1]*(0.2+r()*0.3)/5)*5:null;
+  out.push({id:'PR-'+String(i+1).padStart(3,'0'),type,cap,aff,inc,stage,pri,mgr,champ:'FC-0'+(1+Math.floor(r()*6)),last,next,ask,close:stage==='Solicit'?1+Math.floor(r()*10):null,foreign:r()<0.06,corpReview:type==='Corporation'?(r()<.5?'Cleared as a gift':'Needs gift-vs-sponsored check'):null});
+ }
+ return out;
+}
+const PROSPECTS=buildProspects();
+
+/* ---------------- sample gift ledger (FY2024 to today) ---------------- */
+function fyDate(r,fy,peak){ /* a date in FY fy, weighted to December and June */
+ const m=wpick(r,[[6,6],[7,5],[8,6],[9,8],[10,9],[11,20],[0,7],[1,6],[2,7],[3,7],[4,8],[5,16]]);
+ const y=m>=6?fy-1:fy;return new Date(y,m,1+Math.floor(r()*28));
+}
+function buildGifts(){
+ const r=rng(911),G=[],PL=[];let n=0;const add=g=>{if(g.date>TODAY)return;g.id='G-'+String(++n).padStart(4,'0');G.push(g)};
+ /* annual donors */
+ let pool=[];let dn=0;
+ for(const fy of [2024,2025,2026,2027]){
+  const keep=pool.filter(()=>r()<0.47),fresh=Array.from({length:fy===2024?150:62+Math.floor(r()*14)},()=>'AD-'+String(++dn).padStart(4,'0'));
+  pool=fy===2024?fresh:keep.concat(fresh);
+  pool.forEach(d=>{const k=r()<.18?2:1;for(let j=0;j<k;j++){const amt=Math.max(0.025,Math.exp(Math.log(0.3)+norm(r)*1.05));
+   add({date:fyDate(r,fy),donor:d,dtype:r()<.35?'DBMI program alumnus/a':'Individual',type:'Current use',pri:wpick(r,[['fel',30],['bridge',30],['ppl',25],['ai',15]]),amt:+amt.toFixed(3),ackDays:null,foreign:false})}});
+ }
+ /* major gifts from prospects now in stewardship */
+ const stw=PROSPECTS.filter(p=>p.stage==='Steward').map(p=>({p,amt:Math.round(CAP[p.cap][1]*(0.12+r()*0.3))})).sort((x,y)=>y.amt-x.amt);
+ stw.forEach(({p,amt},i)=>{
+  const fy=2024+[2,1,0,0,1,2][i%6],d=fyDate(r,fy);
+  if(amt>=100&&r()<0.75){ /* pledge paid in annual installments */
+   const yrs=3+Math.floor(r()*3),per=Math.round(amt/yrs),endow=r()<.4;const pl={id:'PL-'+String(PL.length+1).padStart(2,'0'),donor:p.id,pri:p.pri,total:amt,years:yrs,per,start:d,endow,paid:0,payments:[]};
+   for(let k=0;k<yrs;k++){const due=new Date(d.getFullYear()+k,d.getMonth(),d.getDate());const late=k>0&&due<TODAY&&due>new Date(TODAY.getTime()-200*864e5)&&r()<0.5;
+    if(due<=TODAY&&!late){const pd=new Date(due.getTime()+Math.round(r()*20)*864e5);if(pd<=TODAY){add({date:pd,donor:p.id,dtype:p.type,type:'Pledge payment',pri:p.pri,amt:per,ackDays:null,foreign:p.foreign,pledge:pl.id,endow});pl.paid+=per;pl.payments.push(iso(pd))}}
+    else if(late){pl.lateDue=due;break}}
+   PL.push(pl);
+  }else add({date:d,donor:p.id,dtype:p.type,type:amt>=50&&r()<.4?'Endowment':'Current use',pri:p.pri,amt,ackDays:null,foreign:p.foreign});
+ });
+ /* mid-level gifts from cultivate-stage prospects */
+ PROSPECTS.filter(p=>p.stage==='Cultivate'&&p.cap<=2&&r()<.5).forEach(p=>add({date:fyDate(r,2025+Math.floor(r()*3)),donor:p.id,dtype:p.type,type:'Current use',pri:p.pri,amt:Math.round(5+r()*40),ackDays:null,foreign:p.foreign}));
+ /* acknowledgment timing */
+ G.forEach(g=>{const age=-days(g.date);g.ackDays=age<=10&&r()<.45?null:(r()<.82?Math.floor(1+r()*2):Math.floor(3+r()*12))});
+ G.sort((a,b)=>a.date-b.date);
+ return {G,PL};
+}
+let {G:GIFTS,PL:PLEDGES}=buildGifts();
+let USERG=false;
+const gFY=g=>FY(g.date);
+const sum=(a,f)=>a.reduce((s,x)=>s+f(x),0);
+
+/* pledge status */
+function pledgeNext(pl){if(pl.paid>=pl.total)return null;const k=Math.round(pl.paid/pl.per);return new Date(pl.start.getFullYear()+k,pl.start.getMonth(),pl.start.getDate())}
+
+/* funds derived from the ledger */
+function funds(){
+ return PRI.map(p=>{const g=GIFTS.filter(x=>x.pri===p[0]);
+  const cu=sum(g.filter(x=>x.type==='Current use'||(x.type==='Pledge payment'&&!x.endow)),x=>x.amt),en=sum(g.filter(x=>x.type==='Endowment'||(x.type==='Pledge payment'&&x.endow)),x=>x.amt);
+  const old=sum(g.filter(x=>(x.type==='Current use'||(x.type==='Pledge payment'&&!x.endow))&&gFY(x)<CURFY),x=>x.amt),spentShare={fel:0.86,ecf:0.62,ai:0.79,bridge:0.91,ppl:0.95}[p[0]];
+  const spent=old*spentShare,bal=cu-spent,burn=old?spent/(CURFY-2024):0;
+  return {k:p[0],n:p[1],c:p[2],cu,en,spent,bal,mv:en*1.12,months:burn?bal/(burn/12):null};
+ });
+}
+
+/* ---------------- chart helpers ---------------- */
+function niceStep(range,n){const s=Math.pow(10,Math.floor(Math.log10(range/n)));for(const m of [1,2,2.5,5,10])if(range/(s*m)<=n)return s*m;return s*10}
+function bars(groups,o={}){ /* groups:[{l,parts:[[name,v,color]]}] stacked */
+ const W=o.w||720,H=o.h||260,l=54,r=14,t=16,b=40,n=groups.length;
+ const mx=o.max||Math.max(1,...groups.map(g=>g.parts.reduce((a,p)=>a+Math.max(0,p[1]),0)))*1.1;
+ const st=niceStep(mx,4),top=Math.ceil(mx/st)*st,Y=v=>t+(1-v/top)*(H-t-b),bw=(W-l-r)/n*0.62;let g='';
+ for(let v=0;v<=top+1e-9;v+=st)g+=`<line x1="${l}" x2="${W-r}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--line)"/><text x="${l-6}" y="${Y(v)+4}" text-anchor="end">${o.fmt?o.fmt(v):Math.round(v)}</text>`;
+ groups.forEach((gr,i)=>{const x=l+(i+.5)*(W-l-r)/n-bw/2;let acc=0;gr.parts.forEach(p=>{if(p[1]<=0)return;const y0=Y(acc),y1=Y(acc+p[1]);g+=`<rect x="${x.toFixed(1)}" y="${y1.toFixed(1)}" width="${bw.toFixed(1)}" height="${(y0-y1).toFixed(1)}" fill="${p[2]}" rx="2"><title>${E(gr.l+' · '+p[0]+': '+(o.fmt?o.fmt(p[1]):p[1]))}</title></rect>`;acc+=p[1]});
+  g+=`<text x="${(x+bw/2).toFixed(1)}" y="${H-b+16}" text-anchor="middle">${E(gr.l)}</text>`;
+  if(o.total)g+=`<text x="${(x+bw/2).toFixed(1)}" y="${(Y(acc)-5).toFixed(1)}" text-anchor="middle" class="lab">${o.fmt?o.fmt(acc):Math.round(acc)}</text>`;});
+ if(o.ref!=null)g+=`<line x1="${l}" x2="${W-r}" y1="${Y(o.ref)}" y2="${Y(o.ref)}" stroke="var(--amber)" stroke-width="2" stroke-dasharray="6 4"/><text x="${W-r}" y="${Y(o.ref)-6}" text-anchor="end" style="fill:var(--amber);font-weight:700">${E(o.refLab||'')} ${o.fmt?o.fmt(o.ref):o.ref}</text>`;
+ return `<svg class="ch" viewBox="0 0 ${W} ${H}" role="img" aria-label="${E(o.label||'Bar chart')}">${g}</svg>`;
+}
+function hbars(rows,o={}){ /* rows:[label,value,color,note] */
+ const W=o.w||720,rh=30,H=rows.length*rh+10,l=o.l||230,r=90,mx=Math.max(1,...rows.map(x=>x[1]));let g='';
+ rows.forEach((x,i)=>{const y=i*rh+4,w=(W-l-r)*x[1]/mx;g+=`<text x="${l-8}" y="${y+18}" text-anchor="end">${E(x[0])}</text><rect x="${l}" y="${y+5}" width="${Math.max(1,w).toFixed(1)}" height="18" rx="3" fill="${x[2]||'var(--blue)'}"><title>${E(x[0]+': '+(o.fmt?o.fmt(x[1]):x[1])+(x[3]?' · '+x[3]:''))}</title></rect><text x="${l+w+6}" y="${y+18}" class="lab">${o.fmt?o.fmt(x[1]):x[1]}</text>`});
+ return `<svg class="ch" viewBox="0 0 ${W} ${H}" role="img" aria-label="${E(o.label||'Bar chart')}">${g}</svg>`;
+}
+function lines(labels,series,o={}){ /* series:[{n,c,v,lo,hi,dash}] */
+ const W=o.w||900,H=o.h||300,l=60,r=190,t=18,b=34,n=labels.length;
+ const vals=[];series.forEach(s=>{s.v.forEach(v=>v!=null&&vals.push(v));(s.lo||[]).forEach(v=>v!=null&&vals.push(v));(s.hi||[]).forEach(v=>v!=null&&vals.push(v))});
+ if(o.ref!=null)vals.push(o.ref);
+ let mn=o.min!=null?o.min:Math.min(...vals),mx=Math.max(...vals);const st=niceStep((mx-mn)||1,5);mn=o.min!=null?o.min:Math.floor(mn/st)*st;mx=Math.ceil(mx/st)*st;
+ const X=i=>l+i/(n-1)*(W-l-r),Y=v=>t+(mx-v)/((mx-mn)||1)*(H-t-b);let g='';
+ for(let v=mn;v<=mx+1e-9;v+=st)g+=`<line x1="${l}" x2="${W-r}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--line)"/><text x="${l-6}" y="${Y(v)+4}" text-anchor="end">${o.fmt?o.fmt(v):Math.round(v)}</text>`;
+ if(o.split!=null){const x=X(o.split);g+=`<rect x="${x}" y="${t}" width="${W-r-x}" height="${H-t-b}" fill="var(--soft)"/><text x="${x+6}" y="${t+12}">model</text>`}
+ if(o.ref!=null)g+=`<line x1="${l}" x2="${W-r}" y1="${Y(o.ref)}" y2="${Y(o.ref)}" stroke="var(--amber)" stroke-dasharray="5 4"/><text x="${W-r+6}" y="${Y(o.ref)+4}" fill="var(--amber)">${E(o.refLab||'')}</text>`;
+ series.forEach(s=>{if(s.lo&&s.hi){let d='',idx=[];s.hi.forEach((v,i)=>v!=null&&idx.push(i));idx.forEach((i,z)=>d+=(z?'L':'M')+X(i).toFixed(1)+' '+Y(s.hi[i]).toFixed(1));for(let z=idx.length-1;z>=0;z--)d+='L'+X(idx[z]).toFixed(1)+' '+Y(s.lo[idx[z]]).toFixed(1);g+=`<path d="${d}Z" fill="${s.c}" opacity=".15"/>`}
+  let d='';s.v.forEach((v,i)=>{if(v==null)return;d+=(d?'L':'M')+X(i).toFixed(1)+' '+Y(v).toFixed(1)});g+=`<path d="${d}" fill="none" stroke="${s.c}" stroke-width="2.4"${s.dash?' stroke-dasharray="6 4"':''}/>`;
+  s.v.forEach((v,i)=>{if(v!=null)g+=`<circle cx="${X(i)}" cy="${Y(v)}" r="3" fill="${s.c}"><title>${E(s.n+' · '+labels[i]+': '+(o.fmt?o.fmt(v):v)+(s.lo&&s.lo[i]!=null?' (80% range '+(o.fmt?o.fmt(s.lo[i]):s.lo[i])+'–'+(o.fmt?o.fmt(s.hi[i]):s.hi[i])+')':''))}</title></circle>`});
+  const li=s.v.length-1-[...s.v].reverse().findIndex(v=>v!=null);if(!s.nolab&&li>=0&&li<s.v.length)g+=`<text x="${X(li)+8}" y="${Y(s.v[li])+4}" class="lab" fill="${s.c}">${E(s.n)} ${o.fmt?o.fmt(s.v[li]):s.v[li]}</text>`});
+ labels.forEach((lb,i)=>{if(n<=12||i%2===0)g+=`<text x="${X(i)}" y="${H-12}" text-anchor="middle">${E(lb)}</text>`});
+ return `<svg class="ch" viewBox="0 0 ${W} ${H}" role="img" aria-label="${E(o.label||'Line chart')}">${g}</svg>`;
+}
+
+
+/* ======================= thirteen sections ======================= */
+const PAGES=[['command','Command center'],['charter','Charter & strategy'],['inventory','Inventory & scoring'],['funding','Funding & allocation'],['lifecycle','Gift lifecycle'],['scorecard','Benefits & scorecard'],['risk','Risk & compliance'],['capacity','Capacity & dependency'],['roadmap','Roadmap & reviews'],['governance','Governance & comms'],['ai','AI/ML readiness'],['setup','Sources & setup'],['published','Published data & forecast']];
+const head=(eb,t,p)=>`<div class="phead"><div class="eyebrow">${eb}</div><h2>${t}</h2><p>${p}</p></div>`;
+const mistake=(m,b)=>`<div class="callout" style="margin-top:12px"><div class="mis"><b>Common mistake</b><p class="small" style="margin:4px 0 0">${m}</p></div><div class="best"><b>Best practice</b><p class="small" style="margin:4px 0 0">${b}</p></div></div>`;
+const t2=(h,rows)=>`<div class="tw"><table><thead><tr>${h.map(x=>`<th>${x}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+const pill=(t,c)=>`<span class="pill ${c}">${E(t)}</span>`;
+const PROPOSED=`<span class="tag t-asm" title="The author's proposal, to agree with the Chair, DBMI leadership and HMS Alumni Affairs and Development.">Proposed</span>`;
+const LT=()=>USERG?'usr':'smp';
+const fyTot=fy=>sum(GIFTS.filter(g=>gFY(g)===fy),g=>g.amt);
+const newPledges=fy=>sum(PLEDGES.filter(p=>FY(p.start)===fy),p=>p.total-(p.payments.length?p.per:0)); /* commitments beyond the first payment */
+const STP={Identify:0.02,Qualify:0.06,Cultivate:0.18,Solicit:0.45,Steward:0.30};
+const pAsk=p=>p.ask||Math.round(CAP[p.cap][1]*0.25);
+const weighted=()=>sum(PROSPECTS.filter(p=>p.stage!=='Steward'),p=>pAsk(p)*STP[p.stage]);
+
+/* ---------- 1. command center ---------- */
+function exceptions(){
+ const L=[];
+ GIFTS.filter(g=>g.ackDays==null&&-days(g.date)>2&&g.amt>=0.25).forEach(g=>L.push([0,'Acknowledgment late',g.id+' · '+fK(g.amt)+' from '+g.donor+' received '+dfmt(g.date)+'; IRS acknowledgment needed for $250 or more','lifecycle','bad']));
+ PLEDGES.forEach(p=>{const nx=pledgeNext(p);if(nx&&nx<TODAY)L.push([5,'Pledge payment overdue',p.id+' ('+p.donor+') · '+fK(p.per)+' due '+dfmt(nx),'lifecycle','bad'])});
+ STEW().filter(s=>!s.sent&&days(s.due)<=30).forEach(s=>L.push([Math.max(1,days(s.due)),'Stewardship report due',s.donor+' · '+PRIN[s.pri]+' · due '+dfmt(s.due),'lifecycle',days(s.due)<0?'bad':'warn']));
+ PROSPECTS.filter(p=>(p.stage==='Cultivate'||p.stage==='Solicit')&&p.last>120).forEach(p=>L.push([30,'No contact in '+p.last+' days',p.id+' · '+p.stage+' · '+CAP[p.cap][0]+' · '+p.mgr,'inventory','warn']));
+ PROSPECTS.filter(p=>p.stage!=='Steward'&&p.stage!=='Identify'&&p.next<TODAY).forEach(p=>L.push([20,'Next step overdue',p.id+' · '+p.stage+' · was due '+dfmt(p.next),'lifecycle','warn']));
+ PROSPECTS.filter(p=>p.corpReview==='Needs gift-vs-sponsored check'&&p.stage!=='Identify').forEach(p=>L.push([15,'Gift or sponsored?',p.id+' (corporation, '+p.stage+'): needs the Harvard gift-vs-sponsored test before any agreement','risk','warn']));
+ const fx=foreignByYear();Object.entries(fx).forEach(([k,v])=>{if(v.amt>=200)L.push([10,'Foreign gifts near the Section 117 line',k.split('|')[0]+' · calendar '+k.split('|')[1]+' · '+fK(v.amt)+' (report at $250K)','risk',v.amt>=250?'bad':'warn'])});
+ funds().filter(f=>f.months!=null&&f.months>24).forEach(f=>L.push([40,'Current-use funds unspent',f.n+': balance '+fK(f.bal)+' is about '+Math.round(f.months)+' months of spending; donors expect use','funding','warn']));
+ return L.sort((a,b)=>a[0]-b[0]);
+}
+function foreignByYear(){const o={};GIFTS.filter(g=>g.foreign).forEach(g=>{const k=g.donor+'|'+g.date.getFullYear();o[k]=o[k]||{amt:0};o[k].amt+=g.amt});return o}
+let _stew=null;
+function STEW(){ /* annual stewardship reports owed to donors who gave $25K or more in the last fiscal year; due Oct 31 (proposed) */
+ if(_stew&&_stew.n===GIFTS.length)return _stew.v;
+ const r=rng(55),by={};GIFTS.filter(g=>gFY(g)===CURFY-1&&!/^AD-/.test(g.donor)).forEach(g=>{const k=g.donor+'|'+g.pri;by[k]=(by[k]||0)+g.amt});
+ const v=Object.entries(by).filter(([k,a])=>a>=25).map(([k,a])=>({donor:k.split('|')[0],pri:k.split('|')[1],amt:a,due:new Date(CURFY-1,9,31),sent:r()<0.55}));
+ _stew={n:GIFTS.length,v};return v;
+}
+function pCommand(){
+ const fy=fyTot(CURFY),prev=sum(GIFTS.filter(g=>gFY(g)===CURFY-1&&g.date<=new Date(TODAY.getFullYear()-1,TODAY.getMonth(),TODAY.getDate())),g=>g.amt),X=exceptions(),R=simulate(SCN.base[2],300);
+ const goal=state.goal;
+ return head('Command center','What needs attention this week','Gifts, the pipeline, stewardship and compliance on one screen. HMS Alumni Affairs and Development (AAD) makes every ask; this view is the department’s side of the partnership: the case, the prospects, the stewardship and the records.')
+ +`<div class="grid g4" style="margin-bottom:16px">${kpi('Gifts received, FY'+CURFY+' to date',fK(fy),LT(),'same point last year: '+fK(prev),'funding')}${kpi('Weighted pipeline',fK(weighted()),'mod',PROSPECTS.filter(p=>p.stage==='Solicit').length+' proposals out · stage odds are '+'assumptions','inventory')}${kpi('Open exceptions',String(X.length),LT(),X.filter(x=>x[4]==='bad').length+' urgent','lifecycle')}${kpi('FY'+CURFY+' outlook (middle path)',fK(R.p50[0]),'mod','80% range '+fK(R.p10[0])+'–'+fK(R.p90[0])+' · goal '+fK(goal),'published')}</div>`
+ +`<div class="grid g2"><div class="sec"><h3>Exceptions, most urgent first</h3><p class="why">Generated from the gift ledger, pledges, the prospect list and the rules. Each row opens the section that resolves it.</p><div class="tw" style="max-height:440px"><table><thead><tr><th>Type</th><th>What</th><th></th></tr></thead><tbody>${X.slice(0,15).map(x=>`<tr><td>${pill(x[1],x[4]==='bad'?'p-bad':'p-warn')}</td><td class="small">${E(x[2])}</td><td><a href="#${x[3]}">Open</a></td></tr>`).join('')||'<tr><td colspan="3">Nothing open.</td></tr>'}</tbody></table></div>${X.length>15?`<p class="cap">${X.length-15} more in the lifecycle, inventory and risk sections.</p>`:''}</div>
+ <div class="sec"><h3>Decisions waiting</h3><p class="why">${tag('smp')} What the Executive Director brings to the Chair and the AAD gift officer this month.</p>${t2(['Decision','Options','By'],[
+  ['Which three prospects the Chair visits this quarter','Top of Inventory & scoring, with the gift officer’s view','Monthly prospect meeting'],
+  ['A corporate offer that may be sponsored research','Route to the Harvard gift-vs-sponsored test before any letter','Before a reply to the company'],
+  ['Use of flexible gifts this year','Split across the five priorities (Funding & allocation)','Budget cycle'],
+  ['Stewardship reports behind schedule','Add staff time in August–October, or shorten the format','Before Oct 31']].map(r=>r.map(E)))}</div></div>`
+ +`<div class="sec"><h3>Every section</h3><div class="grid g4 map">${PAGES.slice(1).map((p,i)=>`<a href="#${p[0]}"><i>${String(i+2).padStart(2,'0')}</i><b>${p[1]}</b><span>${E(SECDESC[p[0]])}</span></a>`).join('')}<a href="https://narissa-pgm.github.io/HMS_DBMI/HMS_DBMI_Research.html#command" target="_blank" rel="noopener"><i>COMPANION</i><b>Research &amp; Grants ↗</b><span>Awards, proposals, the funding cliff the gifts help bridge.</span></a><a href="https://narissa-pgm.github.io/HMS_DBMI/HMS_Advancement.html#command" target="_blank" rel="noopener"><i>SCHOOL LEVEL</i><b>HMS Advancement ↗</b><span>Propensity, capacity and campaign models across HMS.</span></a></div></div>`
+ +`<div class="sec"><h3>How to read the labels</h3><div class="legend">${tag('pub')} quoted, with a source ${tag('smp')} invented to show the shape ${tag('usr')} uploaded in Sources & setup ${tag('mod')} calculated ${tag('asm')} an input you can change ${tag('doc')} a rule from a policy page ${PROPOSED} the author’s proposal</div>${mistake('Reading the sample gift totals as DBMI’s real fundraising, or a model year as a goal anyone has approved.','Quote only Published figures. Load the department’s gift report in Sources & setup and every section recalculates. Donors appear only as codes.')}</div>`;
+}
+const SECDESC={charter:'Purpose, the DBMI–AAD split of work, objectives, the case for support.',inventory:'Every prospect scored on capacity, affinity and inclination.',funding:'Gift mix, endowment payout math, flexible-gift allocation, fund balances.',lifecycle:'Identify to renew: owners, the IRS and Harvard rules, pipeline and pledges.',scorecard:'Measures, targets and the benefits the program must show.',risk:'Risk register, gift compliance rules and the twelve-month calendar.',capacity:'Faculty and staff time for donors, by month, and who DBMI depends on.',roadmap:'Thirty-six months in four phases, and the review cadence.',governance:'Who decides, who asks, who stewards, and who hears what.',ai:'Where AI helps development work, and what it must never touch.',setup:'Upload the gift report; data connections and every source.',published:'Published Harvard, HMS and national giving data, and the gift forecast.'};
+
+/* ---------- 2. charter & strategy ---------- */
+function pCharter(){
+ const OBJ=[['Fund the five priorities','Raise philanthropy for the case for support, not for whatever a donor likes.','Gifts and pledges by priority against the agreed split','#9d2235'],
+  ['Widen the base','Bring DBMI program alumni, families and foundations into giving.','Donors by type; DBMI alumni giving rate','#2f7d4f'],
+  ['Steward every gift','Every gift acknowledged promptly, used as intended and reported on time.','Acknowledgment time; stewardship reports on time; fund balances in use','#2b5c8a'],
+  ['Partner well with AAD','Qualified referrals, prepared faculty, fast follow-up.','Referrals that become proposals; days to follow up','#b45309']];
+ const W=900,H=300;let g='';const layers=[['Outcome','Priorities funded'],['Donors','Engaged, renewing'],['Process','Clean and prompt'],['Capability','Case, people, data']];
+ layers.forEach((l,i)=>{const y=12+i*72;g+=`<rect x="6" y="${y}" width="150" height="60" rx="8" fill="var(--soft)" stroke="var(--line)"/><text x="16" y="${y+26}" class="lab" style="fill:var(--ink)">${l[0]}</text><text x="16" y="${y+44}" style="font-size:10.5px">${E(l[1])}</text>`});
+ const nodes=[[0,['The five priorities funded'],[600]],[1,['Leadership gifts closed','Donors who give again'],[400,760]],[2,['Prospect meetings monthly','Prompt acknowledgment','Reports on time'],[300,520,760]],[3,['A clear case for support','Faculty champions','One gift ledger','Clear roles with AAD'],[240,430,620,810]]];
+ const pos={};nodes.forEach(([lv,ns,xs])=>ns.forEach((n,i)=>{pos[n]=[xs[i],12+lv*72+30]}));
+ [['Leadership gifts closed','The five priorities funded'],['Donors who give again','The five priorities funded'],['Prospect meetings monthly','Leadership gifts closed'],['Prompt acknowledgment','Donors who give again'],['Reports on time','Donors who give again'],['A clear case for support','Prospect meetings monthly'],['Faculty champions','Prospect meetings monthly'],['One gift ledger','Prompt acknowledgment'],['One gift ledger','Reports on time'],['Clear roles with AAD','Prospect meetings monthly']].forEach(([a,b])=>{const p=pos[a],q=pos[b];g+=`<line x1="${p[0]}" y1="${p[1]-14}" x2="${q[0]}" y2="${q[1]+16}" stroke="var(--grey)" stroke-width="1.2" marker-end="url(#ar)"/>`});
+ Object.entries(pos).forEach(([n,[x,y]])=>{const w=Math.max(150,n.length*7.2);g+=`<rect x="${x-w/2}" y="${y-16}" width="${w}" height="32" rx="16" fill="var(--card)" stroke="var(--crim)"/><text x="${x}" y="${y+4}" text-anchor="middle" class="lab" style="fill:var(--ink);font-size:11.5px">${E(n)}</text>`});
+ return head('Charter & strategy','What the development program is for, and who does what','A one-page charter for DBMI’s side of fundraising, the split of work with HMS Alumni Affairs and Development, the strategy map and the case for support. The charter and objectives are the author’s proposal.')
+ +`<div class="grid g2"><div class="sec"><h3>Charter ${PROPOSED}</h3>${t2(['Field','Proposal'],[
+  ['<b>Purpose</b>','Raise philanthropy for DBMI’s agreed priorities, and steward every gift so the next one comes easier.'],
+  ['<b>Sponsor</b>','Chair, DBMI'],['<b>Owner</b>','Executive Director'],['<b>Partner</b>','HMS Office of Alumni Affairs and Development (AAD): major and principal gifts, gift planning, donor relations, development services, research '+'('+sc('aad','AAD')+')'],
+  ['<b>DBMI does</b>','The case for support, qualified referrals, faculty champions, lab visits, use of funds as intended, stewardship content.'],
+  ['<b>AAD does</b>','Every ask, gift agreements, gift processing and receipts, donor research, donor relations standards.'],
+  ['<b>Out of scope</b>','Direct solicitation without AAD; gift levels and naming, which HMS and Harvard set; sponsored research, which goes to research administration.'],
+  ['<b>Success at 12 months</b>','An agreed case for support; a scored prospect list reviewed monthly with AAD; every gift acknowledged and every report on time.']])}</div>
+ <div class="sec"><h3>Four objectives ${PROPOSED}</h3>${OBJ.map(o=>`<div class="kpi" style="margin-bottom:10px;border-left:5px solid ${o[3]}"><div class="k"><span>${o[0]}</span></div><p class="small" style="margin:6px 0 2px;color:var(--ink)">${o[1]}</p><small>Measure: ${o[2]}</small></div>`).join('')}</div></div>`
+ +`<div class="sec"><h3>Strategy map</h3><p class="why">Read from the bottom: a clear case, champions and clean records make the process work; the process keeps donors engaged; engaged donors fund the priorities.</p><svg class="ch" viewBox="0 0 ${W} ${H}" role="img" aria-label="Strategy map"><defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10z" fill="var(--grey)"/></marker></defs>${g}</svg>
+ <p class="cap">Context: Harvard’s current-use gifts reached a record $684 million in FY2026 (${sc('hufy26','Harvard')}), while HMS federal revenue fell 17% (${sc('sos26','Crimson')}). Philanthropy replaces part of what federal funding no longer covers; it does not replace all of it.</p>
+ ${mistake('Pitching whatever a donor likes, so gifts arrive for things the department did not plan and cannot staff.','Agree a short case for support with the Chair first, and bring every prospect to AAD against it.')}</div>`
+ +`<div class="sec"><h3>Case for support: five priorities</h3><p class="why">From the operating plan (${sc('plan','module 54')}). Gift levels and naming are set by HMS and Harvard; this platform quotes no gift minimums.</p><div class="grid g3">${PRI.map(p=>`<div class="kpi" style="border-top:4px solid ${p[2]}"><div class="k"><span>${E(p[1])}</span></div><p class="small" style="margin:6px 0 4px;color:var(--ink)">${E(p[3])}</p><small>Gift type: ${E(p[4])}</small></div>`).join('')}</div></div>`;
+}
+
+/* ---------- 3. inventory & scoring ---------- */
+function scoreP(w){return PROSPECTS.map(p=>{const capS=1+p.cap,readiness=(p.aff+p.inc)/2,score=(capS*w.cap+p.aff*w.aff+p.inc*w.inc)/(w.cap+w.aff+w.inc||1);return Object.assign({},p,{capS,readiness,score})}).sort((a,b)=>b.score-a.score)}
+function pInventory(){
+ const S=state.inv,P=scoreP(S);
+ const W=900,H=360,l=50,r=20,t=16,b=40,X=v=>l+(v-1)/4*(W-l-r),Y=v=>t+(5-v)/4*(H-t-b);let g='';
+ g+=`<rect x="${X(3)}" y="${Y(5)}" width="${X(5)-X(3)}" height="${Y(3)-Y(5)}" fill="var(--green)" opacity=".07"/><text x="${X(5)-6}" y="${Y(5)+14}" text-anchor="end">visit first</text><text x="${X(1)+6}" y="${Y(1)-6}">keep warm</text>`;
+ [1,2,3,4,5].forEach(v=>{g+=`<line x1="${X(v)}" x2="${X(v)}" y1="${t}" y2="${H-b}" stroke="var(--line)"/><line x1="${l}" x2="${W-r}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--line)"/><text x="${X(v)}" y="${H-b+16}" text-anchor="middle">${v}</text><text x="${l-8}" y="${Y(v)+4}" text-anchor="end">${v}</text>`});
+ g+=`<text x="${(l+W-r)/2}" y="${H-6}" text-anchor="middle">readiness (affinity and inclination)</text><text transform="translate(14 ${(t+H-b)/2}) rotate(-90)" text-anchor="middle">capacity band</text>`;
+ const jit=rng(5);P.forEach(p=>{const jx=(jit()-.5)*0.25,jy=(jit()-.5)*0.35;g+=`<circle cx="${X(Math.min(5,Math.max(1,p.readiness+jx)))}" cy="${Y(Math.min(5,Math.max(1,p.capS+jy)))}" r="7" fill="${STC[p.stage]}" fill-opacity=".7" stroke="#fff"><title>${E(p.id+' · '+p.type+' · '+p.stage+' · '+CAP[p.cap][0]+' · score '+p.score.toFixed(2))}</title></circle>`});
+ const bySt=STAGES.map(s=>({l:s,parts:[[s,PROSPECTS.filter(p=>p.stage===s).length,STC[s]]]}));
+ const opp=PRI.map(p=>{const n=PROSPECTS.filter(x=>x.pri===p[0]&&x.stage!=='Steward'),w=sum(n,x=>pAsk(x)*STP[x.stage]);return [p[1],Math.round(w),p[2],n.length+' prospects']});
+ return head('Inventory & scoring','Who to see first, and for which priority','The prospect inventory scored on capacity, affinity and inclination. Weights are adjustable; AAD’s research team owns capacity ratings, and DBMI adds what faculty know about affinity. Prospects are a sample and appear only as codes.')
+ +`<div class="sec"><h3>Prospect scoring</h3><p class="why">${tag('smp')} prospects. Capacity is a band from AAD research; affinity and inclination are 1–5 ratings. Weights are ${tag('asm')} inputs.</p>
+ <div class="ctrls">${[['wcap','Weight: capacity',S.cap],['waff','Weight: affinity',S.aff],['winc','Weight: inclination',S.inc]].map(x=>`<div class="ctrl"><label for="${x[0]}">${x[1]}</label><input id="${x[0]}" type="range" min="0" max="3" step="0.5" value="${x[2]}"><output>${x[2]}</output></div>`).join('')}</div>
+ <div class="legend" style="margin-bottom:6px">${STAGES.map(s=>`<span><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:${STC[s]};margin-right:5px"></span>${s}</span>`).join('')}</div>
+ <svg class="ch" viewBox="0 0 ${W} ${H}" role="img" aria-label="Prospects by capacity and readiness">${g}</svg>
+ ${t2(['#','Prospect','Type','Capacity','Affinity','Inclination','Stage','Priority','Managed by','Score'],P.slice(0,15).map((p,i)=>[String(i+1),'<b>'+p.id+'</b>',E(p.type),E(CAP[p.cap][0]),String(p.aff),String(p.inc),pill(p.stage,p.stage==='Solicit'?'p-bad':p.stage==='Cultivate'?'p-warn':'p-ok'),E(PRIN[p.pri]),E(p.mgr),'<b>'+p.score.toFixed(2)+'</b>']))}
+ <p class="cap">Top 15 of ${PROSPECTS.length}. <button class="btn" type="button" data-csvp>Download all prospects (CSV)</button></p>
+ ${mistake('Ranking prospects by capacity alone, so the Chair’s time goes to people with means and no connection to DBMI.','Weigh affinity and inclination as heavily as capacity, and let faculty who know the prospect add what AAD’s research cannot see.')}</div>`
+ +`<div class="grid g2"><div class="sec"><h3>Portfolio by stage</h3>${bars(bySt,{label:'Prospects by stage',total:true,w:420,h:240})}<p class="cap">${tag('smp')} Healthy portfolios keep enough in Qualify and Cultivate to replace the gifts that close.</p></div>
+ <div class="sec"><h3>Weighted pipeline by priority</h3>${hbars(opp,{fmt:fk,label:'Weighted pipeline by priority',w:520,l:170})}<p class="cap">${tag('mod')} Ask (or 25% of the capacity midpoint, a typical first gift) × stage odds (${Object.entries(STP).map(([k,v])=>k+' '+pc(v)).join(', ')}), all ${tag('asm')}.</p></div></div>`;
+}
+
+/* ---------- 4. funding & allocation ---------- */
+function pFunding(){
+ const yrs=[2024,2025,2026,CURFY],groups=yrs.map(fy=>({l:'FY'+fy+(fy===CURFY?' YTD':''),parts:GTYPES.map(t=>[t,sum(GIFTS.filter(g=>gFY(g)===fy&&g.type===t),g=>g.amt),GTC[t]])}));
+ const S=state.al,F=funds(),pool=S.pool,ws=PRI.map(p=>S.w[p[0]]),wt=ws.reduce((a,b)=>a+b,0)||1;
+ const en=state.en,pay=en.gift*en.rate;
+ return head('Funding & allocation','What arrives, what it pays for, and how flexible money is split','Gifts by type, what an endowed gift pays each year, how flexible gifts are allocated across the five priorities, and whether current-use balances are being used as donors intended.')
+ +`<div class="sec"><h3>Gifts by type</h3>${bars(groups,{fmt:fK,total:true,label:'Gifts by type and fiscal year',w:960,h:270})}<div class="legend">${GTYPES.map(t=>`<span><span style="display:inline-block;width:10px;height:10px;background:${GTC[t]};margin-right:5px"></span>${t}</span>`).join('')}</div><p class="cap">${tag(LT())} Pledge payments are cash received against earlier commitments. Context: across Harvard, current-use gifts were 10% of operating revenue and the endowment distribution 39% in FY2026 (${sc('hufy26','Harvard')}); at HMS, gifts were 8% of revenue and endowment income slightly more than a quarter (${sc('hmsmix','Crimson, 2024')}).</p></div>`
+ +`<div class="grid g2"><div class="sec"><h3>What an endowed gift pays each year</h3><div class="ctrls"><div class="ctrl"><label for="egift">Gift ($K)</label><input id="egift" type="range" min="250" max="10000" step="250" value="${en.gift}"><output>${fK(en.gift)}</output></div><div class="ctrl"><label for="erate">Payout rate</label><input id="erate" type="range" min="0.035" max="0.06" step="0.0025" value="${en.rate}"><output>${pc(en.rate,2)}</output></div></div>
+  <div class="grid g2">${kpi('Spendable each year',fK(pay),'mod','gift × payout rate')}${kpi('Current-use equivalent','≈ '+Math.round(1/en.rate)+' years','mod','years of spending the gift would fund if given as current use')}</div>
+  <p class="cap">The payout rate is an ${tag('asm')}; Harvard sets distributions centrally. The endowment tax rises to 8% from FY2027 and the FY2027 distribution is flat (${sc('hmag26','Harvard Magazine')}), so new endowed funds should be planned on a flat payout for now.</p>
+  ${mistake('Promising a donor that an endowed fund will cover a full salary from day one.','Show the donor the payout math, and pair an endowed gift with current-use support for the first years.')}</div>
+ <div class="sec"><h3>Allocate flexible gifts ${PROPOSED}</h3><div class="ctrls"><div class="ctrl"><label for="apool">Flexible gifts this year ($K)</label><input id="apool" type="range" min="50" max="3000" step="50" value="${pool}"><output>${fK(pool)}</output></div>${PRI.map(p=>`<div class="ctrl"><label for="aw_${p[0]}">${E(p[1])}</label><input id="aw_${p[0]}" type="range" min="0" max="5" step="1" value="${S.w[p[0]]}"><output>${S.w[p[0]]}</output></div>`).join('')}</div>
+  ${hbars(PRI.map((p,i)=>[p[1],pool*ws[i]/wt,p[2],pc(ws[i]/wt)]),{fmt:fK,label:'Flexible gift allocation',w:520,l:170})}
+  <p class="cap">${tag('asm')} weights. Rule ${PROPOSED}: bridge-fund money goes only to labs with a credible renewal or new award in view (see the Research &amp; Grants platform), and 10% is held back until the spring.</p></div></div>`
+ +`<div class="sec"><h3>Fund balances: are gifts being used?</h3>${t2(['Priority','Current-use received','Spent (est.)','Balance','Months of spending','Endowed gifts','Market value (est.)'],F.map(f=>['<b style="color:'+f.c+'">'+E(f.n)+'</b>',fK(f.cu),fK(f.spent),fK(f.bal),f.months==null?'–':(f.months>24?pill(Math.round(f.months)+' months','p-warn'):Math.round(f.months)+' months'),fK(f.en),fK(f.mv)]))}<p class="cap">${tag('smp')} spending shares and market values are illustrative. A balance worth more than two years of spending is flagged: restricted gifts are expected to be used for their purpose.</p></div>`;
+}
+
+/* ---------- 5. gift lifecycle ---------- */
+function pLifecycle(){
+ const ST=[['Identify','DBMI · AAD research','Faculty and alumni name prospects; AAD researches capacity'],['Qualify','AAD gift officer','First meeting: interest, capacity, fit with a priority'],['Cultivate','Chair · faculty champion','Lab visits, briefings, the impact report'],['Solicit','AAD gift officer','The ask, with the Chair; a written proposal'],['Agreement','AAD · Harvard','Gift agreement or letter; naming approved above DBMI'],['Receive','AAD development services','Gift processed, receipt and IRS acknowledgment'],['Use','DBMI · HMS Finance','Fund set up; spent only as the donor intended'],['Steward','DBMI · AAD donor relations','Annual report, thanks, the next conversation']];
+ const W=980,H=220,n=ST.length,w=(W-20)/n;let g='';
+ ST.forEach((s,i)=>{const x=10+i*w,c=i<2?'#4a6272':i<4?'#9d2235':i<6?'#2b5c8a':'#2f7d4f';g+=`<path d="M${x+2} 30 h${w-18} l14 26 l-14 26 h-${w-18} l14 -26z" fill="${c}" opacity="${.8+.02*i}"><title>${E(s[0]+' · '+s[1]+' · '+s[2])}</title></path><text x="${x+w/2+4}" y="61" text-anchor="middle" style="fill:#fff;font-weight:700;font-size:12.5px">${E(s[0])}</text>`;
+  wrapT(s[1],17).slice(0,2).forEach((t,j)=>g+=`<text x="${x+8}" y="${116+j*14}" style="font-size:11px;font-weight:600;fill:var(--ink)">${E(t)}</text>`);wrapT(s[2],19).forEach((t,j)=>g+=`<text x="${x+8}" y="${170+j*14}" style="font-size:10.5px">${E(t)}</text>`)});
+ g+=`<text x="10" y="18" class="lab" style="fill:var(--crim)">STAGE</text><text x="10" y="100" class="lab" style="fill:var(--crim)">WHO</text><text x="10" y="154" class="lab" style="fill:var(--crim)">WHAT HAPPENS</text>`;
+ const pipe=STAGES.filter(s=>s!=='Steward').map(s=>{const p=PROSPECTS.filter(x=>x.stage===s);return {l:s,parts:[['Weighted',sum(p,x=>pAsk(x)*STP[s]),STC[s]]]}});
+ const moves=PROSPECTS.filter(p=>p.stage!=='Identify'&&p.stage!=='Steward'&&days(p.next)<=30).sort((a,b)=>a.next-b.next).slice(0,12);
+ const unack=GIFTS.filter(g=>g.ackDays==null).sort((a,b)=>a.date-b.date);
+ return head('Gift lifecycle','From first name to the next gift, with the rules at each stage','Eight stages and their owners, the pipeline and the moves due, open pledges and gifts waiting for acknowledgment. IRS and Harvard rules are published; prospects and gifts are a sample.')
+ +`<div class="sec"><h3>The lifecycle</h3><svg class="ch" viewBox="0 0 ${W} ${H}" role="img" aria-label="Gift lifecycle stages">${g}</svg>
+ ${t2(['Rule','What it requires','Source'],[
+  ['Written acknowledgment','A gift of $250 or more needs a written acknowledgment: amount (or description of property) and whether goods or services were given, with their value','<span class="tag t-doc">Document</span> '+sc('irs','IRS')],
+  ['Timing and aggregation','The donor needs it by the earlier of the filing date or return due date; separate gifts under $250 are not added together','<span class="tag t-doc">Document</span> '+sc('p1771','IRS Pub 1771')],
+  ['Quid pro quo','A payment over $75 that is partly for goods or services (an event ticket, say) needs a written disclosure','<span class="tag t-doc">Document</span> '+sc('p1771','IRS Pub 1771')],
+  ['Gift or sponsored?','Deliverables, required reports, a period of performance or a binding agreement make it sponsored research, not a gift','<span class="tag t-doc">Document</span> '+sc('giftpol','Harvard OSP')],
+  ['Foreign sources','$250,000 or more from one foreign source in a calendar year is reported by Jan 31 or Jul 31','<span class="tag t-doc">Document</span> '+sc('s117','CRS on Section 117')]].map(r=>[E(r[0]),E(r[1]),r[2]]))}</div>`
+ +`<div class="grid g2"><div class="sec"><h3>Pipeline, weighted</h3>${bars(pipe,{fmt:fK,total:true,label:'Weighted pipeline by stage',w:420,h:240})}<p class="cap">${tag('mod')} ask × stage odds (${tag('asm')}).</p></div>
+ <div class="sec"><h3>Moves due in the next 30 days</h3>${t2(['Prospect','Stage','Next step due','Managed by','Champion'],moves.map(p=>['<b>'+p.id+'</b>',E(p.stage),days(p.next)<0?pill(dfmt(p.next),'p-bad'):dfmt(p.next),E(p.mgr),p.champ]))}</div></div>`
+ +`<div class="grid g2"><div class="sec"><h3>Open pledges</h3>${t2(['Pledge','Donor','Priority','Total','Paid','Next payment'],PLEDGES.filter(p=>p.paid<p.total).map(p=>{const nx=pledgeNext(p);return ['<b>'+p.id+'</b>',p.donor,E(PRIN[p.pri]),fK(p.total),fK(p.paid)+' ('+pc(p.paid/p.total)+')',nx?(nx<TODAY?pill(dfmt(nx)+' · overdue','p-bad'):dfmt(nx)):'–']}))}<p class="cap">${tag('smp')} Pledges are paid in annual installments; one overdue payment starts a gift-officer call, not a reminder letter.</p></div>
+ <div class="sec"><h3>Gifts waiting for acknowledgment</h3>${t2(['Gift','Received','Donor','Amount','Age'],unack.slice(0,10).map(g=>['<b>'+g.id+'</b>',dfmt(g.date),g.donor,fK(g.amt),-days(g.date)>2?pill(-days(g.date)+' days','p-bad'):(-days(g.date))+' days']).concat(unack.length?[]:[['None waiting','','','','']]))}<p class="cap">Target ${PROPOSED}: acknowledged within two business days; the Chair adds a personal note for gifts of $1K or more.</p></div></div>`;
+}
+function wrapT(s,n){const w=String(s).split(' '),o=[];let c='';w.forEach(x=>{if((c+' '+x).trim().length>n){if(c)o.push(c);c=x}else c=(c+' '+x).trim()});if(c)o.push(c);return o.slice(0,3)}
+
+/* ---------- 6. benefits & scorecard ---------- */
+function retention(fy){const a=new Set(GIFTS.filter(g=>gFY(g)===fy-1).map(g=>g.donor)),b=new Set(GIFTS.filter(g=>gFY(g)===fy).map(g=>g.donor));let k=0;a.forEach(d=>{if(b.has(d))k++});return a.size?k/a.size:null}
+function series(seed,start,end,noise){const r=rng(seed);return Array.from({length:8},(_,i)=>+(start+(end-start)*i/7+(r()-.5)*noise).toFixed(1))}
+function pScorecard(){
+ const ret=retention(2026),ack=GIFTS.filter(g=>gFY(g)===2026&&g.ackDays!=null),ack2=ack.length?ack.filter(g=>g.ackDays<=2).length/ack.length:null,donors=new Set(GIFTS.filter(g=>gFY(g)===2026).map(g=>g.donor)).size;
+ const K=[['Gifts received, rolling four quarters','$K',series(1,250,fyTot(2026),40),state.goal,'up','Fund the five priorities'],['Donor retention','%',series(2,40,ret?ret*100:46,4),50,'up','Widen the base'],['Acknowledged within 2 business days','%',series(3,70,ack2?ack2*100:85,6),100,'up','Steward every gift'],['Stewardship reports on time','%',series(4,60,82,8),100,'up','Steward every gift'],['Referrals that became proposals','%',series(5,15,28,5),30,'up','Partner well with AAD'],['Active prospects contacted in 90 days','%',series(6,55,72,6),85,'up','Partner well with AAD'],['Faculty champions active','#',series(7,2,6,1).map(Math.round),6,'up','Partner well with AAD'],['Current-use funds used within 24 months','%',series(8,70,84,5),90,'up','Steward every gift']];
+ const spark=v=>{const mx=Math.max(...v),mn=Math.min(...v),W=120,H=30;return `<svg viewBox="0 0 ${W} ${H}" width="120" height="30" aria-hidden="true"><path d="M${v.map((x,i)=>(i*(W-4)/7+2).toFixed(1)+' '+(H-3-(x-mn)/((mx-mn)||1)*(H-6)).toFixed(1)).join('L')}" fill="none" stroke="var(--crim)" stroke-width="2"/></svg>`};
+ const BEN=[['More flexible money for the bridge fund','Monthly prospect meetings; the Chair’s visits','Gift ledger','Flexible gifts per year'],['Trainees funded by fellowships','Fellowship priority in the case','Fund statements','Students supported per year'],['Donors who give again','Prompt thanks, on-time reports, the impact report','Gift ledger','Retention rate'],['Faculty time used well','Scored prospect list; prepared visits','Visit log','Gifts per faculty visit'],['No compliance surprises','Gift-vs-sponsored check; Section 117 tracking','Exception log','Findings (target 0)']];
+ return head('Benefits & scorecard','Is the development program making a difference?','Eight measures tied to the four objectives, each with a target, and the benefits register. Retention and acknowledgment time are computed from the gift ledger; the other trends are a sample until real data is loaded.')
+ +`<div class="grid g4" style="margin-bottom:16px">${kpi('Donor retention, FY2026',ret==null?'–':pc(ret),LT(),'donors of FY2025 who gave again')}${kpi('National benchmark','43.3%','pub','donor retention, all U.S. nonprofits, 2025 ('+sc('fep25','FEP summary')+')')}${kpi('Donors, FY2026',String(donors),LT(),'distinct donor codes')}${kpi('HMS alumni giving','22%','pub','average share of alumni who give each year ('+sc('alum26','HMS AAD')+')')}</div>`
+ +`<div class="sec"><h3>Scorecard</h3><p class="why">${tag('smp')} eight quarters of illustrative values ending at the ledger’s figures. Targets are ${PROPOSED}.</p>${t2(['Measure','Objective','Trend','Latest','Target','Status'],K.map(k=>{const v=k[2][7],ok=v>=k[3]*0.97,warn=!ok&&v>=k[3]*0.8;return [E(k[0]),E(k[5]),spark(k[2]),(k[1]==='$K'?fk(v):v+(k[1]==='%'?'%':'')),(k[1]==='$K'?fk(k[3]):k[3]+(k[1]==='%'?'%':'')),ok?pill('On target','p-ok'):warn?pill('Watch','p-warn'):pill('Off target','p-bad')]}))}
+ <p class="cap">Benchmarks are context, not targets: the FEP covers all U.S. nonprofits (${sc('fep25','FEP summary')}); HMS’s 22% is MD alumni (${sc('alum26','HMS AAD')}), and DBMI’s PhD and MMSc alumni are not reported separately.</p></div>`
+ +`<div class="sec"><h3>Benefits register ${PROPOSED}</h3>${t2(['Benefit','What delivers it','Evidence','Measure'],BEN.map(b=>b.map(E)))}${mistake('Reporting activity (events held, letters sent) as success.','Report dollars by priority, donors who renew and reports delivered on time, each one checkable outside the department.')}</div>`;
+}
+
+/* ---------- 7. risk & compliance ---------- */
+const RISKS=[['Donor concentration: a few gifts make most of the total','Executive Director',4,4,'Top five donors above 60% of the year','Widen the base; plan on the middle path, not the best year','smp'],
+ ['Pledge payments missed or written off','AAD gift officer',3,3,'Any installment 30 days late','Gift-officer call; pledge reminder schedule','smp'],
+ ['Restricted funds not used as intended','Executive Director',2,5,'Balance above 24 months of spending','Quarterly fund review; spending plan per fund','smp'],
+ ['A sponsored agreement accepted as a gift','Executive Director',2,4,'Deliverables, reports or IP terms in a corporate offer','Harvard gift-vs-sponsored test before any letter','doc'],
+ ['Foreign-source gifts not reported','AAD development services',2,4,'One foreign source at $200K in a calendar year','Track by source and calendar year; report at $250K','doc'],
+ ['Late acknowledgment or missing disclosure','AAD development services',2,3,'Gift unacknowledged after 2 business days','Daily gift report; templates with the IRS wording','doc'],
+ ['Donor data shared outside approved systems','Executive Director',2,5,'Donor records in personal email or AI tools','Records stay in AAD systems; AI only within HMS data levels','doc'],
+ ['Reputational risk from a donor or a naming','Chair',1,5,'Adverse news about a donor','AAD gift acceptance review; naming approved above DBMI','smp'],
+ ['Flat endowment distribution limits endowed income','Executive Director',4,2,'FY2027 distribution flat; 8% endowment tax','Pair endowed gifts with current-use support','pub'],
+ ['Faculty champions too busy to engage donors','Chair',3,3,'Visits cancelled two months running','Short, prepared visits; spread across six champions','smp']];
+function pRisk(){
+ const W=520,H=420,l=60,b=50,c=(W-l-10)/5,rr=(H-b-10)/5;let g='';
+ for(let L=1;L<=5;L++)for(let I=1;I<=5;I++){const s=L*I,x=l+(I-1)*c,y=10+(5-L)*rr;g+=`<rect x="${x}" y="${y}" width="${c-2}" height="${rr-2}" rx="4" fill="${s>=15?'#9d2235':s>=8?'#b45309':'#2f7d4f'}" opacity="${s>=15?.22:s>=8?.18:.12}"/>`}
+ RISKS.forEach((k,i)=>{const x=l+(k[3]-1)*c+c/2+((i%3)-1)*14,y=10+(5-k[2])*rr+rr/2+(Math.floor(i/3)%2?10:-6);g+=`<circle cx="${x}" cy="${y}" r="11" fill="var(--card)" stroke="var(--crim)"/><text x="${x}" y="${y+4}" text-anchor="middle" class="lab" style="fill:var(--ink)">${i+1}</text><title>${E((i+1)+'. '+k[0])}</title>`});
+ [1,2,3,4,5].forEach(v=>{g+=`<text x="${l+(v-1)*c+c/2}" y="${H-b+18}" text-anchor="middle">${v}</text><text x="${l-10}" y="${10+(5-v)*rr+rr/2+4}" text-anchor="end">${v}</text>`});
+ g+=`<text x="${l+(W-l)/2}" y="${H-12}" text-anchor="middle">impact</text><text transform="translate(16 ${(H-b)/2}) rotate(-90)" text-anchor="middle">likelihood</text>`;
+ const months=[];for(let i=0;i<12;i++)months.push(new Date(TODAY.getFullYear(),TODAY.getMonth()+i,1));
+ const EV=m=>{const k=m.getMonth(),o=[];if(k===11)o.push(['Calendar year-end giving peak','gift']);if(k===0)o.push(['Section 117 report due Jan 31','pol']);if(k===6)o.push(['Section 117 report due Jul 31','pol'],['New fiscal year: fund statements','rep']);if(k===5)o.push(['Fiscal year ends Jun 30','gift']);if(k===8||k===9)o.push(['Stewardship reports season','rep']);if(k===9)o.push(['Reports due Oct 31 (proposed)','rep']);if(k===2)o.push(['Impact report drafted','rep']);o.push(['Prospect meeting with AAD','nih']);return o};
+ return head('Risk & compliance','What could go wrong, who owns it, and what is due','The development risk register on a heat map, the compliance rules every gift passes through, and the twelve-month calendar. Rules cite their source; likelihood and impact are the author’s ratings.')
+ +`<div class="grid g2"><div class="sec"><h3>Heat map</h3><p class="why">Numbers match the register. Ratings are ${PROPOSED}.</p><svg class="ch" viewBox="0 0 ${W} ${H}" role="img" aria-label="Risk heat map">${g}</svg></div>
+ <div class="sec"><h3>Rules every gift passes through</h3><ul class="list small"><li>Written acknowledgment for gifts of $250 or more, with the IRS wording (${sc('irs','IRS')}); disclosure for quid pro quo payments over $75 (${sc('p1771','IRS Pub 1771')}).</li><li>Gift or sponsored research: decided by Harvard’s criteria, with Alumni and Development Services or OSP (${sc('giftpol','Harvard OSP')}).</li><li>Foreign gifts and contracts of $250,000 or more from one source in a calendar year are reported by Jan 31 or Jul 31; a House bill would lower the line to $50,000 but is not law (${sc('s117','CRS')}).</li><li>Donor intent: restricted gifts are spent only on their purpose; more than 80% of Harvard’s endowment distribution carries donor restrictions (${sc('hufy26','Harvard')}).</li><li>AI tools only within HMS data levels (${sc('hmsai','HMS IT')}).</li></ul></div></div>`
+ +`<div class="sec"><h3>Risk register</h3>${t2(['#','Risk','Owner','L','I','Score','Trigger','Response','Basis'],RISKS.map((k,i)=>[String(i+1),E(k[0]),E(k[1]),k[2],k[3],pill(String(k[2]*k[3]),k[2]*k[3]>=15?'p-bad':k[2]*k[3]>=8?'p-warn':'p-ok'),E(k[4]),E(k[5]),tag(k[6])]))}</div>`
+ +`<div class="sec"><h3>Twelve-month calendar</h3><div class="cal">${months.map((m,i)=>`<div class="mo${i===0?' now':''}"><h4>${m.toLocaleDateString('en-US',{month:'short',year:'numeric'})}</h4>${EV(m).map(e=>`<div class="ev ${e[1]}">${E(e[0])}</div>`).join('')}</div>`).join('')}</div><p class="cap">${tag('doc')} Section 117 dates (${sc('s117','CRS')}). Fiscal year ends June 30. Report and meeting dates are ${PROPOSED}.</p></div>`;
+}
+
+/* ---------- 8. capacity & dependency ---------- */
+function pCapacity(){
+ const S=state.cap,months=[];for(let i=0;i<12;i++)months.push(new Date(TODAY.getFullYear(),TODAY.getMonth()+i,1));
+ const stew=STEW().length,act=PROSPECTS.filter(p=>p.stage==='Cultivate'||p.stage==='Solicit').length;
+ const load=months.map(m=>{const k=m.getMonth();let h=act*S.visit/3+S.meet; /* each active prospect touched once a quarter */
+  if(k===8||k===9)h+=stew*S.report/2;if(k===2)h+=S.impact;if(k===11||k===5)h+=S.peak;
+  h+=PROSPECTS.filter(p=>p.stage==='Solicit'&&new Date(TODAY.getFullYear(),TODAY.getMonth()+p.close,1).getMonth()===k).length*S.prop;return h});
+ const cap=S.hrs,over=load.filter(v=>v>cap).length;
+ const groups=months.map((m,i)=>({l:m.toLocaleDateString('en-US',{month:'short'}),parts:[['Load',load[i],load[i]>cap?'#9d2235':'#2b5c8a']]}));
+ const DEP=[['HMS AAD major and principal gifts','The ask, proposals, the relationship lead','No officer time for DBMI prospects','Monthly prospect meeting; a short, scored list'],['HMS AAD gift planning','Bequests and planned gifts','Planned-gift prospects missed','Flag age and interest at qualification'],['HMS AAD development services','Gift processing, receipts, acknowledgments','Late receipts and IRS letters','Daily gift report to DBMI'],['HMS AAD donor relations','Stewardship standards and reports','Reports late or generic','Shared calendar; DBMI drafts the content'],['HMS AAD development research','Capacity ratings, prospect profiles','Visits without context','Research request two weeks before a visit'],['HMS Finance','Fund setup and monthly statements','Gifts unspent or misposted','Fund set up on notice of the gift'],['Harvard OSP and research administration','Gift-vs-sponsored decisions for corporate money','A sponsored agreement accepted as a gift','Route corporate offers before any reply'],['Faculty champions and the Chair','Visits, lab tours, the science story','Cancelled visits','Six champions; prepared one-page briefs']];
+ const W=980,H=330,cx=490,cy=165;let g='';
+ DEP.forEach((d,i)=>{const a=-Math.PI/2+i*2*Math.PI/DEP.length,x=cx+Math.cos(a)*330,y=cy+Math.sin(a)*125;g+=`<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="var(--grey)"/><rect x="${x-130}" y="${y-18}" width="260" height="36" rx="18" fill="var(--card)" stroke="var(--blue)"/><text x="${x}" y="${y+4}" text-anchor="middle" class="lab" style="fill:var(--ink);font-size:11px">${E(d[0].length>40?d[0].slice(0,38)+'…':d[0])}</text><title>${E(d[0]+' · '+d[1])}</title>`});
+ g+=`<circle cx="${cx}" cy="${cy}" r="54" fill="var(--crim)"/><text x="${cx}" y="${cy-2}" text-anchor="middle" style="fill:#fff;font-weight:700;font-size:13px">DBMI</text><text x="${cx}" y="${cy+15}" text-anchor="middle" style="fill:#fff;font-size:11px">development</text>`;
+ return head('Capacity & dependency','Is there time for donors, and who do we depend on?','A monthly time model for the Executive Director, the Chair and faculty champions, driven by active prospects, proposals and the stewardship season; then the offices DBMI depends on. Hours are assumptions you can change.')
+ +`<div class="sec"><h3>Time for development, by month</h3><div class="ctrls">${[['chrs','DBMI hours available per month',S.hrs,20,200,5],['cvisit','Hours per prospect touch',S.visit,1,10,0.5],['creport','Hours per stewardship report',S.report,1,12,0.5],['cprop','Hours per proposal',S.prop,2,30,1],['cmeet','Hours per month in AAD meetings',S.meet,0,20,1]].map(x=>`<div class="ctrl"><label for="${x[0]}">${x[1]}</label><input id="${x[0]}" type="range" min="${x[3]}" max="${x[4]}" step="${x[5]}" value="${x[2]}"><output>${x[2]}</output></div>`).join('')}</div>
+ <div class="grid g3">${kpi('Monthly capacity',Math.round(cap)+' h','asm','Executive Director, Chair and champions together')}${kpi('Peak month load',Math.round(Math.max(...load))+' h','mod',act+' active prospects; '+stew+' reports owed')}${kpi('Months over capacity',String(over),'mod','of the next twelve')}</div>
+ ${bars(groups,{fmt:v=>Math.round(v)+'h',label:'Development workload by month',max:Math.max(cap,...load)*1.1,ref:cap,refLab:'capacity'})}<p class="cap">${tag('mod')} Drivers: a touch each quarter for every active prospect, AAD meetings, proposals as they close, the stewardship season (September–October), the impact report (March), and year-end giving (December, June). Hours are ${tag('asm')}.</p>
+ ${mistake('Booking donor visits in the same months as stewardship reports, so both slip.','Draft reports in August, keep October for visits, and let AAD donor relations carry the format.')}</div>`
+ +`<div class="sec"><h3>Dependency map</h3><svg class="ch" viewBox="0 0 ${W} ${H}" role="img" aria-label="Dependency map">${g}</svg>${t2(['Depends on','What they provide','If late','Safeguard'],DEP.map(d=>d.map(E)))}<p class="cap">Office names follow the AAD contact page (${sc('aad','HMS AAD')}).</p></div>`;
+}
+
+/* ---------- 9. roadmap & reviews ---------- */
+function pRoadmap(){
+ const PH=[['Listen and baseline',0,3,'#4a6272',['Meet the AAD gift officer and donor relations','Agree the case for support with the Chair','One gift ledger from AAD reports']],['Build the pipeline',3,12,'#9d2235',['Scored prospect list, reviewed monthly','Six faculty champions briefed','First annual impact report']],['First leadership gifts',12,24,'#2b5c8a',['Proposals for two priorities','Every report on time','DBMI alumni giving launched']],['Campaign-ready',24,36,'#2f7d4f',['A pipeline that replaces what closes','Endowed and current-use pairs','Readiness review with AAD']]];
+ const W=980,H=60+PH.length*58,l=170,r=20,X=m=>l+m/36*(W-l-r);let g='';
+ [0,6,12,18,24,30,36].forEach(m=>g+=`<line x1="${X(m)}" x2="${X(m)}" y1="20" y2="${H-10}" stroke="var(--line)"/><text x="${X(m)}" y="14" text-anchor="middle">M${m}</text>`);
+ PH.forEach((p,i)=>{const y=30+i*58;g+=`<text x="${l-10}" y="${y+22}" text-anchor="end" class="lab" style="fill:var(--ink)">${E(p[0])}</text><rect x="${X(p[1])}" y="${y+6}" width="${X(p[2])-X(p[1])}" height="26" rx="6" fill="${p[3]}" opacity=".85"><title>${E(p[0]+': '+p[4].join('; '))}</title></rect><text x="${X(p[1])+8}" y="${y+24}" style="fill:#fff;font-size:11px;font-weight:600">${E(p[4][0].length>34&&p[2]-p[1]<6?p[4][0].slice(0,30)+'…':p[4][0])}</text>`});
+ return head('Roadmap & reviews','Thirty-six months, and how progress is reviewed','Four phases from baseline to campaign readiness, and the review cadence with AAD. All dates are a proposal.')
+ +`<div class="sec"><h3>Roadmap ${PROPOSED}</h3><svg class="ch" viewBox="0 0 ${W} ${H}" role="img" aria-label="Thirty-six month roadmap">${g}</svg>${t2(['Phase','Months','Deliverables'],PH.map(p=>['<b>'+E(p[0])+'</b>','M'+p[1]+'–M'+p[2],E(p[4].join(' · '))]))}</div>`
+ +`<div class="sec"><h3>Review cadence ${PROPOSED}</h3>${t2(['Review','When','Who','Looks at','Decides'],[
+  ['Weekly check','Every Monday','Executive Director, department administrator','Gifts received, acknowledgments, moves due','Who does what this week'],
+  ['Monthly prospect meeting','First week of each month','Executive Director, AAD gift officer, Chair when needed','Scored list, moves, proposals','Next visits; who asks, when'],
+  ['Quarterly portfolio review','Each quarter','Chair, Executive Director, AAD','Pipeline by priority, scorecard, fund balances','Priorities and champion assignments'],
+  ['Annual stewardship review','Each November','Executive Director, AAD donor relations','Reports delivered, donor feedback','Format and calendar for next year'],
+  ['Gate review','At each phase end','Chair','Phase deliverables met?','Continue, change or stop']].map(r=>r.map(E)))}${mistake('Meetings that review the prospect list and decide nothing.','End every prospect meeting with the next move, its owner and its date, recorded against the prospect code.')}</div>`;
+}
+
+/* ---------- 10. governance & communications ---------- */
+function pGovernance(){
+ const roles=['Chair','Executive Director','Faculty champion','AAD gift officer','AAD donor relations','AAD development services','HMS Finance'];
+ const ACT=[['Agree the case for support',['A','R','C','C','','','']],['Name and refer prospects',['C','A','R','C','','','']],['Qualify and research',['I','C','C','A','','','']],['Cultivation visits',['R','R','R','A','','','']],['The ask and the proposal',['R','C','C','A','','','']],['Gift agreement and naming',['C','C','','A','','','']],['Gift processing and acknowledgment',['I','I','','I','','A','']],['Fund setup and spending',['I','A','','','','','R']],['Stewardship report',['C','A','C','C','R','','C']],['Gift-vs-sponsored question',['I','R','C','C','','A','']]];
+ const cls={A:'background:#152430;color:#fff',R:'background:#9d2235;color:#fff',C:'background:#e7f4ec;color:#15803d',I:'border:1px solid var(--line)'};
+ const COMM=[['Donors','Impact report: what their gifts did','Once a year, plus a fund report each fall','Executive Director with AAD donor relations'],['Prospects','Science briefings, lab visits, event invitations','As cultivation plans say','Faculty champions with AAD'],['Chair','Pipeline, exceptions, decisions','Monthly, one page','Executive Director'],['Faculty champions','Who they will meet, a one-page brief','Before each visit; quarterly briefing','Executive Director'],['AAD','Referrals, faculty news, the science story','Monthly meeting; same-day referrals','Executive Director'],['Faculty and staff','What gifts fund and how to refer a contact','Each semester','Chair'],['DBMI program alumni','News, student stories, ways to give','Twice a year, with AAD alumni engagement','Executive Director']];
+ return head('Governance & communications','Who decides, who asks, who stewards, and who hears what','A RACI for the development partnership and a communications plan by audience. Both are proposals; AAD and Harvard roles follow their published structure.')
+ +`<div class="sec"><h3>RACI ${PROPOSED}</h3><p class="why">R does the work · A owns the outcome · C is consulted · I is informed. AAD owns every ask and every gift record.</p><div class="tw"><table><thead><tr><th>Activity</th>${roles.map(r=>`<th style="text-align:center">${E(r)}</th>`).join('')}</tr></thead><tbody>${ACT.map(a=>`<tr><td>${E(a[0])}</td>${a[1].map(v=>`<td style="text-align:center">${v?`<span class="pill" style="${cls[v]}">${v}</span>`:''}</td>`).join('')}</tr>`).join('')}</tbody></table></div><p class="cap">Gift-vs-sponsored questions go to Alumni and Development Services or OSP (${sc('giftpol','Harvard OSP')}). Naming is approved above the department.</p></div>`
+ +`<div class="sec"><h3>Communications plan ${PROPOSED}</h3>${t2(['Audience','Message','Channel and cadence','Owner'],COMM.map(c=>c.map(E)))}${mistake('A donor hears about their fund only when they are asked for the next gift.','Report first, ask later: every donor gets a report on what their gift did before any new conversation about money.')}</div>`;
+}
+
+/* ---------- 11. AI/ML readiness ---------- */
+function pAI(){
+ const D=[['Data',2,'One gift ledger and prospect list with stable codes'],['Policy and guardrails',3,'Written guidance with AAD on donor data and AI'],['People and skills',2,'Staff trained on the HMS tools'],['Tools and security',4,'HMS tools approved up to Level 3 data'],['Use-case value',3,'Time saved on reports and briefs']];
+ const W=420,H=380,cx=210,cy=190,R0=140;let g='';
+ [1,2,3,4,5].forEach(v=>{g+=`<polygon points="${D.map((d,i)=>{const a=-Math.PI/2+i*2*Math.PI/D.length;return (cx+Math.cos(a)*R0*v/5).toFixed(1)+','+(cy+Math.sin(a)*R0*v/5).toFixed(1)}).join(' ')}" fill="none" stroke="var(--line)"/>`});
+ D.forEach((d,i)=>{const a=-Math.PI/2+i*2*Math.PI/D.length;g+=`<line x1="${cx}" y1="${cy}" x2="${cx+Math.cos(a)*R0}" y2="${cy+Math.sin(a)*R0}" stroke="var(--line)"/><text x="${cx+Math.cos(a)*(R0+22)}" y="${cy+Math.sin(a)*(R0+22)+4}" text-anchor="middle" class="lab" style="font-size:11px">${E(d[0])}</text>`});
+ g+=`<polygon points="${D.map((d,i)=>{const a=-Math.PI/2+i*2*Math.PI/D.length;return (cx+Math.cos(a)*R0*d[1]/5).toFixed(1)+','+(cy+Math.sin(a)*R0*d[1]/5).toFixed(1)}).join(' ')}" fill="var(--crim)" fill-opacity=".22" stroke="var(--crim)" stroke-width="2"/>`;
+ const UC=[['First drafts of stewardship reports from fund statements','High','Pilot','Level 3, after AAD agrees','A person checks every figure and sends'],['One-page visit briefs from public sources and the science','High','Pilot','Public information and DBMI content','No donor records pasted in; AAD research stays the source on capacity'],['Impact-report stories from faculty interviews','Medium','Ready','DBMI content','Faculty approve their quotes'],['Meeting notes from prospect meetings','Medium','Limited','Level 2 only','HMS approves meeting assistants only up to Level 2: no donor details'],['Renewal or propensity score (ML)','High','Needs data','With AAD, in AAD systems','Advisory only; built with AAD research; reviewed yearly'],['Pasting donor records into a personal or unapproved AI tool','—','Never','—','Donor data stays in approved systems']];
+ return head('AI/ML readiness','Where AI helps development work, and what it must never touch','A readiness assessment, the use cases ranked by value and readiness, and the guardrails. Scores are the author’s assessment; the HMS rules are published. Any use of donor data needs AAD’s agreement first.')
+ +`<div class="grid g2"><div class="sec"><h3>Readiness ${PROPOSED}</h3><p class="why">1 = not started, 5 = in routine use.</p><svg class="ch" viewBox="0 0 ${W} ${H}" role="img" aria-label="AI readiness radar">${g}</svg></div>
+ <div class="sec"><h3>What each score rests on</h3>${t2(['Dimension','Score','What would raise it'],D.map(d=>[E(d[0]),String(d[1]),E(d[2])]))}</div></div>`
+ +`<div class="sec"><h3>Use cases</h3>${t2(['Use case','Value','Readiness','Data','Guardrail'],UC.map(u=>[E(u[0]),E(u[1]),pill(u[2],u[2]==='Ready'?'p-ok':u[2]==='Never'?'p-bad':'p-warn'),E(u[3]),E(u[4])]))}</div>`
+ +`<div class="sec"><h3>Rules that apply</h3><ul class="list small">
+  <li>HMS IT offers Claude, ChatGPT Edu and Copilot Premium to eligible Quad-based employees after training; use them with Level 3 data and below, never Level 4 or 5; meeting assistants only up to Level 2 (${sc('hmsai','HMS IT')}). Confirm the classification of any donor data with AAD before use.</li>
+  <li>Frame each use case with the NIST AI Risk Management Framework: govern, map, measure, manage (${sc('nist','NIST AI 100-1')}).</li>
+  <li>No message reaches a donor without a person writing or approving it.</li></ul>
+ ${mistake('Asking a chatbot to profile a named prospect, or pasting gift history into a personal account.','Use public information and DBMI’s own content for briefs; leave donor records and capacity research in AAD’s systems.')}</div>`;
+}
+
+/* ---------- 12. sources & setup ---------- */
+function pSetup(){
+ return head('Sources & setup','Load the real gift report, and see every source','Upload the department’s gift report as a CSV and the command center, funding, lifecycle, scorecard and forecast recalculate on it. It stays in this browser; nothing is sent anywhere. Use donor codes, never names.')
+ +`<div class="sec"><h3>Load the gift report</h3><p class="why">${USERG?tag('usr')+' Your report is loaded ('+GIFTS.length+' gifts).':tag('smp')+' The sample ledger is loaded ('+GIFTS.length+' gifts).'}</p>
+ <div class="ctrls"><div class="ctrl"><label for="csvin">CSV file</label><input id="csvin" type="file" accept=".csv,text/csv"></div><button class="btn" type="button" data-tpl>Download the template</button><button class="btn" type="button" data-csv>Download the current ledger</button>${USERG?'<button class="btn" type="button" data-resetled>Return to the sample</button>':''}</div>
+ <p class="small">Columns: <code>gift_id, date (YYYY-MM-DD), donor_code, gift_type, priority, amount_k</code>, and optionally <code>donor_type</code>, <code>ack_date</code>, <code>foreign (Y/N)</code>, <code>endowed (Y/N)</code>. Gift types: ${GTYPES.join(', ')}. Priorities: ${PRI.map(p=>p[0]+' ('+p[1]+')').join(', ')}.</p>
+ <p class="small muted">Prospects and pledges stay as the sample until a live connection exists.</p><div id="csvmsg" class="small"></div></div>`
+ +`<div class="sec"><h3>Data connections for a live version</h3>${t2(['Source','What it would supply','Replaces'],[
+  ['AAD gift reports (for DBMI funds)','Every gift, pledge and payment, with donor codes','The sample ledger and pledges'],
+  ['AAD prospect reports','Stage, manager, capacity band, next step','The sample prospect list'],
+  ['HMS Finance fund statements','Balances and spending by fund','Spent shares and fund balances'],
+  ['AAD donor relations calendar','Stewardship reports owed and sent','The stewardship list'],
+  ['Research & Grants platform','Labs between awards (for the bridge fund)','The bridge-fund rule'],
+  ['Faculty Affairs platform','New faculty and recruitment packages','Early-career priority planning']].map(r=>r.map(E)))}</div>`
+ +`<div class="sec"><h3>Sources</h3>${t2(['Source','Publisher','Date','What it supports'],Object.values(SRC).map(s=>[`<a href="${E(s[3])}" target="_blank" rel="noopener">${E(s[0])}</a>`,E(s[1]),E(s[2]),'<span class="small">'+E(s[4])+'</span>']))}</div>`;
+}
+
+/* ---------- 13. published data & forecast ---------- */
+function simulate(o,runs){
+ const r=rng(4242),yrs=[CURFY,CURFY+1,CURFY+2,CURFY+3,CURFY+4],N=yrs.length,out=yrs.map(()=>[]);
+ const fyStart=new Date(CURFY-1,6,1),el=Math.min(1,Math.max(0,(TODAY-fyStart)/(365*864e5))),ytd=fyTot(CURFY);
+ const last=GIFTS.filter(g=>gFY(g)===CURFY-1&&/^AD-/.test(g.donor)),d0=new Set(last.map(g=>g.donor)).size||100,avg=last.length?sum(last,g=>g.amt)/d0:0.4;
+ const capW=[[0,18],[1,30],[2,32],[3,15],[4,5]];
+ for(let k=0;k<runs;k++){const y=Array(N).fill(0);let donors=d0;
+  for(let i=0;i<N;i++){donors=donors*o.ret+o.newD;y[i]+=donors*avg*Math.exp(norm(r)*0.08)}
+  const put=(t,amt)=>{if(t>=N)return;if(amt>=250){for(let j=0;j<3&&t+j<N;j++)y[t+j]+=amt/3}else y[t]+=amt};
+  PROSPECTS.forEach(p=>{if(p.stage==='Steward'){if(r()<o.renew)put(1+Math.floor(r()*3),CAP[p.cap][1]*0.2*Math.exp(norm(r)*0.4));return}
+   const pr=Math.min(0.95,STP[p.stage]*o.close*(p.stage==='Identify'?1:1.2));if(r()>=pr)return;
+   put(({Identify:3,Qualify:2,Cultivate:1,Solicit:0})[p.stage]+Math.floor(r()*1.6),pAsk(p)*Math.exp(norm(r)*0.45-0.1))});
+  for(let i=1;i<N;i++)for(let j=0;j<o.newP;j++){if(r()<0.29*o.close){const c=wpick(r,capW);put(i+1+Math.floor(r()*1.4),CAP[c][1]*0.25*Math.exp(norm(r)*0.45-0.1))}}
+  y[0]*=(1-el); /* the rest of this fiscal year */
+  PLEDGES.forEach(p=>{let nx=pledgeNext(p),rem=p.total-p.paid;if(!nx||rem<=0||r()<0.05)return;while(rem>0){const t=nx<TODAY?0:FY(nx)-CURFY;if(t>=N)break;const a=Math.min(p.per,rem);y[t]+=a;rem-=a;nx=new Date(nx.getFullYear()+1,nx.getMonth(),nx.getDate())}});
+  y[0]+=ytd;
+  y.forEach((v,i)=>out[i].push(v))}
+ const q=(a,p)=>{const s=a.slice().sort((x,z)=>x-z);return s[Math.min(s.length-1,Math.floor(p*s.length))]};
+ return {yrs,p10:out.map(a=>q(a,0.1)),p50:out.map(a=>q(a,0.5)),p90:out.map(a=>q(a,0.9)),ytd};
+}
+const SCN={base:['Base','Retention near today’s, typical close rates',{ret:0.46,newD:62,close:1,renew:0.35,newP:10}],down:['Downturn','Donors pull back: lower retention and close rates',{ret:0.38,newD:45,close:0.7,renew:0.25,newP:7}],push:['Pipeline push','Monthly prospect meetings and champions working',{ret:0.5,newD:80,close:1.2,renew:0.45,newP:14}]};
+function pPublished(){
+ const harv=bars([{l:'FY2025 (derived)',parts:[['Current-use gifts',627,'#94a3b8']]},{l:'FY2026',parts:[['Current-use gifts',684,'#9d2235']]}],{fmt:v=>'$'+Math.round(v)+'M',total:true,label:'Harvard current-use gifts',w:340,h:220});
+ const vse=bars([{l:'FY2024 (derived)',parts:[['Giving to U.S. higher education',75.8,'#94a3b8']]},{l:'FY2025',parts:[['Giving to U.S. higher education',78.8,'#9d2235']]}],{fmt:v=>'$'+v.toFixed(1)+'B',total:true,label:'Giving to U.S. colleges and universities',w:340,h:220});
+ const alum=bars([{l:'FY2025',parts:[['HMS alumni donors',2339,'#94a3b8']]},{l:'FY2026',parts:[['HMS alumni donors',1964,'#9d2235']]}],{fmt:v=>Math.round(v).toLocaleString(),total:true,label:'HMS alumni donors',w:340,h:220});
+ const mix=hbars([['Sponsored support',38,'#2b5c8a'],['Endowment income (≈)',28,'#9d2235'],['Other',15,'#94a3b8'],['Education',11,'#0f766e'],['Gifts',8,'#b45309']],{fmt:v=>v+'%',label:'HMS revenue mix',w:520,l:170});
+ const S=state.fc,o=Object.assign({},SCN[S.k][2],S.over),R=simulate(o,600);
+ const hist=[2024,2025,2026].map(fy=>fyTot(fy)),labs=['FY24','FY25','FY26'].concat(R.yrs.map(y=>'FY'+String(y).slice(2)));
+ const ch=lines(labs,[{n:'Middle path',c:'#9d2235',v:[null,null,hist[2]].concat(R.p50),lo:[null,null,hist[2]].concat(R.p10),hi:[null,null,hist[2]].concat(R.p90)},{n:'Received',c:'#152430',v:hist.concat(R.yrs.map(()=>null)),nolab:true}],{fmt:fK,label:'Gift receipts, history and forecast',split:2,min:0,ref:state.goal,refLab:''});
+ return head('Published data & forecast','What the public numbers say, and where gift income could go','Harvard, HMS and national giving series as published, then a forecast of DBMI gift receipts built from the ledger, the pipeline and open pledges. Published points link to their source; derived and model values are labeled.')
+ +`<div class="grid g3"><div class="sec"><h3>Harvard current-use gifts</h3>${harv}<p class="cap">${tag('pub')} $684M in FY2026, a record and up 9% (${sc('hufy26','Harvard')}); FY2025 is ${tag('mod')} derived from the 9%. Total gifts were more than $1.5B.</p></div><div class="sec"><h3>U.S. higher-education giving</h3>${vse}<p class="cap">${tag('pub')} $78.8B in FY2025, up 4% (${sc('vse25','CASE')}); FY2024 is ${tag('mod')} derived from the 4%.</p></div><div class="sec"><h3>HMS alumni donors</h3>${alum}<p class="cap">${tag('pub')} 2,339 in FY2025 (${sc('honor25','HMS')}); 1,964 gave more than $19M in FY2026 (${sc('alum26','HMS AAD')}). Counts may define alumni differently.</p></div></div>`
+ +`<div class="grid g2"><div class="sec"><h3>HMS revenue mix</h3>${mix}<p class="cap">${tag('pub')} Sponsored 38%, education 11%, gifts 8%, other 15%, endowment income “slightly more than a quarter” (${sc('hmsmix','Crimson, Dec 2024')}); the 28% shown is ${tag('mod')} the remainder.</p></div>
+ <div class="sec"><h3>Harvard, FY2026</h3><div class="grid g2">${kpi('Endowment distribution','$2.6B','pub','39% of operating revenue ('+sc('hufy26','Harvard')+')')}${kpi('Current-use gifts','10%','pub','of operating revenue; philanthropy 48% in all')}${kpi('Endowment tax','8%','pub','from FY2027, up from 1.4% ('+sc('hmag26','Harvard Magazine')+')')}${kpi('Donor retention','43.3%','pub','all U.S. nonprofits, 2025 ('+sc('fep25','FEP summary')+')')}</div></div></div>`
+ +`<div class="sec"><h3>DBMI gift receipts: history and forecast</h3><p class="why">${tag('mod')} ${600} simulated paths from the ${USERG?'uploaded':'sample'} ledger: this year’s gifts to date plus the rest of the year; annual donors renew at the retention rate and new donors join; prospects close at stage odds with uncertain size and timing; new qualified prospects enter each year and close later; gifts of $250K or more arrive over three years; open pledges are paid with a 5% chance of write-off. Shaded: the 80% range.</p>
+ <div class="ctrls"><div class="seg" role="group" aria-label="Scenario">${Object.entries(SCN).map(([k,s])=>`<button type="button" data-scn="${k}" aria-pressed="${S.k===k}">${s[0]}</button>`).join('')}</div>
+ <div class="ctrl"><label for="fret">Donor retention</label><input id="fret" type="range" min="0.3" max="0.65" step="0.01" value="${o.ret}"><output>${pc(o.ret)}</output></div>
+ <div class="ctrl"><label for="fnew">New donors a year</label><input id="fnew" type="range" min="20" max="150" step="5" value="${o.newD}"><output>${o.newD}</output></div>
+ <div class="ctrl"><label for="fnp">New qualified prospects a year</label><input id="fnp" type="range" min="0" max="30" step="1" value="${o.newP}"><output>${o.newP}</output></div>
+ <div class="ctrl"><label for="fclose">Close-rate multiplier</label><input id="fclose" type="range" min="0.5" max="1.5" step="0.05" value="${o.close}"><output>${o.close.toFixed(2)}×</output></div>
+ <div class="ctrl"><label for="fgoal">Annual goal ($K)</label><input id="fgoal" type="range" min="250" max="5000" step="50" value="${state.goal}"><output>${fK(state.goal)}</output></div></div>
+ ${ch}<p class="cap">Dashed amber line: the annual goal (${fK(state.goal)}). ${E(SCN[S.k][1])}. Retention, new donors, close rates and the goal are ${tag('asm')} inputs; 43.3% is the published national retention rate for context (${sc('fep25','FEP summary')}).</p>
+ ${t2(['Fiscal year','Low (10th percentile)','Middle path','High (90th percentile)','Against the goal'],R.yrs.map((y,i)=>['FY'+y,fK(R.p10[i]),'<b>'+fK(R.p50[i])+'</b>',fK(R.p90[i]),R.p50[i]>=state.goal?pill('Middle path meets it','p-ok'):R.p90[i]>=state.goal?pill('Possible, not likely','p-warn'):pill('Out of reach','p-bad')]))}
+ ${mistake('Setting next year’s goal from the best year in the ledger, when one leadership gift made that year.','Set the goal near the middle path, and treat anything above it as a pipeline to work, not a budget to spend.')}</div>`;
+}
+
+
+/* ---------------- user gift report (Sources & setup) ---------------- */
+function parseCSV(t){const rows=[];let row=[],f='',q=false;for(let i=0;i<t.length;i++){const c=t[i];if(q){if(c==='"'){if(t[i+1]==='"'){f+='"';i++}else q=false}else f+=c}else if(c==='"')q=true;else if(c===','){row.push(f);f=''}else if(c==='\n'||c==='\r'){if(c==='\r'&&t[i+1]==='\n')i++;row.push(f);f='';if(row.some(x=>x!==''))rows.push(row);row=[]}else f+=c}row.push(f);if(row.some(x=>x!==''))rows.push(row);return rows}
+function giftsFromRows(rows){
+ const h=rows[0].map(x=>x.trim().toLowerCase()),ix=k=>h.indexOf(k),need=['gift_id','date','donor_code','gift_type','priority','amount_k'],miss=need.filter(k=>ix(k)<0);
+ if(miss.length)throw new Error('Missing columns: '+miss.join(', '));
+ const out=[];rows.slice(1).forEach((r,n)=>{const g=k=>ix(k)>=0?String(r[ix(k)]||'').trim():'';
+  const m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(g('date'));if(!m)throw new Error('Row '+(n+2)+': date must be YYYY-MM-DD');
+  const d=new Date(+m[1],+m[2]-1,+m[3]),amt=parseFloat(g('amount_k'));if(!isFinite(amt))throw new Error('Row '+(n+2)+': amount_k must be a number');
+  let type=GTYPES.find(t=>t.toLowerCase()===g('gift_type').toLowerCase())||'Current use';const pri=PRIN[g('priority').toLowerCase()]?g('priority').toLowerCase():'bridge';
+  let ack=null;const am=/^(\d{4})-(\d{2})-(\d{2})$/.exec(g('ack_date'));if(am)ack=Math.max(0,Math.round((new Date(+am[1],+am[2]-1,+am[3])-d)/864e5));
+  out.push({id:g('gift_id')||('U-'+(n+1)),date:d,donor:g('donor_code')||('D-'+(n+1)),dtype:g('donor_type')||'Individual',type,pri,amt,ackDays:ack,foreign:/^y/i.test(g('foreign')),endow:/^y/i.test(g('endowed'))})});
+ if(!out.length)throw new Error('No gift rows found');return out.sort((a,b)=>a.date-b.date);
+}
+(function(){const u=LS.get('gifts',null);if(Array.isArray(u)&&u.length){try{GIFTS=u.map(g=>Object.assign({},g,{date:new Date(g.date)}));USERG=true}catch(e){}}})();
+
+/* ---------------- state, routing, events ---------------- */
+const state={inv:{cap:1.5,aff:1,inc:1},al:{pool:150,w:{fel:3,ecf:2,ai:2,bridge:3,ppl:1}},en:{gift:2500,rate:0.05},cap:{hrs:70,visit:3,report:4,prop:10,meet:6,impact:30,peak:8},fc:{k:'base',over:{}},goal:Math.round((fyTot(2024)+fyTot(2025)+fyTot(2026))/3/50)*50};
+const RENDER={command:pCommand,charter:pCharter,inventory:pInventory,funding:pFunding,lifecycle:pLifecycle,scorecard:pScorecard,risk:pRisk,capacity:pCapacity,roadmap:pRoadmap,governance:pGovernance,ai:pAI,setup:pSetup,published:pPublished};
+const ALIAS={index:'command',prospects:'inventory',pipeline:'lifecycle',stewardship:'lifecycle',forecast:'published',compliance:'risk',sources:'setup'};
+function page(){const h=location.hash.slice(1);return RENDER[h]?h:(ALIAS[h]||'command')}
+const PLANMAP={command:[['1','Executive summary'],['33','Delivery health']],charter:[['54','Development & Advancement plan'],['8','Plan on a page'],['9','Strategy map']],inventory:[['54','Development & Advancement plan'],['12','Programs & initiatives'],['13','Value vs feasibility']],funding:[['22','Funding sources'],['19','Financial plan'],['41','Funding lab']],lifecycle:[['54','Development & Advancement plan'],['56','Grant lifecycle']],scorecard:[['28','Scorecard'],['39','Benefits register']],risk:[['26','Risks'],['40','Risk register']],capacity:[['37','Dependencies'],['38','Resource capacity']],roadmap:[['15','Roadmap'],['16','Decision gates']],governance:[['25','Decision rights'],['7','Stakeholder map'],['58','Communications plan']],ai:[['57','AI/ML readiness'],['49','Training & adoption']],setup:[['29','Assumptions'],['31','Sources'],['47','Reports & exports']],published:[['59','Published data & forecast'],['3','Harvard & HMS finances']]};
+const OFAMAP={command:['index','Platform index'],charter:['charter','Office charter'],inventory:['inventory','Inventory & scoring'],funding:['funding','Funding & allocation'],lifecycle:['lifecycle','Faculty & grant lifecycle'],scorecard:['kpi','Performance measures'],risk:['mitigate','Risk register'],capacity:['capacity','Capacity planning'],roadmap:['calendar','Decision calendar'],governance:['comms','Communications plan'],ai:['aiready','AI/ML readiness'],setup:['setup','Sources & setup'],published:['forecast','Faculty forecast']};
+const lk=(u,t)=>`<a href="${u}" target="_blank" rel="noopener">${E(t)} ↗</a>`;
+const planStrip=p=>{const m=PLANMAP[p],o=OFAMAP[p],rn=PAGES.find(x=>x[0]===p);if(!m)return '';
+ return `<div class="sec planstrip"><h3>Same section in the companion platforms</h3><p class="small" style="margin:0 0 8px">The operating plan and the three platforms use the same 13 sections (each opens in a new tab).</p>
+ <div class="pslinks">${m.map(([n,t])=>lk('https://narissa-pgm.github.io/HMS_DBMI/DBMI_Operating_Plan.html#/m/'+n,'Plan '+n+' · '+t)).join('')}${lk('https://narissa-pgm.github.io/HMS_DBMI/HMS_DBMI_Research.html#'+p,'Research & Grants · '+rn[1].replace('Gift lifecycle','Grant lifecycle'))}${o?lk('https://narissa-pgm.github.io/HMS_DBMI/HMS_OFA.html#'+o[0],'Faculty Affairs · '+o[1]):''}${lk('https://narissa-pgm.github.io/HMS_DBMI/HMS_Advancement.html#'+p,'HMS Advancement · '+rn[1])}</div></div>`};
+function paint(keepScroll){
+ const p=page(),y=window.scrollY;
+ $('#tabs').innerHTML=PAGES.map(([k,n],i)=>`<a href="#${k}"${k===p?' aria-current="page"':''}><span class="tn">${i+1}</span>${n}</a>`).join('');
+ try{$('#main').innerHTML=RENDER[p]()+planStrip(p)}catch(e){$('#main').innerHTML='<div class="sec">This page failed to render: '+E(e.message)+'</div>';console.error(e)}
+ document.title=(p==='command'?'':PAGES.find(x=>x[0]===p)[1]+' · ')+'HMS DBMI Gift & Development';
+ if(keepScroll)window.scrollTo(0,y);
+ const cur=document.querySelector('#tabs a[aria-current]');if(cur&&!keepScroll)try{cur.scrollIntoView({block:'nearest',inline:'center'})}catch(e){}
+}
+$('#foot').innerHTML='Demo build by Narissa Khomkhai, as of '+TODAY.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'})+'. Not an official Harvard system. Published figures carry their source; sample data is invented; proposals are the author’s; model output is not a goal anyone has approved. No donor names and no HMS internal data are included.';
+window.addEventListener('hashchange',()=>{paint(false);window.scrollTo(0,0);$('#main').focus({preventScroll:true})});
+function dl(name,rows){const csv=rows.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500)}
+document.addEventListener('click',e=>{
+ const t=e.target.closest('[data-scn],[data-go],[data-csv],[data-csvp],[data-tpl],[data-resetled]');if(!t)return;
+ if(t.dataset.scn){state.fc={k:t.dataset.scn,over:{}};paint(true)}
+ else if(t.dataset.go){location.hash=t.dataset.go}
+ else if(t.hasAttribute('data-csv')){dl('DBMI_gift_ledger.csv',[['gift_id','date','donor_code','donor_type','gift_type','priority','amount_k','ack_date','foreign','layer']].concat(GIFTS.map(g=>[g.id,iso(g.date),g.donor,g.dtype,g.type,g.pri,g.amt,g.ackDays==null?'':iso(new Date(g.date.getTime()+g.ackDays*864e5)),g.foreign?'Y':'N',USERG?'YOUR DATA':'SAMPLE'])))}
+ else if(t.hasAttribute('data-csvp')){dl('DBMI_prospects_sample.csv',[['prospect_code','type','capacity_band','affinity','inclination','stage','priority','managed_by','champion','last_contact_days','next_step','ask_k','layer']].concat(PROSPECTS.map(p=>[p.id,p.type,CAP[p.cap][0],p.aff,p.inc,p.stage,PRIN[p.pri],p.mgr,p.champ,p.last==null?'':p.last,iso(p.next),p.ask||'','SAMPLE'])))}
+ else if(t.hasAttribute('data-tpl')){dl('DBMI_gift_report_template.csv',[['gift_id','date','donor_code','gift_type','priority','amount_k','donor_type','ack_date','foreign','endowed'],['G-0001','2026-07-14','D-0101','Current use','fel','5','DBMI program alumnus/a','2026-07-15','N','N'],['G-0002','2026-08-02','D-0102','Pledge payment','ecf','100','Family foundation','2026-08-04','N','Y'],['G-0003','2026-09-20','D-0103','Endowment','ai','1000','Individual','2026-09-22','N','Y']])}
+ else if(t.hasAttribute('data-resetled')){const b=buildGifts();GIFTS=b.G;USERG=false;LS.set('gifts',null);_stew=null;paint(true)}
+});
+document.addEventListener('change',e=>{if(e.target.id!=='csvin')return;const f=e.target.files&&e.target.files[0];if(!f)return;const rd=new FileReader();rd.onload=()=>{try{const L=giftsFromRows(parseCSV(String(rd.result)));GIFTS=L;USERG=true;_stew=null;LS.set('gifts',L);paint(true);const m=$('#csvmsg');if(m)m.innerHTML='<span class="ok">Loaded '+L.length+' gifts. The sections now use your report.</span>'}catch(err){const m=$('#csvmsg');if(m)m.innerHTML='<span class="bad">Could not load: '+E(err.message)+'</span>'}};rd.readAsText(f)});
+document.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.dataset&&e.target.dataset.go){e.preventDefault();location.hash=e.target.dataset.go}});
+let tmr=null;
+const SETS={wcap:v=>state.inv.cap=v,waff:v=>state.inv.aff=v,winc:v=>state.inv.inc=v,egift:v=>state.en.gift=v,erate:v=>state.en.rate=v,apool:v=>state.al.pool=v,chrs:v=>state.cap.hrs=v,cvisit:v=>state.cap.visit=v,creport:v=>state.cap.report=v,cprop:v=>state.cap.prop=v,cmeet:v=>state.cap.meet=v,fret:v=>state.fc.over.ret=v,fnew:v=>state.fc.over.newD=v,fclose:v=>state.fc.over.close=v,fnp:v=>state.fc.over.newP=v,fgoal:v=>state.goal=v};
+PRI.forEach(p=>SETS['aw_'+p[0]]=v=>state.al.w[p[0]]=v);
+const FMT={egift:fK,erate:v=>pc(v,2),apool:fK,fret:v=>pc(v),fclose:v=>v.toFixed(2)+'×',fgoal:fK};
+document.addEventListener('input',e=>{
+ const id=e.target.id,v=parseFloat(e.target.value),out=e.target.parentNode.querySelector('output');
+ if(!SETS[id])return; if(out)out.textContent=FMT[id]?FMT[id](v):v;
+ clearTimeout(tmr);tmr=setTimeout(()=>{SETS[id](v);paint(true);const el=document.getElementById(id);if(el)el.focus()},160);
+});
+(function theme(){const k='hmsgd_theme';let t=null;try{t=localStorage.getItem(k)}catch(e){}if(t)document.documentElement.setAttribute('data-theme',t);
+ $('#theme').addEventListener('click',()=>{const cur=document.documentElement.getAttribute('data-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'),nx=cur==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',nx);try{localStorage.setItem(k,nx)}catch(e){}})})();
+paint(false);
+
+</script>
+</body>
+</html>

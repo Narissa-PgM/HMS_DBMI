@@ -38,6 +38,7 @@ header.top{position:sticky;top:0;z-index:20;background:var(--card);border-bottom
 .btn:hover{border-color:var(--crim)}
 .btn.pri{background:var(--crim);border-color:var(--crim);color:#fff}
 nav.tabs{max-width:1240px;margin:0 auto;padding:0 24px 10px;display:flex;gap:6px;overflow-x:auto;scrollbar-width:thin}
+@media (min-width:1000px){nav.tabs{flex-wrap:wrap;overflow:visible}}
 nav.tabs a{flex:0 0 auto;text-decoration:none;color:var(--mute);font-weight:600;font-size:13.5px;padding:8px 13px;border-radius:999px;border:1px solid transparent;white-space:nowrap}
 nav.tabs a:hover{color:var(--ink);border-color:var(--line)}
 nav.tabs a[aria-current="page"]{background:var(--crim);color:#fff}
@@ -127,6 +128,11 @@ svg.ch .lab{font-weight:600;font-size:12px}
 :focus-visible{outline:3px solid var(--blue);outline-offset:2px}
 main:focus,main:focus-visible{outline:none}
 @media print{header.top,nav.tabs,.toplinks{display:none}.sec,.phead{box-shadow:none;break-inside:avoid}}
+.t-usr{background:#e0f2f1;color:#0f766e;border-color:#a7d9d4}
+nav.tabs a .tn{display:inline-grid;place-items:center;width:18px;height:18px;border-radius:50%;background:var(--soft);color:var(--mute);font-size:10.5px;margin-right:6px}
+nav.tabs a[aria-current="page"] .tn{background:rgba(255,255,255,.25);color:#fff}
+code{background:var(--soft);padding:1px 5px;border-radius:4px;font-size:12.5px}
+.pslinks{display:flex;flex-wrap:wrap;gap:6px}.pslinks a{font-size:12.5px;padding:4px 9px;border:1px solid var(--line,#D5DAE0);border-radius:999px;text-decoration:none;color:inherit;max-width:100%}.pslinks a:hover,.pslinks a:focus-visible{border-color:#0F766E;color:#0F766E}
 </style>
 </head>
 <body>
@@ -134,7 +140,7 @@ main:focus,main:focus-visible{outline:none}
 <header class="top">
   <div class="topin">
     <div class="logo" aria-hidden="true">HMS</div>
-    <div class="brand"><h1>Research &amp; Grants</h1><small>Department of Biomedical Informatics · research and grant management (demo)</small></div>
+    <div class="brand"><h1>Research &amp; Grants</h1><small>Department of Biomedical Informatics · research portfolio management in 13 sections (demo)</small></div>
     <div class="toplinks">
       <a class="btn" href="https://narissa-pgm.github.io/HMS_DBMI/HMS_OFA.html#index" target="_blank" rel="noopener">Faculty Affairs platform ↗</a>
       <a class="btn" href="https://narissa-pgm.github.io/HMS_DBMI/DBMI_Operating_Plan.html" target="_blank" rel="noopener">Operating plan ↗</a>
@@ -148,6 +154,7 @@ main:focus,main:focus-visible{outline:none}
 <div class="dlg" id="dlg" role="dialog" aria-modal="true" aria-labelledby="dlgt"><div class="box"><button class="btn close" type="button" data-close>Close</button><h3 id="dlgt"></h3><div id="dlgb"></div></div></div>
 
 <script>
+
 'use strict';
 /* =====================================================================
    HMS DBMI · Research & Grants (demo)
@@ -172,6 +179,9 @@ const SRC={
  ailimit:['NIH policy on AI use and a PI application limit (summary of NOT-OD-25-132)','Weill Cornell Medicine','accessed 24 Oct 2026','https://research.weill.cornell.edu/about-us/news-updates/nih-update-new-policy-ai-use-pi-application-limit','NIH will not consider applications substantially developed by AI. Each PI may submit at most six new, renewal, resubmission or revision applications per calendar year, from the 25 Sep 2025 receipt date.'],
  ug:['Uniform Guidance (2 CFR 200) revisions, effective 1 Oct 2024','OMB, via GWU sponsored programs','Oct 2024','https://sponsoredprojects.gwu.edu/node/1501','Equipment threshold $10,000; 15% de minimis indirect rate for entities without a negotiated rate.'],
  dbmiproj:['DBMI projects','HMS Department of Biomedical Informatics','accessed 25 Oct 2026','https://dbmi.hms.harvard.edu/projects','Public list of DBMI programs, including NIH Common Fund, NHLBI, NIA and NIEHS consortium and data-coordination work.'],
+ peerai:['The use of generative AI technologies is prohibited for the NIH peer review process (NOT-OD-23-149)','NIH','23 Jun 2023','https://grants.nih.gov/grants/guide/notice-files/NOT-OD-23-149.html','NIH reviewers may not use generative AI to analyze or draft critiques; uploading application content to online AI tools breaches review confidentiality.'],
+ hmsai:['AI tools at HMS','HMS IT','accessed 25 Oct 2026','https://it.hms.harvard.edu/service/ai-tools','Claude, ChatGPT Edu and Copilot Premium for eligible Quad-based employees and students after training; use with Level 3 data and below, never Level 4 or 5; meeting assistants only up to Level 2.'],
+ nist:['AI Risk Management Framework (NIST AI 100-1)','NIST','26 Jan 2023','https://www.nist.gov/itl/ai-risk-management-framework','Four functions for managing AI risk: govern, map, measure, manage.'],
  litig:['Harvard federal research funding litigation','The Harvard Crimson','10 Aug 2026','https://www.thecrimson.com/article/2026/8/10/harvard-funding-appeal-amici/','A September 2025 ruling restored terminated funding; the government appealed. Status after August 2026 not verified.']
 };
 /* public DBMI programs (DBMI projects page): names and funders only, no dollar values */
@@ -183,8 +193,8 @@ const E=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','
 const fm=(v,d=1)=>(v<0?'−':'')+'$'+Math.abs(v).toFixed(d)+'M';
 const fk=v=>'$'+Math.round(v).toLocaleString()+'K';
 const pc=(v,d=0)=>(v*100).toFixed(d)+'%';
-const TAG={pub:['Published','t-pub'],smp:['Sample','t-smp'],mod:['Model','t-mod'],asm:['Assumption','t-asm'],doc:['Document','t-doc']};
-const tag=t=>`<span class="tag ${TAG[t][1]}" title="${E({pub:'Quoted from a published source; open Sources for the citation.',smp:'Invented to show the shape of the report. Not DBMI or Harvard data.',mod:'Calculated from the stated inputs. Not a count and not a decision.',asm:'An input you can change.',doc:'Rule or date taken from a policy page.'}[t])}">${TAG[t][0]}</span>`;
+const TAG={usr:['Your data','t-usr'],pub:['Published','t-pub'],smp:['Sample','t-smp'],mod:['Model','t-mod'],asm:['Assumption','t-asm'],doc:['Document','t-doc']};
+const tag=t=>`<span class="tag ${TAG[t][1]}" title="${E({usr:'Uploaded in Sources & setup; stays in this browser.',pub:'Quoted from a published source; open Sources for the citation.',smp:'Invented to show the shape of the report. Not DBMI or Harvard data.',mod:'Calculated from the stated inputs. Not a count and not a decision.',asm:'An input you can change.',doc:'Rule or date taken from a policy page.'}[t])}">${TAG[t][0]}</span>`;
 const sc=(k,label)=>{const s=SRC[k];return s?`<a href="${E(s[3])}" target="_blank" rel="noopener">${E(label||s[1]+', '+s[2])}</a>`:''};
 const kpi=(k,v,t,note,act)=>`<div class="kpi${act?' click':''}"${act?` role="button" tabindex="0" data-go="${act}"`:''}><div class="k"><span>${E(k)}</span>${tag(t)}</div><div class="v">${v}</div><small>${note}</small></div>`;
 function rng(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
@@ -229,7 +239,7 @@ function buildLedger(){
  L.forEach(a=>{a.nce=(a.end===CURFY)&&(a.spent<a.elapsed-0.12)});
  return L.sort((a,b)=>a.end-b.end||b.dir-a.dir);
 }
-const LEDGER=buildLedger();
+let LEDGER=buildLedger();
 const tot=a=>a.dir+a.fa;
 const activeIn=(a,y)=>a.sy<=y&&a.end>=y;
 
@@ -243,6 +253,7 @@ function bars(groups,o={}){ /* groups:[{l,parts:[[name,v,color]]}] stacked */
  groups.forEach((gr,i)=>{const x=l+(i+.5)*(W-l-r)/n-bw/2;let acc=0;gr.parts.forEach(p=>{if(p[1]<=0)return;const y0=Y(acc),y1=Y(acc+p[1]);g+=`<rect x="${x.toFixed(1)}" y="${y1.toFixed(1)}" width="${bw.toFixed(1)}" height="${(y0-y1).toFixed(1)}" fill="${p[2]}" rx="2"><title>${E(gr.l+' · '+p[0]+': '+(o.fmt?o.fmt(p[1]):p[1]))}</title></rect>`;acc+=p[1]});
   g+=`<text x="${(x+bw/2).toFixed(1)}" y="${H-b+16}" text-anchor="middle">${E(gr.l)}</text>`;
   if(o.total)g+=`<text x="${(x+bw/2).toFixed(1)}" y="${(Y(acc)-5).toFixed(1)}" text-anchor="middle" class="lab">${o.fmt?o.fmt(acc):Math.round(acc)}</text>`;});
+ if(o.ref!=null)g+=`<line x1="${l}" x2="${W-r}" y1="${Y(o.ref)}" y2="${Y(o.ref)}" stroke="var(--amber)" stroke-width="2" stroke-dasharray="6 4"/><text x="${W-r}" y="${Y(o.ref)-6}" text-anchor="end" style="fill:var(--amber);font-weight:700">${E(o.refLab||'')} ${o.fmt?o.fmt(o.ref):o.ref}</text>`;
  return `<svg class="ch" viewBox="0 0 ${W} ${H}" role="img" aria-label="${E(o.label||'Bar chart')}">${g}</svg>`;
 }
 function hbars(rows,o={}){ /* rows:[label,value,color,note] */
@@ -262,44 +273,11 @@ function lines(labels,series,o={}){ /* series:[{n,c,v,lo,hi,dash}] */
  series.forEach(s=>{if(s.lo&&s.hi){let d='',idx=[];s.hi.forEach((v,i)=>v!=null&&idx.push(i));idx.forEach((i,z)=>d+=(z?'L':'M')+X(i).toFixed(1)+' '+Y(s.hi[i]).toFixed(1));for(let z=idx.length-1;z>=0;z--)d+='L'+X(idx[z]).toFixed(1)+' '+Y(s.lo[idx[z]]).toFixed(1);g+=`<path d="${d}Z" fill="${s.c}" opacity=".15"/>`}
   let d='';s.v.forEach((v,i)=>{if(v==null)return;d+=(d?'L':'M')+X(i).toFixed(1)+' '+Y(v).toFixed(1)});g+=`<path d="${d}" fill="none" stroke="${s.c}" stroke-width="2.4"${s.dash?' stroke-dasharray="6 4"':''}/>`;
   s.v.forEach((v,i)=>{if(v!=null)g+=`<circle cx="${X(i)}" cy="${Y(v)}" r="3" fill="${s.c}"><title>${E(s.n+' · '+labels[i]+': '+(o.fmt?o.fmt(v):v)+(s.lo&&s.lo[i]!=null?' (80% range '+(o.fmt?o.fmt(s.lo[i]):s.lo[i])+'–'+(o.fmt?o.fmt(s.hi[i]):s.hi[i])+')':''))}</title></circle>`});
-  const li=s.v.length-1-[...s.v].reverse().findIndex(v=>v!=null);if(li>=0&&li<s.v.length)g+=`<text x="${X(li)+8}" y="${Y(s.v[li])+4}" class="lab" fill="${s.c}">${E(s.n)} ${o.fmt?o.fmt(s.v[li]):s.v[li]}</text>`});
+  const li=s.v.length-1-[...s.v].reverse().findIndex(v=>v!=null);if(!s.nolab&&li>=0&&li<s.v.length)g+=`<text x="${X(li)+8}" y="${Y(s.v[li])+4}" class="lab" fill="${s.c}">${E(s.n)} ${o.fmt?o.fmt(s.v[li]):s.v[li]}</text>`});
  labels.forEach((lb,i)=>{if(n<=12||i%2===0)g+=`<text x="${X(i)}" y="${H-12}" text-anchor="middle">${E(lb)}</text>`});
  return `<svg class="ch" viewBox="0 0 ${W} ${H}" role="img" aria-label="${E(o.label||'Line chart')}">${g}</svg>`;
 }
 const SPC={'NIH Common Fund':'#9d2235','NHLBI':'#c4626f','NHGRI':'#2b5c8a','NIEHS':'#0f766e','NIH Office of the Director':'#6b8bb0','NIA':'#b45309','NCI':'#7c3aed','NLM':'#1f3442','NIMH':'#4a6272','NIGMS':'#8a9eab','Private foundation':'#2f7d4f','Industry sponsor':'#a3b8c6'};
-
-/* ---------------- pages ---------------- */
-const PAGES=[['index','Overview'],['portfolio','Portfolio'],['pipeline','Proposal pipeline'],['postaward','Post-award'],['exposure','Federal exposure'],['forecast','Funding forecast'],['compliance','Compliance calendar'],['sources','Sources & method']];
-const head=(eb,t,p)=>`<div class="phead"><div class="eyebrow">${eb}</div><h2>${t}</h2><p>${p}</p></div>`;
-
-function pIndex(){
- const act=LEDGER.filter(a=>activeIn(a,CURFY)),fed=act.filter(a=>a.fed),T=act.reduce((s,a)=>s+tot(a),0)/1000,F=fed.reduce((s,a)=>s+tot(a),0)/1000;
- return head('Research and grant management','One view of the research enterprise','Where the money comes from, what is due, what is at risk, and how the funding outlook moves. Built for the Executive Director role: the published context first, then a sample department ledger and a model you can change.')
- +`<div class="sec"><h3>The published context</h3><p class="why">What changed for HMS research in 2025–2026. Every figure links to its source.</p><div class="grid g4">
-  ${kpi('NIH R01-equivalent success, FY2025','13.0%','pub','Down from 18.7% in FY2024, as applications rose 12% ('+sc('nihfy25','NIH')+').')}
-  ${kpi('HMS federal revenue, FY2026','−17%','pub','After four years of growth ('+sc('sos26','Crimson, Sep 2026')+').')}
-  ${kpi('HMS on-campus F&A rate','69.0%','pub','Federal research, MTDC base, through Jun 2028 ('+sc('fa','Harvard OSP')+').')}
-  ${kpi('Grants frozen at HMS, 2025','≈$230M','pub','Met by $90M University and $120M HMS bridge funds ('+sc('sos25','Crimson, Sep 2025')+').')}
- </div><div class="grid g4" style="margin-top:12px">
-  ${kpi('HMS + affiliates grant spending, FY25','$4.57B','pub','$2.51B federal ('+sc('hmsnum','HMS by the Numbers')+').')}
-  ${kpi('Harvard federal sponsored revenue, FY26','$506M','pub','−19.5% from $629M ('+sc('hufy26','Harvard, Oct 2026')+').')}
-  ${kpi('NIH 15% indirect cap','Enjoined','pub','Proposed again for FY2027 ('+sc('cap','status guide')+').')}
-  ${kpi('Sample DBMI sponsored total, FY'+CURFY,fm(T),'smp',act.length+' active sample awards; '+pc(F/T)+' federal.','portfolio')}
- </div></div>`
- +`<div class="sec"><h3>What each page answers</h3><div class="grid g4 map">${[
-  ['portfolio','01','Portfolio','Who funds us, by which mechanism, and when each award ends.'],
-  ['pipeline','02','Proposal pipeline','What is being written, what is due, and the odds at today’s success rates.'],
-  ['postaward','03','Post-award','Burn rate, awards ending, extensions, effort and reports due.'],
-  ['exposure','04','Federal exposure','What a cap, a freeze or a termination would remove, and how long bridge funds last.'],
-  ['forecast','05','Funding forecast','Sponsored revenue to FY2031 with an 80% range, and the year the cliff arrives.'],
-  ['compliance','06','Compliance calendar','NIH due dates, progress reports, closeout and new policy rules.'],
-  ['sources','07','Sources & method','Every citation, the model and its assumptions.']
- ].map(x=>`<a href="#${x[0]}"><i>${x[1]}</i><b>${x[2]}</b><span>${x[3]}</span></a>`).join('')}
-  <a href="https://narissa-pgm.github.io/HMS_DBMI/HMS_OFA.html#index" target="_blank" rel="noopener"><i>COMPANION</i><b>Faculty Affairs platform ↗</b><span>The faculty side of the same operation: appointments, promotions, workforce forecast.</span></a>
- </div></div>`
- +`<div class="sec"><h3>How to read the labels</h3><div class="legend">${tag('pub')} quoted, with a source ${tag('smp')} invented to show the shape, not DBMI data ${tag('mod')} calculated from stated inputs ${tag('asm')} an input you can change ${tag('doc')} a rule or date from a policy page</div>
- <div class="callout" style="margin-top:12px"><div class="mis"><b>Common mistake</b><p class="small" style="margin:4px 0 0">Reading a sample award total as DBMI’s real research volume, or a model year as a forecast someone has approved.</p></div><div class="best"><b>Best practice</b><p class="small" style="margin:4px 0 0">Quote only figures tagged Published. Replace the sample ledger with the department’s award list before any decision; the model then runs on it unchanged.</p></div></div></div>`;
-}
 
 function pPortfolio(){
  const S=state.pf, act=LEDGER.filter(a=>activeIn(a,CURFY)&&(S.f==='all'||(S.f==='fed'?a.fed:!a.fed)));
@@ -313,12 +291,12 @@ function pPortfolio(){
  const uShare=U.reduce((s,a)=>s+tot(a),0)/1000/T;
  const rows=act.slice().sort((a,b)=>tot(b)-tot(a));
  return head('Portfolio','Who funds DBMI research, and when it ends','A sample ledger shaped like an informatics department: large data-coordination and consortium awards, investigator grants, training grants, foundation and industry funding.')
- +`<div class="note">${tag('smp')} The awards below are invented. DBMI does not publish award-level totals, and the real programs listed further down carry no dollar values here. Replace the ledger with the department’s award list; every chart recalculates.</div>`
+ +`<div class="note">${tag(LT())} ${USERLED?'These awards come from the list loaded in Sources &amp; setup.':'The awards below are invented. DBMI does not publish award-level totals, and the real programs listed further down carry no dollar values here. Load the department’s award list in Sources &amp; setup; every chart recalculates.'}</div>`
  +`<div class="sec"><div class="ctrls"><div class="ctrl"><label>Sponsor type</label><div class="seg" role="group" aria-label="Sponsor type">${[['all','All'],['fed','Federal'],['non','Non-federal']].map(x=>`<button type="button" data-pf="${x[0]}" aria-pressed="${S.f===x[0]}">${x[1]}</button>`).join('')}</div></div></div>
- <div class="grid g4">${kpi('Sponsored total, FY'+CURFY,fm(T),'smp',act.length+' active awards')}${kpi('Direct costs',fm(D),'smp','Annual, before F&A')}${kpi('F&A recovery',fm(FA),'mod','69% federal on an assumed MTDC of 88% of direct')}${kpi('Consortium and coordination share',pc(uShare),'smp','U24, U01 and Other Transaction awards')}</div></div>`
+ <div class="grid g4">${kpi('Sponsored total, FY'+CURFY,fm(T),LT(),act.length+' active awards')}${kpi('Direct costs',fm(D),LT(),'Annual, before F&A')}${kpi('F&A recovery',fm(FA),'mod','69% federal on an assumed MTDC of 88% of direct')}${kpi('Consortium and coordination share',pc(uShare),LT(),'U24, U01 and Other Transaction awards')}</div></div>`
  +`<div class="grid g2"><div class="sec"><h3>By sponsor</h3><p class="why">Annual direct plus F&A, $M.</p>${hbars(spRows,{fmt:v=>fm(v),label:'Sponsored total by sponsor',l:170,w:520})}</div>
  <div class="sec"><h3>By mechanism</h3><p class="why">Crimson federal, green non-federal.</p>${hbars(mRows,{fmt:v=>fm(v),label:'Sponsored total by mechanism',l:210,w:540})}</div></div>`
- +`<div class="sec"><h3>When the money ends</h3><p class="why">Annual value of awards by final fiscal year. A tall bar is a renewal year: the competing application is due 9 to 12 months before it.</p>${bars(ends,{fmt:v=>'$'+v.toFixed(1)+'M',total:true,label:'Award value by final fiscal year'})}<p class="cap">${tag('smp')} Consortium awards end together because their networks were funded in the same cycle. That clustering, not the average, drives the funding cliff on the forecast page.</p></div>`
+ +`<div class="sec"><h3>When the money ends</h3><p class="why">Annual value of awards by final fiscal year. A tall bar is a renewal year: the competing application is due 9 to 12 months before it.</p>${bars(ends,{fmt:v=>'$'+v.toFixed(1)+'M',total:true,label:'Award value by final fiscal year'})}<p class="cap">${tag(LT())} Consortium awards end together because their networks were funded in the same cycle. That clustering, not the average, drives the funding cliff on the forecast page.</p></div>`
  +`<div class="sec"><h3>Programs DBMI lists publicly</h3><p class="why">From the ${sc('dbmiproj','DBMI projects page')}. Names and funders only; no dollar values are published there.</p><div class="tw"><table><thead><tr><th>Program</th><th>Funder named on the page</th></tr></thead><tbody>${PROGRAMS.map(p=>`<tr><td>${E(p[0])}</td><td>${E(p[1])}</td></tr>`).join('')}</tbody></table></div><p class="cap">The mix matters: data-coordination centers are large cooperative agreements with fixed end dates and program-officer oversight, so renewal timing is the department’s main financial risk.</p></div>`
  +`<div class="sec"><h3>Award ledger</h3><p class="why">One row per award. Investigators are coded, never named. <button class="btn" type="button" data-csv>Download CSV</button></p><div class="tw" style="max-height:480px"><table><thead><tr><th>ID</th><th>Mechanism</th><th>Sponsor</th><th>Investigator</th><th class="n">Start FY</th><th class="n">End FY</th><th class="n">Direct / yr</th><th class="n">F&A / yr</th></tr></thead><tbody>${rows.map(a=>`<tr><td>${a.id}</td><td>${E(a.mech)}</td><td>${E(a.sp)}</td><td>${a.pi} · ${a.role}</td><td class="n">${a.sy}</td><td class="n">${a.end}</td><td class="n">${fk(a.dir)}</td><td class="n">${fk(a.fa)}</td></tr>`).join('')}</tbody></table></div></div>`;
 }
@@ -368,7 +346,7 @@ function pPost(){
  g+=`<text x="${(l+W-r)/2}" y="${H}" text-anchor="middle" style="font-size:11px">share of the budget year elapsed</text>`;
  const rp=act.filter(a=>a.fed).map(a=>[a,rpprDue(a)]).filter(x=>days(x[1])<=120).sort((x,y)=>x[1]-y[1]);
  return head('Post-award','Are awards spending as planned, and what is due?','Burn rate against time, awards ending this year, no-cost extension candidates, effort certification and progress reports. Report rules are published; the awards are a sample.')
- +`<div class="grid g4" style="margin-bottom:16px">${kpi('Under-spending',String(under.length),'smp','more than 15 points behind time elapsed')}${kpi('Over-spending',String(over.length),'smp','more than 15 points ahead')}${kpi('Ending this fiscal year',String(ending.length),'smp',nce.length+' look like no-cost extension candidates')}${kpi('Effort not certified',String(eff.length),'smp',eff.filter(a=>a.effort==='Overdue').length+' overdue')}</div>`
+ +`<div class="grid g4" style="margin-bottom:16px">${kpi('Under-spending',String(under.length),LT(),'more than 15 points behind time elapsed')}${kpi('Over-spending',String(over.length),LT(),'more than 15 points ahead')}${kpi('Ending this fiscal year',String(ending.length),LT(),nce.length+' look like no-cost extension candidates')}${kpi('Effort not certified',String(eff.length),LT(),eff.filter(a=>a.effort==='Overdue').length+' overdue')}</div>`
  +`<div class="sec"><h3>Burn rate against time</h3><p class="why">Each bubble is one award, sized by annual value. The green band is ±15 points of spend-equals-time. Hover for detail.</p><svg class="ch" viewBox="0 0 ${W} ${H}" role="img" aria-label="Spend versus time elapsed by award">${g}</svg>
  <div class="callout" style="margin-top:12px"><div class="mis"><b>Common mistake</b><p class="small" style="margin:4px 0 0">Discovering an under-spent award in its final quarter, when the only options are a rushed purchase or a no-cost extension request.</p></div><div class="best"><b>Best practice</b><p class="small" style="margin:4px 0 0">Review this chart monthly with each PI’s grants manager; anything outside the band gets a re-budget or a written plan within 30 days.</p></div></div></div>`
  +`<div class="grid g2"><div class="sec"><h3>Progress reports due in the next 120 days</h3><p class="why">${tag('doc')} Annual RPPR about 45 days before the next budget period for SNAP awards, 60 for non-SNAP (${sc('rppr','NIH')}). Budget periods are sample.</p><div class="tw"><table><thead><tr><th>Award</th><th>Type</th><th>Due</th><th class="n">Days</th></tr></thead><tbody>${rp.map(([a,d])=>`<tr><td>${a.id}</td><td>${a.snap?'SNAP':'Non-SNAP'}</td><td>${dfmt(d)}</td><td class="n"><span class="pill ${days(d)<30?'p-bad':days(d)<60?'p-warn':'p-ok'}">${days(d)}</span></td></tr>`).join('')||'<tr><td colspan="4">None in the window.</td></tr>'}</tbody></table></div></div>
@@ -385,7 +363,7 @@ function pExposure(){
  const lab=[],cum=[],covered=[];let c=0,cv=0;for(let m=0;m<=Math.max(12,months);m++){lab.push('M'+m);if(m>0&&m<=months){c+=gapPerMonth;cv+=frozenM/12*S.cover}cum.push(+c.toFixed(2));covered.push(+cv.toFixed(2))}
  return head('Federal exposure','What a cap, a freeze or a termination would remove','The rules and the HMS response are published. DBMI’s federal volume is not, so it starts from the sample ledger and you can type the real figure.')
  +`<div class="sec"><h3>The 15% indirect-cost cap</h3><p class="why">Arithmetic only: exposure = federal MTDC × (69% − 15%). The same formula as the operating plan’s indirect-cost page.</p>
- <div class="ctrls"><div class="ctrl"><label for="mtdc">DBMI annual federal MTDC ($M)</label><input id="mtdc" type="number" min="0" step="0.5" value="${mtdc.toFixed(1)}"></div><div class="small muted" style="max-width:520px">${S.mtdc==null?tag('smp')+' Started from the sample ledger (88% of federal direct). Type the department’s figure to replace it.':tag('asm')+' Your figure. <button class="btn" type="button" data-resetmtdc>Use the sample again</button>'}</div></div>
+ <div class="ctrls"><div class="ctrl"><label for="mtdc">DBMI annual federal MTDC ($M)</label><input id="mtdc" type="number" min="0" step="0.5" value="${mtdc.toFixed(1)}"></div><div class="small muted" style="max-width:520px">${S.mtdc==null?tag(LT())+' Started from the sample ledger (88% of federal direct). Type the department’s figure to replace it.':tag('asm')+' Your figure. <button class="btn" type="button" data-resetmtdc>Use the sample again</button>'}</div></div>
  <div class="grid g3">${kpi('Recovery at 69%',fm(mtdc*0.69),'mod','current negotiated rate ('+sc('fa','OSP')+')')}${kpi('Recovery at a 15% cap',fm(mtdc*0.15),'mod','the proposed flat rate')}${kpi('Lost each year',fm(capLoss),'mod','54 cents per dollar of MTDC')}</div>
  <p class="cap">${tag('pub')} The 2025 flat cap was permanently enjoined; the FY2026 appropriations act kept the rider; the FY2027 budget request proposes it again (${sc('cap','status guide')}). Treat it as a scenario to plan for, not a current rule.</p></div>`
  +`<div class="sec"><h3>A freeze or termination, and the bridge</h3><p class="why">If part of the federal portfolio stops paying, how much does the department have to cover, and for how long?</p>
@@ -481,45 +459,325 @@ function pSources(){
   <p class="small">Companion: the <a href="https://narissa-pgm.github.io/HMS_DBMI/HMS_OFA.html#index" target="_blank" rel="noopener">HMS Faculty Affairs Operations Platform</a> covers appointments, promotions and the faculty forecast. The <a href="https://narissa-pgm.github.io/HMS_DBMI/DBMI_Operating_Plan.html" target="_blank" rel="noopener">DBMI Operating Plan</a> sets the department plan both platforms support.</p></div>`;
 }
 
+/* ======================= v2 · thirteen sections ======================= */
+const PAGES=[['command','Command center'],['charter','Charter & strategy'],['inventory','Inventory & scoring'],['funding','Funding & allocation'],['lifecycle','Grant lifecycle'],['scorecard','Benefits & scorecard'],['risk','Risk & compliance'],['capacity','Capacity & dependency'],['roadmap','Roadmap & reviews'],['governance','Governance & comms'],['ai','AI/ML readiness'],['setup','Sources & setup'],['published','Published data & forecast']];
+let SUB=false; /* when true, embedded legacy pages drop their own page head */
+const head=(eb,t,p)=>SUB?'':`<div class="phead"><div class="eyebrow">${eb}</div><h2>${t}</h2><p>${p}</p></div>`;
+const embed=fn=>{SUB=true;try{return fn()}finally{SUB=false}};
+const mistake=(m,b)=>`<div class="callout" style="margin-top:12px"><div class="mis"><b>Common mistake</b><p class="small" style="margin:4px 0 0">${m}</p></div><div class="best"><b>Best practice</b><p class="small" style="margin:4px 0 0">${b}</p></div></div>`;
+const t2=(h,rows,cls)=>`<div class="tw"><table${cls?` class="${cls}"`:''}><thead><tr>${h.map(x=>`<th>${x}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+const pill=(t,c)=>`<span class="pill ${c}">${E(t)}</span>`;
+const PROPOSED=`<span class="tag t-asm" title="The author's proposal, to agree with the Chair and DBMI leadership.">Proposed</span>`;
+
+/* ---------- 1. command center ---------- */
+function exceptions(){
+ const act=LEDGER.filter(a=>activeIn(a,CURFY)),L=[];
+ act.filter(a=>a.fed).forEach(a=>{const d=rpprDue(a),k=days(d);if(k<=30)L.push([k,'Progress report due',a.id+' · '+(a.snap?'SNAP':'non-SNAP')+' RPPR on '+dfmt(d),'lifecycle','bad'])});
+ act.filter(a=>a.spent<a.elapsed-0.15).forEach(a=>L.push([40,'Under-spending',a.id+' is '+Math.round((a.elapsed-a.spent)*100)+' points behind time elapsed','lifecycle','warn']));
+ act.filter(a=>a.spent>a.elapsed+0.15).forEach(a=>L.push([35,'Over-spending',a.id+' is '+Math.round((a.spent-a.elapsed)*100)+' points ahead of time elapsed','lifecycle','bad']));
+ act.filter(a=>a.effort==='Overdue').forEach(a=>L.push([20,'Effort overdue',a.id+' · '+a.pi,'risk','bad']));
+ act.filter(a=>a.ren&&a.end===CURFY+1&&tot(a)>1500).forEach(a=>L.push([60,'Large renewal due',a.id+' ('+a.mech+', '+fm(tot(a)/1000)+'/yr) ends FY'+a.end+'; competing application due about a year ahead','inventory','warn']));
+ DUE.forEach(([n,md])=>{const d=nextDue(md)[0],k=days(d);if(k<=21)L.push([k,'NIH due date',n+' on '+dfmt(d)+' ('+k+' days)','lifecycle','warn'])});
+ return L.sort((a,b)=>a[0]-b[0]);
+}
+function pCommand(){
+ const act=LEDGER.filter(a=>activeIn(a,CURFY)),T=act.reduce((s,a)=>s+tot(a),0)/1000,F=act.filter(a=>a.fed).reduce((s,a)=>s+tot(a),0)/1000,X=exceptions(),R=simulate(SCN.base[2],300);
+ const cliffI=R.p50.findIndex((v,i)=>i>0&&v<R.p50[0]*0.8);
+ return head('Command center','What needs a decision this week','The research portfolio on one screen: the money, the exceptions that need someone today, the decisions waiting, and where the outlook is heading. Everything below links to the section that owns it.')
+ +`<div class="grid g4" style="margin-bottom:16px">${kpi('Sponsored total, FY'+CURFY,fm(T),LT(),act.length+' active awards · '+pc(F/T)+' federal','inventory')}${kpi('Exceptions open',String(X.length),LT(),X.filter(x=>x[4]==='bad').length+' urgent','lifecycle')}${kpi('Funding cliff',cliffI>0?'FY'+R.yrs[cliffI]:'Not in range','mod','base case; middle path 20% below today','published')}${kpi('NIH success, FY2025','13.0%','pub','R01-equivalent, down from 18.7% ('+sc('nihfy25','NIH')+')','published')}</div>`
+ +`<div class="grid g2"><div class="sec"><h3>Exceptions, soonest first</h3><p class="why">Generated from the ledger and the NIH rules. Each row opens the section that resolves it.</p><div class="tw" style="max-height:420px"><table><thead><tr><th>Type</th><th>What</th><th></th></tr></thead><tbody>${X.slice(0,14).map(x=>`<tr><td>${pill(x[1],x[4]==='bad'?'p-bad':'p-warn')}</td><td class="small">${E(x[2])}</td><td><a href="#${x[3]}">Open</a></td></tr>`).join('')||'<tr><td colspan="3">Nothing open.</td></tr>'}</tbody></table></div>${X.length>14?`<p class="cap">${X.length-14} more in the lifecycle and risk sections.</p>`:''}</div>
+ <div class="sec"><h3>Decisions waiting</h3><p class="why">${tag('smp')} What the Executive Director brings to the Chair this month.</p>${t2(['Decision','Options','By'],[
+  ['Bridge rule for a frozen award','Cover at 74% (HMS average), cover fully for trainees only, or pause hires','Next portfolio review'],
+  ['Which renewal gets central writing support','Rank by size and success odds (Inventory & scoring)','6 weeks before the due date'],
+  ['Accept an industry agreement with IP terms','Proceed, renegotiate or decline, with HMS research administration','Before signature'],
+  ['Pilot AI drafting for budget justifications','Approve a Level 3 pilot or wait (AI/ML readiness)','Quarterly review']].map(r=>[E(r[0]),E(r[1]),E(r[2])]))}</div></div>`
+ +`<div class="sec"><h3>Every section</h3><div class="grid g4 map">${PAGES.slice(1).map((p,i)=>`<a href="#${p[0]}"><i>${String(i+2).padStart(2,'0')}</i><b>${p[1]}</b><span>${E(SECDESC[p[0]])}</span></a>`).join('')}<a href="https://narissa-pgm.github.io/HMS_DBMI/HMS_OFA.html#index" target="_blank" rel="noopener"><i>COMPANION</i><b>Faculty Affairs platform ↗</b><span>Appointments, promotions and the faculty forecast.</span></a></div></div>`
+ +`<div class="sec"><h3>How to read the labels</h3><div class="legend">${tag('pub')} quoted, with a source ${tag('smp')} invented to show the shape ${tag('usr')} uploaded in Sources & setup ${tag('mod')} calculated ${tag('asm')} an input you can change ${tag('doc')} a rule or date from a policy page ${PROPOSED} the author’s proposal</div>${mistake('Reading a sample award total as DBMI’s real research volume, or a model year as an approved forecast.','Quote only Published figures. Load the department’s award list in Sources & setup; every section recalculates on it.')}</div>`;
+}
+const SECDESC={charter:'Purpose, scope, objectives and the strategy map.',inventory:'Every award and proposal, scored for value and feasibility.',funding:'F&A recovery, cap exposure, bridge funding and allocation rules.',lifecycle:'From idea to closeout: pipeline, NIH dates, burn rate, reports.',scorecard:'Measures, targets and the benefits the office must show.',risk:'Risk register, compliance rules and the 12-month calendar.',capacity:'Grants-team workload by month and the offices DBMI depends on.',roadmap:'Thirty-six months in four phases, and the review cadence.',governance:'Who decides, who does the work, and who hears what, when.',ai:'Where AI helps research administration, and the rules it must follow.',setup:'Upload the real award list; every source and data connection.',published:'Published NIH, Harvard and HMS series, and the funding forecast.'};
+
+/* ---------- 2. charter & strategy ---------- */
+function pCharter(){
+ const OBJ=[['Secure the base','Renew every large award on time and keep the federal base from falling faster than NIH overall.','Renewals submitted ≥ 9 months before end; federal share trend','#9d2235'],
+  ['Grow and diversify','Raise non-federal research funding so one sponsor cannot stall the department.','Non-federal share of sponsored total','#2f7d4f'],
+  ['Run a clean operation','No late reports, no surprise overspends, no audit findings.','On-time RPPRs and closeouts; awards inside the burn band','#2b5c8a'],
+  ['Free investigator time','Take administration off PIs so their hours go to science.','PI hours on administration (survey); proposal cycle time','#b45309']];
+ const W=900,H=300;let g='';const layers=[['Outcome','Funded, sustainably'],['Sponsors & PIs','Renewed, diversified'],['Process','Clean and fast'],['Capability','Data, people, tools']];
+ layers.forEach((l,i)=>{const y=12+i*72;g+=`<rect x="6" y="${y}" width="150" height="60" rx="8" fill="var(--soft)" stroke="var(--line)"/><text x="16" y="${y+26}" class="lab" style="fill:var(--ink)">${l[0]}</text><text x="16" y="${y+44}" style="font-size:10.5px">${E(l[1])}</text>`});
+ const nodes=[[0,['More funded research, at lower risk'],[600]],[1,['Large renewals on time','Non-federal growth'],[340,720]],[2,['Burn reviews monthly','Proposal factory','Reports never late'],[250,500,750]],[3,['One award ledger','Trained grants team','AI with guardrails','Clear decision rights'],[230,420,610,800]]];
+ const pos={};nodes.forEach(([lv,ns,xs])=>ns.forEach((n,i)=>{pos[n]=[xs[i],12+lv*72+30]}));
+ const links=[['Large renewals on time','More funded research, at lower risk'],['Non-federal growth','More funded research, at lower risk'],['Burn reviews monthly','Large renewals on time'],['Proposal factory','Large renewals on time'],['Proposal factory','Non-federal growth'],['Reports never late','Large renewals on time'],['One award ledger','Burn reviews monthly'],['One award ledger','Reports never late'],['Trained grants team','Proposal factory'],['AI with guardrails','Proposal factory'],['Clear decision rights','Burn reviews monthly']];
+ links.forEach(([a,b])=>{const p=pos[a],q=pos[b];g+=`<line x1="${p[0]}" y1="${p[1]-14}" x2="${q[0]}" y2="${q[1]+16}" stroke="var(--grey)" stroke-width="1.2" marker-end="url(#ar)"/>`});
+ Object.entries(pos).forEach(([n,[x,y]])=>{const w=Math.max(150,n.length*7.2);g+=`<rect x="${x-w/2}" y="${y-16}" width="${w}" height="32" rx="16" fill="var(--card)" stroke="var(--crim)"/><text x="${x}" y="${y+4}" text-anchor="middle" class="lab" style="fill:var(--ink);font-size:11.5px">${E(n)}</text>`});
+ return head('Charter & strategy','What the research office is for, and how it gets there','A one-page charter for research and grant management in DBMI, and the strategy map that links daily work to the outcome. Both are the author’s proposal, to agree with the Chair.')
+ +`<div class="grid g2"><div class="sec"><h3>Charter ${PROPOSED}</h3>${t2(['Field','Proposal'],[
+  ['<b>Purpose</b>','Keep DBMI’s research funded, compliant and growing, so investigators spend their time on science.'],
+  ['<b>Sponsor</b>','Chair, DBMI'],['<b>Owner</b>','Executive Director'],
+  ['<b>In scope</b>','Pre-award support, award setup, post-award financial management, effort, progress reports, closeout, renewal planning, portfolio reporting.'],
+  ['<b>Out of scope</b>','Scientific direction; institutional sign-off and negotiation, which stay with Harvard and HMS research administration.'],
+  ['<b>Budget</b>','Within the operating plan’s existing staff and the initiatives it funds; no new permanent hire assumed here.'],
+  ['<b>Success at 12 months</b>','Every award on one ledger; no late report; every large renewal on a dated plan; a monthly portfolio brief to the Chair.']])}</div>
+ <div class="sec"><h3>Four objectives ${PROPOSED}</h3>${OBJ.map(o=>`<div class="kpi" style="margin-bottom:10px;border-left:5px solid ${o[3]}"><div class="k"><span>${o[0]}</span></div><p class="small" style="margin:6px 0 2px;color:var(--ink)">${o[1]}</p><small>Measure: ${o[2]}</small></div>`).join('')}</div></div>`
+ +`<div class="sec"><h3>Strategy map</h3><p class="why">Read from the bottom: capabilities make the processes reliable, reliable processes keep sponsors and PIs funded, and that produces the outcome.</p><svg class="ch" viewBox="0 0 ${W} ${H}" role="img" aria-label="Strategy map"><defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10z" fill="var(--grey)"/></marker></defs>${g}</svg>
+ <p class="cap">Context: NIH funded 20.5% fewer competing research grants in FY2025 while applications rose 12.9% (${sc('nihfy25','NIH')}), and HMS federal revenue fell 17% in FY2026 (${sc('sos26','Crimson')}). Renewals and diversification matter more than volume of new applications.</p>
+ ${mistake('A strategy that counts applications submitted. At a 13% success rate, more applications mostly mean more PI hours lost.','Count renewals secured and dollars at risk covered; target the applications with the best odds and size.')}</div>`
+ +`<div class="sec"><h3>Where this sits in the DBMI Operating Plan</h3><p class="small">The plan sets the department’s programs and budget; this platform runs the research administration part of it. Open the <a href="https://narissa-pgm.github.io/HMS_DBMI/DBMI_Operating_Plan.html" target="_blank" rel="noopener">operating plan</a> for the grants-system decision (module 14), the project service plan (module 51), the grant lifecycle (module 56), AI/ML readiness (module 57), the communications plan (module 58) and published data and forecasts (module 59).</p></div>`;
+}
+
+/* ---------- 3. inventory & scoring ---------- */
+const MSUCC={'R01 new':0.13,'R01 renewal / resubmission':0.22,'R21 / R03 new':0.12,'K new':0.20,'T32 / training':0.30,'U24 renewal':0.45,'Foundation':0.15};
+function scoreProps(w){return PIPE.map(p=>{const fit=({'U24 renewal':5,'R01 renewal / resubmission':4,'T32 / training':4,'R01 new':3,'K new':3,'R21 / R03 new':2,'Foundation':3})[p.t]||3;
+ const odds=MSUCC[p.t]||0.13,size=Math.min(5,1+Math.log10(Math.max(1,p.dir))*1.2),stage=['Concept','Intent to submit','Budget built','Internal routing','Submitted','Scored','Award pending'].indexOf(p.st);
+ const value=(fit*w.fit+size*w.size)/(w.fit+w.size),feas=Math.min(5,1+odds*10+stage*0.25);return Object.assign({},p,{fit,odds,size,value,feas,score:value*feas,ev:p.dir*odds})}).sort((a,b)=>b.score-a.score)}
+function pInventory(){
+ const S=state.inv,P=scoreProps(S);
+ const W=900,H=360,l=50,r=20,t=16,b=40,X=v=>l+(v-1)/4*(W-l-r),Y=v=>t+(5-v)/4*(H-t-b);let g='';
+ g+=`<rect x="${X(3)}" y="${Y(5)}" width="${X(5)-X(3)}" height="${Y(3)-Y(5)}" fill="var(--green)" opacity=".07"/><text x="${X(5)-6}" y="${Y(5)+14}" text-anchor="end">pursue first</text><text x="${X(1)+6}" y="${Y(1)-6}">reconsider</text>`;
+ [1,2,3,4,5].forEach(v=>{g+=`<line x1="${X(v)}" x2="${X(v)}" y1="${t}" y2="${H-b}" stroke="var(--line)"/><line x1="${l}" x2="${W-r}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--line)"/><text x="${X(v)}" y="${H-b+16}" text-anchor="middle">${v}</text><text x="${l-8}" y="${Y(v)+4}" text-anchor="end">${v}</text>`});
+ g+=`<text x="${(l+W-r)/2}" y="${H-6}" text-anchor="middle">feasibility (odds at current success rates, stage)</text><text transform="translate(14 ${(t+H-b)/2}) rotate(-90)" text-anchor="middle">value (fit, size)</text>`;
+ P.forEach(p=>g+=`<circle cx="${X(p.feas)}" cy="${Y(p.value)}" r="${6+Math.sqrt(p.dir)/5}" fill="${p.t.startsWith('U24')?'#9d2235':p.t==='Foundation'?'#2f7d4f':'#2b5c8a'}" fill-opacity=".55" stroke="#fff"><title>${E(p.id+' · '+p.t+' · '+p.st+' · value '+p.value.toFixed(1)+', feasibility '+p.feas.toFixed(1)+', expected '+fk(p.ev)+'/yr')}</title></circle>`);
+ return head('Inventory & scoring','Everything in the portfolio, and what to pursue first','The award inventory, then every proposal scored for value and feasibility so writing support goes where it pays. Weights are adjustable.')
+ +embed(pPortfolio)
+ +`<div class="sec"><h3>Proposal scoring</h3><p class="why">${tag('smp')} proposals. Feasibility uses mechanism odds anchored on NIH’s 13.0% FY2025 rate (${sc('nihfy25','NIH')}); renewal and training odds are ${tag('asm')} assumptions.</p>
+ <div class="ctrls"><div class="ctrl"><label for="wfit">Weight on strategic fit</label><input id="wfit" type="range" min="0" max="3" step="0.5" value="${S.fit}"><output>${S.fit}</output></div><div class="ctrl"><label for="wsize">Weight on size</label><input id="wsize" type="range" min="0" max="3" step="0.5" value="${S.size}"><output>${S.size}</output></div></div>
+ <svg class="ch" viewBox="0 0 ${W} ${H}" role="img" aria-label="Proposal value versus feasibility">${g}</svg>
+ ${t2(['Rank','Proposal','Type','Stage','Value','Feasibility','Expected / yr'],P.slice(0,10).map((p,i)=>[String(i+1),p.id,E(p.t),E(p.st),p.value.toFixed(1),p.feas.toFixed(1),fk(p.ev)]))}
+ ${mistake('Giving writing support to whoever asks first.','Rank by expected value and feasibility each month; large renewals and training grants usually come first.')}</div>`;
+}
+
+/* ---------- 4. funding & allocation ---------- */
+function pFunding(){
+ const act=LEDGER.filter(a=>activeIn(a,CURFY)),FA=act.reduce((s,a)=>s+a.fa,0)/1000,S=state.al;
+ const split=[['HMS central (facilities, administration)',S.c],['DBMI department pool',S.d],['Investigator incentive',S.i]];const tot_=split.reduce((s,x)=>s+x[1],0)||1;
+ return head('Funding & allocation','Where the money comes from, what it is exposed to, and how it is allocated','F&A recovery and the cap scenario, a freeze with bridge funding, and an allocation rule for recovered F&A and bridge money. HMS rates and the HMS bridge response are published; the department split is a proposal.')
+ +embed(pExposure)
+ +`<div class="sec"><h3>Allocating recovered F&A ${PROPOSED}</h3><p class="why">How ${fm(FA)} of ${tag(LT())} F&A recovery could be shared. HMS sets the actual distribution; the sliders show what each rule means in dollars.</p>
+ <div class="ctrls">${[['alc','HMS central',S.c],['ald','DBMI pool',S.d],['ali','Investigator incentive',S.i]].map(x=>`<div class="ctrl"><label for="${x[0]}">${x[1]} (share)</label><input id="${x[0]}" type="range" min="0" max="100" step="5" value="${x[2]}"><output>${x[2]}</output></div>`).join('')}</div>
+ ${hbars(split.map((x,i)=>[x[0],FA*x[1]/tot_,['#4a6272','#9d2235','#2f7d4f'][i]]),{fmt:v=>fm(v),label:'Allocation of F&A recovery',l:260,w:720})}
+ <p class="cap">${tag('asm')} Shares are normalized to 100%. A department pool is what pays for bridge funding, renewal writing support and pilot data; without one, every bridge decision goes to the Dean.</p></div>`
+ +`<div class="sec"><h3>Bridge allocation rule ${PROPOSED}</h3>${t2(['Priority','Who is protected','Rule'],[
+  ['1','Trainees and students paid on the award','Cover in full until restoration or the end of the appointment'],
+  ['2','Staff on the award, by months of notice owed','Cover at the HMS average of 74% ('+sc('sos25','Crimson, Sep 2025')+')'],
+  ['3','Investigator salary and supplies','Lab reserves first, then the department pool'],
+  ['4','New commitments on the award','Paused until restored']])}${mistake('Deciding bridge funding award by award, under pressure, after the freeze.','Agree the priority order with the Chair in advance and publish it to PIs, so a freeze triggers a rule, not a negotiation.')}</div>`;
+}
+
+/* ---------- 5. grant lifecycle ---------- */
+function pLifecycle(){
+ const ST=[['Idea','PI','Fit, sponsor, mechanism'],['Proposal','PI · grants manager','Budget, justification, DMS plan'],['Submit','HMS / Harvard research admin','Institutional review and submission'],['Review','Sponsor','Score, council, just-in-time'],['Award','Research admin','Terms accepted, account set up'],['Manage','Grants manager · PI','Monthly burn review, effort'],['Report','PI · grants manager','RPPR 45–60 days before each budget year'],['Closeout','Grants manager','Final reports within 120 days']];
+ const W=980,H=210,n=ST.length,w=(W-20)/n;let g='';
+ ST.forEach((s,i)=>{const x=10+i*w,c=i<3?'#2b5c8a':i<5?'#6d28d9':i<7?'#9d2235':'#2f7d4f';g+=`<path d="M${x+2} 30 h${w-18} l14 26 l-14 26 h-${w-18} l14 -26z" fill="${c}" opacity="${.78+.03*i}"><title>${E(s[0]+' · '+s[1]+' · '+s[2])}</title></path><text x="${x+w/2+4}" y="61" text-anchor="middle" style="fill:#fff;font-weight:700;font-size:12.5px">${E(s[0])}</text>`;
+  wrapT(s[1],16).forEach((t,j)=>g+=`<text x="${x+8}" y="${112+j*14}" style="font-size:11px;font-weight:600;fill:var(--ink)">${E(t)}</text>`);wrapT(s[2],18).forEach((t,j)=>g+=`<text x="${x+8}" y="${150+j*14}" style="font-size:10.5px">${E(t)}</text>`)});
+ g+=`<text x="10" y="18" class="lab" style="fill:var(--crim)">STAGE</text><text x="10" y="100" class="lab" style="fill:var(--crim)">WHO</text><text x="10" y="138" class="lab" style="fill:var(--crim)">WHAT HAPPENS</text>`;
+ return head('Grant lifecycle','From idea to closeout, with the rules at each stage','Eight stages and their owners, then the live pipeline and the post-award view. NIH dates and reporting rules are published; proposals and awards are a sample.')
+ +`<div class="sec"><h3>The lifecycle</h3><svg class="ch" viewBox="0 0 ${W} ${H}" role="img" aria-label="Grant lifecycle stages">${g}</svg><p class="cap">${tag('doc')} Report and closeout timing from ${sc('rppr','NIH RPPR')} and ${sc('close','NIH GPS 8.6')}; DMS plan from ${sc('dms','NOT-OD-21-013')}. Institutional submission sits with HMS and Harvard research administration.</p></div>`
+ +`<h3 style="margin:22px 0 10px;font-size:20px">Pre-award: the pipeline</h3>`+embed(pPipeline)
+ +`<h3 style="margin:22px 0 10px;font-size:20px">Post-award: spending, reports and closeout</h3>`+embed(pPost);
+}
+function wrapT(s,n){const w=String(s).split(' '),o=[];let c='';w.forEach(x=>{if((c+' '+x).trim().length>n){if(c)o.push(c);c=x}else c=(c+' '+x).trim()});if(c)o.push(c);return o.slice(0,3)}
+
+/* ---------- 6. benefits & scorecard ---------- */
+function series(seed,start,end,noise){const r=rng(seed);return Array.from({length:8},(_,i)=>+(start+(end-start)*i/7+(r()-.5)*noise).toFixed(1))}
+function pScorecard(){
+ const Q=['Q1','Q2','Q3','Q4','Q5','Q6','Q7','Q8'];
+ const K=[['Renewals submitted ≥ 9 months before end','%',series(1,55,85,8),90,'up','Secure the base'],['Progress reports on time','%',series(2,82,97,4),100,'up','Run a clean operation'],['Awards inside the ±15-point burn band','%',series(3,68,86,6),90,'up','Run a clean operation'],['Closeouts within 120 days','%',series(4,78,96,5),100,'up','Run a clean operation'],['Proposal cycle time (intent → submit), weeks','wk',series(5,9,6,1),6,'down','Free investigator time'],['Non-federal share of sponsored total','%',series(6,7,11,1.5),15,'up','Grow and diversify'],['F&A recovery rate on federal MTDC','%',Array(8).fill(69),69,'flat','Secure the base'],['Effort certified by the deadline','%',series(8,80,95,4),100,'up','Run a clean operation']];
+ const spark=v=>{const mx=Math.max(...v),mn=Math.min(...v),W=120,H=30;return `<svg viewBox="0 0 ${W} ${H}" width="120" height="30" aria-hidden="true"><path d="M${v.map((x,i)=>(i*(W-4)/7+2).toFixed(1)+' '+(H-3-(x-mn)/((mx-mn)||1)*(H-6)).toFixed(1)).join('L')}" fill="none" stroke="var(--crim)" stroke-width="2"/></svg>`};
+ const BEN=[['Hours returned to PIs','Grants team drafts budgets, tracks reports and reconciles accounts','PI time survey, twice a year','Hours per PI per month'],['Renewal dollars protected','Dated renewal plans for every large award','Award ledger','Annual value renewed on schedule'],['Late-report penalties avoided','RPPR and closeout tracker','NIH eRA status','Reports overdue (target 0)'],['Faster bridge decisions','Pre-agreed bridge rule','Decision log','Days from freeze notice to decision'],['Better proposals','Scored pipeline and writing support for the top ranks','Score and success history','Success rate vs the NIH rate']];
+ return head('Benefits & scorecard','Is the research office making a difference?','Eight measures tied to the four objectives, each with a target, and the benefits register that says how each benefit is evidenced. Values are a sample until the ledger is live; the F&A rate is published.')
+ +`<div class="sec"><h3>Scorecard</h3><p class="why">${tag('smp')} eight quarters of illustrative values. Targets are ${PROPOSED}.</p>${t2(['Measure','Objective','Trend','Latest','Target','Status'],K.map(k=>{const v=k[2][7],ok=k[4]==='down'?v<=k[3]:k[4]==='flat'?true:v>=k[3]*0.97,warn=!ok&&(k[4]==='down'?v<=k[3]*1.3:v>=k[3]*0.85);return [E(k[0])+(k[0].startsWith('F&A')?' '+tag('pub'):''),E(k[5]),spark(k[2]),v+(k[1]==='%'?'%':' '+k[1]),k[3]+(k[1]==='%'?'%':' '+k[1]),ok?pill('On target','p-ok'):warn?pill('Watch','p-warn'):pill('Off target','p-bad')]}))}
+ <p class="cap">F&A rate: HMS on-campus research 69.0% through June 2028 (${sc('fa','Harvard OSP')}). A cap would show here first.</p></div>`
+ +`<div class="sec"><h3>Benefits register ${PROPOSED}</h3>${t2(['Benefit','What delivers it','Evidence','Measure'],BEN.map(b=>b.map(E)))}${mistake('Reporting activity (emails sent, meetings held) as benefit.','Tie every benefit to a measure someone outside the office can check, and report it to the Chair each quarter.')}</div>`;
+}
+
+/* ---------- 7. risk & compliance ---------- */
+const RISKS=[['Funding cliff: large coordination awards end together','Executive Director',4,5,'Renewal not drafted 9 months before end','Dated renewal plan for each award over $1M a year','smp'],
+ ['15% indirect-cost cap returns','Chair · Executive Director',2,5,'FY2027 appropriations drop the rider','Model the loss (Funding & allocation); prepare a departmental reserve rule','pub'],
+ ['Federal freeze or termination recurs','Chair',3,4,'Stop-work or termination notice','Pre-agreed bridge rule; list of people on each award','pub'],
+ ['NIH success rate stays near 13%','Executive Director',4,3,'Next NIH data release','Score proposals; concentrate support on the best odds','pub'],
+ ['Late progress reports or closeout','Grants team lead',2,4,'Any RPPR inside 14 days without a draft','Tracker with 45/60/120-day rules; weekly huddle','doc'],
+ ['Investigator hits the six-application limit','Grants team lead',2,2,'A PI at five submissions in a calendar year','Count per PI in the pipeline','doc'],
+ ['AI-drafted application is not considered','Executive Director',1,3,'AI used beyond editorial help','Written AI guidance; editorial use only','doc'],
+ ['Grants-team overload at deadline peaks','Executive Director',3,3,'Load above capacity two months running','Capacity plan; stagger internal deadlines','smp'],
+ ['Effort certification overdue','Grants team lead',2,3,'Any certification past due','Monthly reminder; escalation to the Chair at 30 days','smp'],
+ ['Data sharing or public access lapse','PI · grants team',2,3,'Paper accepted without a PMC plan','Checklist at acceptance and at each RPPR','doc']];
+function pRisk(){
+ const W=520,H=420,l=60,b=50,c=(W-l-10)/5,rr=(H-b-10)/5;let g='';
+ for(let L=1;L<=5;L++)for(let I=1;I<=5;I++){const sc_=L*I,x=l+(I-1)*c,y=10+(5-L)*rr;g+=`<rect x="${x}" y="${y}" width="${c-2}" height="${rr-2}" rx="4" fill="${sc_>=15?'#9d2235':sc_>=8?'#b45309':'#2f7d4f'}" opacity="${sc_>=15?.22:sc_>=8?.18:.12}"/>`}
+ RISKS.forEach((k,i)=>{const x=l+(k[3]-1)*c+c/2+((i%3)-1)*14,y=10+(5-k[2])*rr+rr/2+(Math.floor(i/3)%2?10:-6);g+=`<circle cx="${x}" cy="${y}" r="11" fill="var(--card)" stroke="var(--crim)"/><text x="${x}" y="${y+4}" text-anchor="middle" class="lab" style="fill:var(--ink)">${i+1}</text><title>${E((i+1)+'. '+k[0])}</title>`});
+ [1,2,3,4,5].forEach(v=>{g+=`<text x="${l+(v-1)*c+c/2}" y="${H-b+18}" text-anchor="middle">${v}</text><text x="${l-10}" y="${10+(5-v)*rr+rr/2+4}" text-anchor="end">${v}</text>`});
+ g+=`<text x="${l+(W-l)/2}" y="${H-12}" text-anchor="middle">impact</text><text transform="translate(16 ${(H-b)/2}) rotate(-90)" text-anchor="middle">likelihood</text>`;
+ return head('Risk & compliance','What could go wrong, who owns it, and what is due','The research risk register on a heat map, then the compliance rules and the twelve-month calendar. Policy risks cite their source; likelihood and impact are the author’s ratings.')
+ +`<div class="grid g2"><div class="sec"><h3>Heat map</h3><p class="why">Numbers match the register. Ratings are ${PROPOSED}.</p><svg class="ch" viewBox="0 0 ${W} ${H}" role="img" aria-label="Risk heat map">${g}</svg></div>
+ <div class="sec"><h3>Policy anchors</h3><ul class="list small"><li>15% cap: enjoined; FY2027 budget proposes it again (${sc('cap','status guide')}).</li><li>Freeze: about $230M of HMS grants frozen in 2025; restored by a September 2025 ruling, under appeal (${sc('sos25','Crimson')}; ${sc('litig','Crimson')}).</li><li>Success rate: 13.0% in FY2025 (${sc('nihfy25','NIH')}).</li><li>Six applications per PI a year; AI-drafted applications not considered (${sc('ailimit','summary of NOT-OD-25-132')}).</li><li>Reviewers may not use generative AI (${sc('peerai','NOT-OD-23-149')}).</li></ul></div></div>`
+ +`<div class="sec"><h3>Risk register</h3>${t2(['#','Risk','Owner','L','I','Score','Trigger','Response','Basis'],RISKS.map((k,i)=>[String(i+1),E(k[0]),E(k[1]),k[2],k[3],pill(String(k[2]*k[3]),k[2]*k[3]>=15?'p-bad':k[2]*k[3]>=8?'p-warn':'p-ok'),E(k[4]),E(k[5]),tag(k[6])]))}</div>`
+ +embed(pCompliance);
+}
+
+/* ---------- 8. capacity & dependency ---------- */
+function pCapacity(){
+ const S=state.cap,months=[];for(let i=0;i<12;i++)months.push(new Date(TODAY.getFullYear(),TODAY.getMonth()+i,1));
+ const act=LEDGER.filter(a=>activeIn(a,CURFY));
+ const load=months.map(m=>{let h=act.length*S.recon;const key=m.getFullYear()*12+m.getMonth();
+  act.filter(a=>a.fed).forEach(a=>{const d=rpprDue(a);if(d.getFullYear()*12+d.getMonth()===key)h+=S.rppr});
+  DUE.forEach(([n,md])=>md.forEach(([mm])=>{if(mm-1===m.getMonth())h+=S.prop*(n.startsWith('R01')?2:1)}));
+  act.filter(a=>a.end===CURFY).forEach(a=>{if(m.getMonth()===9&&m.getFullYear()===CURFY)h+=S.close});
+  return h});
+ const cap=S.gm*S.hrs,over=load.filter(v=>v>cap).length;
+ const groups=months.map((m,i)=>({l:m.toLocaleDateString('en-US',{month:'short'}),parts:[['Load',load[i],load[i]>cap?'#9d2235':'#2b5c8a']]}));
+ const DEP=[['HMS and Harvard research administration','Institutional review, submission, award acceptance, subawards','Late routing misses a sponsor deadline','Internal deadline 5 business days before the sponsor’s'],['HMS Finance','Account setup, monthly ledger, year-end close','Late setup delays spending and hiring','Setup request on notice of award'],['Investigators and labs','Science, budgets, effort, progress text','A late draft becomes a late report','Calendar of drafts 30 days ahead'],['Faculty Affairs','Appointments that make a PI eligible; effort for new hires','A pending appointment blocks a submission','Check eligibility at intent to submit (Faculty Affairs platform)'],['HMS IT','Secure tools for data and AI (Level 3 limit)','No approved tool for a task','Use the HMS AI tools within their data levels'],['Sponsors (NIH institutes, foundations)','Funding decisions, terms, prior approvals','Unanticipated terms or delays','Program-officer contact log'],['Consortium partners','Subaward deliverables and invoices','A partner’s delay stalls a coordination center','Quarterly subaward review']];
+ const W=980,H=330,cx=490,cy=165;let g='';
+ DEP.forEach((d,i)=>{const a=-Math.PI/2+i*2*Math.PI/DEP.length,x=cx+Math.cos(a)*330,y=cy+Math.sin(a)*125;g+=`<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="var(--grey)"/><rect x="${x-135}" y="${y-18}" width="270" height="36" rx="18" fill="var(--card)" stroke="var(--blue)"/><text x="${x}" y="${y+4}" text-anchor="middle" class="lab" style="fill:var(--ink);font-size:11px">${E(d[0].length>42?d[0].slice(0,40)+'…':d[0])}</text><title>${E(d[0]+' · '+d[1])}</title>`});
+ g+=`<circle cx="${cx}" cy="${cy}" r="54" fill="var(--crim)"/><text x="${cx}" y="${cy-2}" text-anchor="middle" style="fill:#fff;font-weight:700;font-size:13px">DBMI research</text><text x="${cx}" y="${cy+15}" text-anchor="middle" style="fill:#fff;font-size:11px">administration</text>`;
+ return head('Capacity & dependency','Can the grants team carry the load, and who do we depend on?','A workload model by month, driven by the NIH cycles and the award ledger, against team capacity; then the offices DBMI depends on and what happens when each is late. Hours per task and team size are assumptions you can change.')
+ +`<div class="sec"><h3>Workload against capacity</h3><div class="ctrls">${[['cgm','Grants managers',S.gm,1,15,1],['chrs','Hours each, per month',S.hrs,60,160,5],['cprop','Hours per proposal cycle',S.prop,10,120,5],['crppr','Hours per RPPR',S.rppr,2,40,1],['crec','Hours per award per month (reconciliation)',S.recon,0.5,8,0.5]].map(x=>`<div class="ctrl"><label for="${x[0]}">${x[1]}</label><input id="${x[0]}" type="range" min="${x[3]}" max="${x[4]}" step="${x[5]}" value="${x[2]}"><output>${x[2]}</output></div>`).join('')}</div>
+ <div class="grid g3">${kpi('Monthly capacity',Math.round(cap)+' h','asm',S.gm+' × '+S.hrs+' hours')}${kpi('Peak month load',Math.round(Math.max(...load))+' h','mod','proposal cycles plus reports')}${kpi('Months over capacity',String(over),'mod','of the next twelve')}</div>
+ ${bars(groups,{fmt:v=>Math.round(v)+'h',label:'Workload by month',max:Math.max(cap,...load)*1.1,ref:cap,refLab:'capacity'})}<p class="cap">${tag('mod')} Crimson months exceed capacity (${Math.round(cap)} h). Peaks follow NIH’s February, June and October cycles (${sc('due','NIH due dates')}). All hour figures are ${tag('asm')} planning inputs to set with the team.</p>
+ ${mistake('Staffing to the average month, then missing deadlines in the peak months.','Plan to the peak: stagger internal deadlines, borrow capacity across teams, and move non-deadline work out of February, June and October.')}</div>`
+ +`<div class="sec"><h3>Dependency map</h3><svg class="ch" viewBox="0 0 ${W} ${H}" role="img" aria-label="Dependency map">${g}</svg>${t2(['Depends on','What they provide','If late','Safeguard'],DEP.map(d=>d.map(E)))}</div>`;
+}
+
+/* ---------- 9. roadmap & reviews ---------- */
+function pRoadmap(){
+ const PH=[['Listen and baseline',0,3,'#4a6272',['Meet every PI and HMS research administration','Build one award ledger','Baseline the scorecard']],['Stabilize',3,9,'#9d2235',['Renewal plans for awards over $1M a year','RPPR and closeout tracker live','Bridge rule agreed with the Chair']],['Systematize',9,18,'#2b5c8a',['Monthly portfolio brief','Proposal scoring in use','AI pilot at data Level 3']],['Scale and predict',18,36,'#2f7d4f',['Renewal-risk model on DBMI history','Non-federal growth plan','Annual review of the charter']]];
+ const W=980,H=60+PH.length*58,l=170,r=20,X=m=>l+m/36*(W-l-r);let g='';
+ [0,6,12,18,24,30,36].forEach(m=>g+=`<line x1="${X(m)}" x2="${X(m)}" y1="20" y2="${H-10}" stroke="var(--line)"/><text x="${X(m)}" y="14" text-anchor="middle">M${m}</text>`);
+ PH.forEach((p,i)=>{const y=30+i*58;g+=`<text x="${l-10}" y="${y+22}" text-anchor="end" class="lab" style="fill:var(--ink)">${E(p[0])}</text><rect x="${X(p[1])}" y="${y+6}" width="${X(p[2])-X(p[1])}" height="26" rx="6" fill="${p[3]}" opacity=".85"><title>${E(p[0]+': '+p[4].join('; '))}</title></rect><text x="${X(p[1])+8}" y="${y+24}" style="fill:#fff;font-size:11px;font-weight:600">${E(p[4][0])}</text>`});
+ return head('Roadmap & reviews','Thirty-six months, and how progress is reviewed','Four phases from baseline to prediction, aligned to the DBMI Operating Plan’s three horizons, and the review cadence that keeps them honest. All dates are a proposal.')
+ +`<div class="sec"><h3>Roadmap ${PROPOSED}</h3><svg class="ch" viewBox="0 0 ${W} ${H}" role="img" aria-label="Thirty-six month roadmap">${g}</svg>${t2(['Phase','Months','Deliverables'],PH.map(p=>['<b>'+E(p[0])+'</b>','M'+p[1]+'–M'+p[2],E(p[4].join(' · '))]))}</div>`
+ +`<div class="sec"><h3>Review cadence ${PROPOSED}</h3>${t2(['Review','When','Who','Looks at','Decides'],[
+  ['Weekly huddle','Every Monday','Grants team','Exceptions, deadlines inside 30 days','Who does what this week'],
+  ['Monthly portfolio review','First week of each month','Executive Director, grants lead, finance','Burn band, reports, pipeline scores','Re-budgets, writing support, escalations'],
+  ['Quarterly renewal review','Each quarter','Chair, Executive Director, PIs with renewals','Awards ending in the next 18 months','Which renewals get central support'],
+  ['Annual charter review','Each July','Chair, Executive Director','Scorecard year, benefits, roadmap','Targets and priorities for the year'],
+  ['Gate review','At each phase end','Chair','Phase deliverables met?','Continue, change or stop']].map(r=>r.map(E)))}${mistake('Reviews that report status and decide nothing.','Every review ends with named decisions and owners, recorded in the decision log.')}</div>`;
+}
+
+/* ---------- 10. governance & communications ---------- */
+function pGovernance(){
+ const roles=['PI','Grants manager','Executive Director','Chair','HMS / Harvard research admin','HMS Finance'];
+ const ACT=[['Find funding and fit',['A','R','C','I','',''] ],['Write the science',['A/R','C','','','','']],['Build the budget',['A','R','C','','C','']],['Institutional review and submission',['C','R','I','','A','']],['Award acceptance and setup',['I','R','I','','A','C']],['Monthly burn review',['C','R','A','','','C']],['Effort certification',['R','R','A','','','']],['Progress reports',['A/R','R','I','','C','']],['Closeout',['C','R','A','','C','C']],['Renewal plan',['R','C','A','I','','']],['Bridge decision',['C','C','R','A','','C']]];
+ const cls={A:'background:#152430;color:#fff',R:'background:#9d2235;color:#fff','A/R':'background:#7d1a2a;color:#fff',C:'background:#e7f4ec;color:#15803d',I:'border:1px solid var(--line)'};
+ const COMM=[['Chair','Portfolio brief: money, exceptions, decisions','Monthly, one page','Executive Director'],['Investigators','Award statement and deadlines','Monthly statement; weekly deadline digest','Grants managers'],['Grants team','Exceptions and assignments','Weekly huddle','Grants lead'],['HMS research administration','Pipeline outlook and large submissions','Quarterly meeting','Executive Director'],['Faculty and staff','Funding outlook and what it means for hiring','Each semester, town hall','Chair with Executive Director'],['Dean’s office','Exposure and bridge position','Quarterly, or on any freeze notice','Chair']];
+ return head('Governance & communications','Who decides, who does the work, and who hears what','A RACI for research administration and a communications plan by audience. Both are proposals; institutional roles follow Harvard and HMS research administration.')
+ +`<div class="sec"><h3>RACI ${PROPOSED}</h3><p class="why">R does the work · A owns the outcome · C is consulted · I is informed.</p><div class="tw"><table><thead><tr><th>Activity</th>${roles.map(r=>`<th style="text-align:center">${E(r)}</th>`).join('')}</tr></thead><tbody>${ACT.map(a=>`<tr><td>${E(a[0])}</td>${a[1].map(v=>`<td style="text-align:center">${v?`<span class="pill" style="${cls[v]}">${v}</span>`:''}</td>`).join('')}</tr>`).join('')}</tbody></table></div></div>`
+ +`<div class="sec"><h3>Communications plan ${PROPOSED}</h3>${t2(['Audience','Message','Channel and cadence','Owner'],COMM.map(c=>c.map(E)))}${mistake('Telling investigators about a freeze after the Dean’s office, or through rumor.','Use the plan: the Chair hears first, investigators the same day with what it means for their award, and the next town hall explains the rule.')}</div>`;
+}
+
+/* ---------- 11. AI/ML readiness ---------- */
+function pAI(){
+ const D=[['Data',2,'One clean award ledger with stable IDs'],['Policy and guardrails',3,'Written guidance aligned with NIH and HMS rules'],['People and skills',2,'Grants team trained on the HMS tools'],['Tools and security',4,'HMS tools approved up to Level 3 data'],['Use-case value',3,'Clear time savings in drafting and tracking']];
+ const W=420,H=380,cx=210,cy=190,R0=140;let g='';
+ [1,2,3,4,5].forEach(v=>{g+=`<polygon points="${D.map((d,i)=>{const a=-Math.PI/2+i*2*Math.PI/D.length;return (cx+Math.cos(a)*R0*v/5).toFixed(1)+','+(cy+Math.sin(a)*R0*v/5).toFixed(1)}).join(' ')}" fill="none" stroke="var(--line)"/>`});
+ D.forEach((d,i)=>{const a=-Math.PI/2+i*2*Math.PI/D.length;g+=`<line x1="${cx}" y1="${cy}" x2="${cx+Math.cos(a)*R0}" y2="${cy+Math.sin(a)*R0}" stroke="var(--line)"/><text x="${cx+Math.cos(a)*(R0+22)}" y="${cy+Math.sin(a)*(R0+22)+4}" text-anchor="middle" class="lab" style="font-size:11px">${E(d[0])}</text>`});
+ g+=`<polygon points="${D.map((d,i)=>{const a=-Math.PI/2+i*2*Math.PI/D.length;return (cx+Math.cos(a)*R0*d[1]/5).toFixed(1)+','+(cy+Math.sin(a)*R0*d[1]/5).toFixed(1)}).join(' ')}" fill="var(--crim)" fill-opacity=".22" stroke="var(--crim)" stroke-width="2"/>`;
+ const UC=[['Deadline digest and reminders','High','Ready','Level 2','Drafts only; a person sends'],['First draft of budget justifications','High','Pilot','Level 3','Editorial help only; NIH will not consider applications substantially developed by AI'],['Award terms extraction from notices','Medium','Pilot','Level 3','Human check of every extracted term'],['Burn-rate anomaly detection','Medium','Needs data','Level 3','Flags for review; no automatic action'],['Renewal-risk score (ML)','High','Needs data','Level 3','Advisory only; trained on DBMI history; reviewed yearly'],['Reviewing other investigators’ applications','—','Never','—','Prohibited for NIH peer reviewers']];
+ return head('AI/ML readiness','Where AI helps research administration, and the rules it must follow','A readiness assessment across five dimensions, the use cases ranked by value and readiness, and the guardrails from NIH and HMS policy. Scores are the author’s assessment; the rules are published.')
+ +`<div class="grid g2"><div class="sec"><h3>Readiness ${PROPOSED}</h3><p class="why">1 = not started, 5 = in routine use.</p><svg class="ch" viewBox="0 0 ${W} ${H}" role="img" aria-label="AI readiness radar">${g}</svg></div>
+ <div class="sec"><h3>What each score rests on</h3>${t2(['Dimension','Score','What would raise it'],D.map(d=>[E(d[0]),String(d[1]),E(d[2])]))}</div></div>`
+ +`<div class="sec"><h3>Use cases</h3>${t2(['Use case','Value','Readiness','Max data level','Guardrail'],UC.map(u=>[E(u[0]),E(u[1]),pill(u[2],u[2]==='Ready'?'p-ok':u[2]==='Never'?'p-bad':'p-warn'),E(u[3]),E(u[4])]))}</div>`
+ +`<div class="sec"><h3>Rules that apply</h3><ul class="list small">
+  <li>NIH will not consider applications substantially developed by AI, and limits each PI to six applications a calendar year (${sc('ailimit','summary of NOT-OD-25-132')}).</li>
+  <li>NIH peer reviewers may not use generative AI to analyze or critique applications (${sc('peerai','NOT-OD-23-149')}).</li>
+  <li>HMS IT offers Claude, ChatGPT Edu and Copilot Premium to eligible Quad-based employees after training; use them with Level 3 data and below, never Level 4 or 5; meeting assistants only up to Level 2 (${sc('hmsai','HMS IT')}).</li>
+  <li>Frame each use case with the NIST AI Risk Management Framework: govern, map, measure, manage (${sc('nist','NIST AI 100-1')}).</li></ul>
+ ${mistake('Pasting award notices or application text into a personal AI account.','Use only the HMS-provided tools, within their data levels, with a person checking every output before it leaves the office.')}</div>`;
+}
+
+/* ---------- 12. sources & setup ---------- */
+function pSetup(){
+ const isU=LT()==='usr';
+ return head('Sources & setup','Load the real award list, and see every source','Upload the department’s award list as a CSV and every section recalculates on it. It stays in this browser; nothing is sent anywhere. Below are the data connections a live version would use, and every citation.')
+ +`<div class="sec"><h3>Load the award list</h3><p class="why">${isU?tag('usr')+' Your list is loaded ('+LEDGER.length+' awards).':tag('smp')+' The sample ledger is loaded.'}</p>
+ <div class="ctrls"><div class="ctrl"><label for="csvin">CSV file</label><input id="csvin" type="file" accept=".csv,text/csv"></div><button class="btn" type="button" data-tpl>Download the template</button>${isU?'<button class="btn" type="button" data-resetled>Return to the sample</button>':''}</div>
+ <p class="small">Columns: <code>id, mechanism_code, sponsor, federal (Y/N), start_fy, end_fy, direct_per_year_k</code>, and optionally <code>fa_rate</code> (default 0.69 federal, 0.15 otherwise), <code>investigator_code</code>, <code>spent_share</code>, <code>budget_start_month</code>, <code>snap (Y/N)</code>. Mechanism codes: ${Object.keys(MECH).join(', ')}.</p>
+ <p class="small muted">Use coded investigators, not names. The file is read in this browser and kept only in its local storage.</p><div id="csvmsg" class="small"></div></div>`
+ +`<div class="sec"><h3>Data connections for a live version</h3>${t2(['Source','What it would supply','Replaces'],[
+  ['NIH RePORTER (public)','NIH awards by department, mechanism and end date','The sample award inventory, for NIH awards'],
+  ['Harvard grants management system','Every award, budget period and subaward','The whole ledger'],
+  ['Harvard financial system','Monthly expenses by account','Spent share and burn rate'],
+  ['Effort reporting','Certification status by person and period','Effort status'],
+  ['eRA Commons status','RPPR and closeout status','Report tracker'],
+  ['Faculty Affairs platform','Appointment status and PI eligibility','Eligibility checks at intent to submit']].map(r=>r.map(E)))}</div>`
+ +embed(pSources);
+}
+
+/* ---------- 13. published data & forecast ---------- */
+function pPublished(){
+ const nih=bars([{l:'FY2024',parts:[['RPG success rate',18.5,'#94a3b8']]},{l:'FY2025',parts:[['RPG success rate',13.0,'#9d2235']]}],{fmt:v=>v.toFixed(1)+'%',total:true,label:'NIH RPG success rate',w:340,h:220});
+ const awards=bars([{l:'FY2024',parts:[['Competing RPG awards',10265,'#94a3b8']]},{l:'FY2025',parts:[['Competing RPG awards',8161,'#9d2235']]}],{fmt:v=>Math.round(v).toLocaleString(),total:true,label:'NIH competing research project grant awards',w:340,h:220});
+ const harv=bars([{l:'FY2025',parts:[['Federal sponsored revenue',629,'#94a3b8']]},{l:'FY2026',parts:[['Federal sponsored revenue',506,'#9d2235']]}],{fmt:v=>'$'+Math.round(v)+'M',total:true,label:'Harvard federal sponsored revenue',w:340,h:220});
+ const hms26=251*0.83,S=state.pub,yrs=['FY24','FY25','FY26','FY27','FY28','FY29','FY30'];
+ const path=g=>[230,251,+hms26.toFixed(0)].concat([1,2,3,4].map(k=>+(hms26*Math.pow(1+g,k)).toFixed(0)));
+ const hmsCh=lines(yrs,[{n:'Recovery +5%',c:'#2f7d4f',v:[null,null,null].concat(path(0.05).slice(3)).map((v,i)=>i===2?+hms26.toFixed(0):v),dash:true},{n:'Flat',c:'#2b5c8a',v:[null,null,null].concat(path(0).slice(3)).map((v,i)=>i===2?+hms26.toFixed(0):v),dash:true},{n:'Pressure −5%',c:'#b45309',v:[null,null,null].concat(path(-0.05).slice(3)).map((v,i)=>i===2?+hms26.toFixed(0):v),dash:true},{n:'Published / derived',c:'#9d2235',v:[230,251,+hms26.toFixed(0),null,null,null,null],nolab:true}],{fmt:v=>'$'+Math.round(v)+'M',label:'HMS federal grant revenue, published points and scenarios',split:2,min:0});
+ return head('Published data & forecast','What the public numbers say, and where the forecast goes','NIH, Harvard and HMS series as published, an HMS federal revenue path built from them, and the department funding forecast. Every published point links to its source; derived and model values are labeled.')
+ +`<div class="grid g3"><div class="sec"><h3>NIH success rate</h3>${nih}<p class="cap">${tag('pub')} ${sc('nihfy25','NIH, Mar 2026')}. Applications rose 12.9% to 62,592.</p></div><div class="sec"><h3>NIH competing awards</h3>${awards}<p class="cap">${tag('pub')} −20.5%; average award $675,426 (+8.9%). NIH says more awards were forward funded.</p></div><div class="sec"><h3>Harvard federal sponsored revenue</h3>${harv}<p class="cap">${tag('pub')} −19.5% (${sc('hufy26','Harvard, Oct 2026')}). University-wide, not HMS.</p></div></div>`
+ +`<div class="sec"><h3>HMS federal grant revenue: published points and three paths</h3><p class="why">FY2024 “more than $230M” and the FY2025 projection of $251M are published (${sc('sos25','Crimson, Sep 2025')}). FY2026 applies the published −17% (${sc('sos26','Crimson, Sep 2026')}) to the FY2025 projection, so it is ${tag('mod')} derived. Solid crimson: published and derived points. The three dashed paths are scenarios, not forecasts.</p>${hmsCh}
+ <div class="grid g4" style="margin-top:12px">${kpi('FY2024','>$230M','pub','HMS federal grants')}${kpi('FY2025 projection','$251M','pub','as stated in Sep 2025')}${kpi('FY2026, derived','≈$'+Math.round(hms26)+'M','mod','$251M × (1 − 17%)')}${kpi('HMS + affiliates, FY25','$2.51B','pub','federal grant spending ('+sc('hmsnum','HMS by the Numbers')+')')}</div></div>`
+ +`<h3 style="margin:22px 0 10px;font-size:20px">Department funding forecast</h3>`+embed(pForecast);
+}
+
+/* ---------- user ledger (Sources & setup) ---------- */
+function LT(){return USERLED?'usr':'smp'}
+function parseCSV(t){const rows=[];let row=[],f='',q=false;for(let i=0;i<t.length;i++){const c=t[i];if(q){if(c==='"'){if(t[i+1]==='"'){f+='"';i++}else q=false}else f+=c}else if(c==='"')q=true;else if(c===','){row.push(f);f=''}else if(c==='\n'||c==='\r'){if(c==='\r'&&t[i+1]==='\n')i++;row.push(f);f='';if(row.some(x=>x!==''))rows.push(row);row=[]}else f+=c}row.push(f);if(row.some(x=>x!==''))rows.push(row);return rows}
+function ledgerFromRows(rows){
+ const h=rows[0].map(x=>x.trim().toLowerCase()),ix=k=>h.indexOf(k),need=['id','mechanism_code','sponsor','federal','start_fy','end_fy','direct_per_year_k'],miss=need.filter(k=>ix(k)<0);
+ if(miss.length)throw new Error('Missing columns: '+miss.join(', '));
+ const out=[];rows.slice(1).forEach((r,n)=>{const g=k=>ix(k)>=0?String(r[ix(k)]||'').trim():'';const m=g('mechanism_code').toUpperCase();const M=MECH[m]||MECH.R01;const fed=/^y|true|1/i.test(g('federal'));const sy=parseInt(g('start_fy'),10),end=parseInt(g('end_fy'),10),dir=parseFloat(g('direct_per_year_k'));
+  if(!isFinite(sy)||!isFinite(end)||!isFinite(dir))throw new Error('Row '+(n+2)+': start_fy, end_fy and direct_per_year_k must be numbers');
+  const faRate=g('fa_rate')?parseFloat(g('fa_rate')):(fed?0.69:0.15),sm=parseInt(g('budget_start_month'),10)||7;
+  const elapsed=Math.max(0.04,Math.min(1,(((TODAY.getMonth()+1-sm)+12)%12+TODAY.getDate()/30)/12));
+  const spent=g('spent_share')?parseFloat(g('spent_share')):elapsed;
+  out.push({id:g('id')||('U-'+(n+1)),m:MECH[m]?m:'R01',mech:M.n,sp:g('sponsor')||'Sponsor',fed,ren:M.ren,sy,end,dur:end-sy+1,dir,faRate,fa:Math.round(dir*0.88*faRate),role:'PI',pi:g('investigator_code')||'PI-??',spent,elapsed,snap:/^y/i.test(g('snap')),smonth:sm,effort:'Certified',nce:end===CURFY&&spent<elapsed-0.12})});
+ if(!out.length)throw new Error('No award rows found');return out;
+}
+let USERLED=false;
+(function(){const u=LS.get('ledger',null);if(Array.isArray(u)&&u.length){LEDGER=u;USERLED=true}})();
+
+
 /* ---------------- state, routing, events ---------------- */
-const state={pf:{f:'all'},pp:{p:0.13},ex:{mtdc:LS.get('mtdc',null),frozen:0.3,months:9,cover:0.74},fc:{k:'base',over:{}}};
-const RENDER={index:pIndex,portfolio:pPortfolio,pipeline:pPipeline,postaward:pPost,exposure:pExposure,forecast:pForecast,compliance:pCompliance,sources:pSources};
-function page(){const h=location.hash.slice(1);return RENDER[h]?h:'index'}
+const state={pf:{f:'all'},pp:{p:0.13},ex:{mtdc:LS.get('mtdc',null),frozen:0.3,months:9,cover:0.74},fc:{k:'base',over:{}},inv:{fit:1.5,size:1},al:{c:55,d:35,i:10},cap:{gm:3,hrs:110,prop:40,rppr:8,recon:2,close:16},pub:{}};
+const RENDER={command:pCommand,charter:pCharter,inventory:pInventory,funding:pFunding,lifecycle:pLifecycle,scorecard:pScorecard,risk:pRisk,capacity:pCapacity,roadmap:pRoadmap,governance:pGovernance,ai:pAI,setup:pSetup,published:pPublished};
+const ALIAS={index:'command',portfolio:'inventory',pipeline:'lifecycle',postaward:'lifecycle',exposure:'funding',forecast:'published',compliance:'risk',sources:'setup'};
+function page(){const h=location.hash.slice(1);return RENDER[h]?h:(ALIAS[h]||'command')}
+const PLANMAP={"command": [["1", "Executive summary"], ["33", "Delivery health"], ["R1", "Research portfolio at a glance"], ["R10", "Escalation queue"]], "charter": [["43", "Initiative charter"], ["8", "Plan on a page"], ["9", "Strategy map"], ["R2", "Alignment & strategy"]], "inventory": [["12", "Programs & initiatives"], ["13", "Value vs feasibility"], ["42", "Portfolio frontier"], ["R5", "Sponsored portfolio"]], "funding": [["19", "Financial plan"], ["22", "Funding sources"], ["4", "Indirect-cost exposure"], ["R13", "Exposure register"], ["R14", "Recovery model"]], "lifecycle": [["56", "Grant lifecycle"], ["R6", "Award lifecycle bridge"], ["R9", "Research administration calendar"], ["R11", "Controls & systems of record"]], "scorecard": [["28", "Scorecard"], ["39", "Benefits register"], ["44", "SMART goals"]], "risk": [["26", "Risks"], ["40", "Risk register"], ["36", "Cost risk simulation"], ["R4", "Research Compliance"]], "capacity": [["37", "Dependencies"], ["38", "Resource capacity"], ["23", "Operating model"]], "roadmap": [["15", "Roadmap"], ["16", "Decision gates"], ["24", "Operating rhythm"], ["50", "Transformation plan"]], "governance": [["25", "Decision rights"], ["7", "Stakeholder map"], ["58", "Communications plan"], ["R12", "Briefing builder"]], "ai": [["57", "AI/ML readiness"], ["49", "Training & adoption"]], "setup": [["29", "Assumptions"], ["31", "Sources"], ["47", "Reports & exports"]], "published": [["59", "Published data & forecast"], ["3", "Harvard & HMS finances"], ["35", "Forecast at completion"]]};
+const planStrip=p=>{const m=PLANMAP[p];if(!m)return '';return `<div class="sec planstrip"><h3>Same section in the DBMI Operating Plan</h3><p class="small" style="margin:0 0 8px">The plan and this platform use the same 13 sections. These plan modules cover this one (open in a new tab):</p><div class="pslinks">${m.map(([n,t])=>`<a href="https://narissa-pgm.github.io/HMS_DBMI/DBMI_Operating_Plan.html#/m/${n}" target="_blank" rel="noopener">${n} · ${E(t)} ↗</a>`).join('')}</div></div>`};
 function paint(keepScroll){
  const p=page(),y=window.scrollY;
- $('#tabs').innerHTML=PAGES.map(([k,n])=>`<a href="#${k}"${k===p?' aria-current="page"':''}>${n}</a>`).join('');
- try{$('#main').innerHTML=RENDER[p]()}catch(e){$('#main').innerHTML='<div class="sec">This page failed to render: '+E(e.message)+'</div>';console.error(e)}
- document.title=(p==='index'?'':PAGES.find(x=>x[0]===p)[1]+' · ')+'HMS DBMI Research & Grants';
+ $('#tabs').innerHTML=PAGES.map(([k,n],i)=>`<a href="#${k}"${k===p?' aria-current="page"':''}><span class="tn">${i+1}</span>${n}</a>`).join('');
+ try{$('#main').innerHTML=RENDER[p]()+planStrip(p)}catch(e){$('#main').innerHTML='<div class="sec">This page failed to render: '+E(e.message)+'</div>';console.error(e)}
+ document.title=(p==='command'?'':PAGES.find(x=>x[0]===p)[1]+' · ')+'HMS DBMI Research & Grants';
  if(keepScroll)window.scrollTo(0,y);
+ const cur=document.querySelector('#tabs a[aria-current]');if(cur&&!keepScroll)try{cur.scrollIntoView({block:'nearest',inline:'center'})}catch(e){}
 }
-$('#foot').innerHTML='Demo build by Narissa Khomkhai, as of '+TODAY.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'})+'. Not an official Harvard system. Published figures carry their source; sample data is invented; model output is not a forecast anyone has approved. No investigator names and no HMS internal data are included.';
+$('#foot').innerHTML='Demo build by Narissa Khomkhai, as of '+TODAY.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'})+'. Not an official Harvard system. Published figures carry their source; sample data is invented; proposals are the author’s; model output is not a forecast anyone has approved. No investigator names and no HMS internal data are included.';
 window.addEventListener('hashchange',()=>{paint(false);window.scrollTo(0,0);$('#main').focus({preventScroll:true})});
 document.addEventListener('click',e=>{
- const t=e.target.closest('[data-pf],[data-scn],[data-go],[data-csv],[data-resetmtdc],[data-close]');if(!t)return;
+ const t=e.target.closest('[data-pf],[data-scn],[data-go],[data-csv],[data-resetmtdc],[data-close],[data-tpl],[data-resetled]');if(!t)return;
  if(t.dataset.pf){state.pf.f=t.dataset.pf;paint(true)}
  else if(t.dataset.scn){state.fc={k:t.dataset.scn,over:{}};paint(true)}
  else if(t.dataset.go){location.hash=t.dataset.go}
- else if(t.hasAttribute('data-csv')){const h=['id','mechanism','sponsor','investigator_code','role','start_fy','end_fy','direct_per_year_k','fa_per_year_k','layer'],rows=LEDGER.map(a=>[a.id,a.mech,a.sp,a.pi,a.role,a.sy,a.end,a.dir,a.fa,'SAMPLE']);const csv=[h].concat(rows).map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='DBMI_sample_award_ledger.csv';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500)}
+ else if(t.hasAttribute('data-csv')){const h=['id','mechanism_code','sponsor','federal','start_fy','end_fy','direct_per_year_k','fa_rate','investigator_code','layer'],rows=LEDGER.map(a=>[a.id,a.m,a.sp,a.fed?'Y':'N',a.sy,a.end,a.dir,a.faRate,a.pi,USERLED?'YOUR DATA':'SAMPLE']);dl('DBMI_award_ledger.csv',[h].concat(rows))}
+ else if(t.hasAttribute('data-tpl')){dl('DBMI_award_ledger_template.csv',[['id','mechanism_code','sponsor','federal','start_fy','end_fy','direct_per_year_k','fa_rate','investigator_code','spent_share','budget_start_month','snap'],['AW-001','U24','NHLBI','Y','2024','2028','2400','0.69','PI-01','0.42','7','N'],['AW-002','R01','NLM','Y','2025','2029','350','0.69','PI-02','0.30','9','Y'],['AW-003','FDN','Private foundation','N','2026','2027','250','0.15','PI-03','0.20','1','N']])}
+ else if(t.hasAttribute('data-resetled')){LEDGER=buildLedger();USERLED=false;LS.set('ledger',null);paint(true)}
  else if(t.hasAttribute('data-resetmtdc')){state.ex.mtdc=null;LS.set('mtdc',null);paint(true)}
  else if(t.hasAttribute('data-close')){$('#dlg').classList.remove('on')}
 });
+function dl(name,rows){const csv=rows.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500)}
+document.addEventListener('change',e=>{if(e.target.id!=='csvin')return;const f=e.target.files&&e.target.files[0];if(!f)return;const rd=new FileReader();rd.onload=()=>{try{const L=ledgerFromRows(parseCSV(String(rd.result)));LEDGER=L;USERLED=true;LS.set('ledger',L);paint(true);const m=$('#csvmsg');if(m)m.innerHTML='<span class="ok">Loaded '+L.length+' awards. Every section now uses your list.</span>'}catch(err){const m=$('#csvmsg');if(m)m.innerHTML='<span class="bad">Could not load: '+E(err.message)+'</span>'}};rd.readAsText(f)});
 document.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.dataset&&e.target.dataset.go){e.preventDefault();location.hash=e.target.dataset.go}if(e.key==='Escape')$('#dlg').classList.remove('on')});
 let tmr=null;
+const SETS={pp:v=>state.pp.p=v,frz:v=>state.ex.frozen=v,mon:v=>state.ex.months=v,cov:v=>state.ex.cover=v,fs:v=>state.fc.over.s=v,fr:v=>state.fc.over.ren=v,fa:v=>state.fc.over.apps=v,wfit:v=>state.inv.fit=v,wsize:v=>state.inv.size=v,alc:v=>state.al.c=v,ald:v=>state.al.d=v,ali:v=>state.al.i=v,cgm:v=>state.cap.gm=v,chrs:v=>state.cap.hrs=v,cprop:v=>state.cap.prop=v,crppr:v=>state.cap.rppr=v,crec:v=>state.cap.recon=v};
+const FMT={pp:v=>pc(v,1),frz:v=>pc(v),cov:v=>pc(v),fs:v=>pc(v,1),fr:v=>pc(v)};
 document.addEventListener('input',e=>{
- const id=e.target.id,v=parseFloat(e.target.value);const out=e.target.parentNode.querySelector('output');
- const later=fn=>{clearTimeout(tmr);tmr=setTimeout(()=>{fn();paint(true);const el=document.getElementById(id);if(el)el.focus()},140)};
- if(id==='pp'){state.pp.p=v;if(out)out.textContent=pc(v,1);later(()=>{})}
- else if(id==='mtdc'){if(isFinite(v)&&v>=0){later(()=>{state.ex.mtdc=v;LS.set('mtdc',v)})}}
- else if(id==='frz'){if(out)out.textContent=pc(v);later(()=>state.ex.frozen=v)}
- else if(id==='mon'){if(out)out.textContent=v;later(()=>state.ex.months=v)}
- else if(id==='cov'){if(out)out.textContent=pc(v);later(()=>state.ex.cover=v)}
- else if(id==='fs'){if(out)out.textContent=pc(v,1);later(()=>state.fc.over.s=v)}
- else if(id==='fr'){if(out)out.textContent=pc(v);later(()=>state.fc.over.ren=v)}
- else if(id==='fa'){if(out)out.textContent=v;later(()=>state.fc.over.apps=v)}
+ const id=e.target.id,v=parseFloat(e.target.value),out=e.target.parentNode.querySelector('output');
+ if(id==='mtdc'){if(isFinite(v)&&v>=0){clearTimeout(tmr);tmr=setTimeout(()=>{state.ex.mtdc=v;LS.set('mtdc',v);paint(true);const el=$('#mtdc');if(el)el.focus()},500)}return}
+ if(!SETS[id])return; if(out)out.textContent=FMT[id]?FMT[id](v):v;
+ clearTimeout(tmr);tmr=setTimeout(()=>{SETS[id](v);paint(true);const el=document.getElementById(id);if(el)el.focus()},160);
 });
 (function theme(){const k='hmsrg_theme';let t=null;try{t=localStorage.getItem(k)}catch(e){}if(t)document.documentElement.setAttribute('data-theme',t);
  $('#theme').addEventListener('click',()=>{const cur=document.documentElement.getAttribute('data-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'),nx=cur==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',nx);try{localStorage.setItem(k,nx)}catch(e){}})})();
 paint(false);
+
 </script>
 </body>
 </html>

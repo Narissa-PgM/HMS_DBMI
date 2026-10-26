@@ -1,0 +1,719 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HMS Advancement</title>
+<meta name="description" content="School-level advancement operations for Harvard Medical School in 13 sections: a propensity model, retention cohorts, an officer capacity optimizer, a campaign simulation and gift range chart, gift processing and pledges, and a gift income forecast. Published anchors, a calibrated sample and browser-run models, each labeled.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%239d2235'/%3E%3Ctext x='32' y='41' font-family='Georgia,serif' font-size='22' font-weight='700' fill='white' text-anchor='middle'%3EADV%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#eef1f1;--card:#ffffff;--ink:#152430;--mute:#4a5560;--line:#dfe4e6;--soft:#f4f6f6;
+  --crim:#9d2235;--crim2:#7d1a2a;--blue:#2b5c8a;--teal:#0f766e;--amber:#b45309;--green:#2f7d4f;--violet:#6d28d9;--grey:#94a3b8;
+  --serif:Cambria,Georgia,"Times New Roman",serif;--sans:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  --shadow:0 1px 2px rgba(21,36,48,.06),0 6px 18px rgba(21,36,48,.06);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){--bg:#0e161b;--card:#152028;--ink:#e8eef2;--mute:#9aacb4;--line:#314049;--soft:#1c282f;--crim:#e05a6c;--crim2:#f08a98;--blue:#7fb0dc;--teal:#4fc1b4;--amber:#e6a35a;--green:#6cc497;--violet:#b49af2;--grey:#6b7d89}
+}
+:root[data-theme="dark"]{--bg:#0e161b;--card:#152028;--ink:#e8eef2;--mute:#9aacb4;--line:#314049;--soft:#1c282f;--crim:#e05a6c;--crim2:#f08a98;--blue:#7fb0dc;--teal:#4fc1b4;--amber:#e6a35a;--green:#6cc497;--violet:#b49af2;--grey:#6b7d89}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+a{color:var(--blue)}
+button,input,select{font:inherit;color:inherit}
+h1,h2,h3{font-family:var(--serif);font-weight:700;letter-spacing:0;margin:0}
+.skip{position:absolute;left:-999px;top:0;background:var(--card);padding:8px 12px;z-index:50}
+.skip:focus{left:12px;top:12px}
+/* header */
+header.top{position:sticky;top:0;z-index:20;background:var(--card);border-bottom:1px solid var(--line)}
+.topin{max-width:1240px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.logo{width:44px;height:44px;border-radius:10px;background:var(--crim);color:#fff;display:grid;place-items:center;font:700 13px/1 var(--serif);flex:0 0 auto}
+.brand h1{font-size:21px;line-height:1.15}
+.brand small{display:block;color:var(--mute);font-size:12.5px;margin-top:2px}
+.toplinks{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--card);border-radius:999px;padding:7px 14px;font-size:13px;font-weight:600;text-decoration:none;color:var(--ink);cursor:pointer;min-height:36px}
+.btn:hover{border-color:var(--crim)}
+.btn.pri{background:var(--crim);border-color:var(--crim);color:#fff}
+nav.tabs{max-width:1240px;margin:0 auto;padding:0 24px 10px;display:flex;gap:6px;overflow-x:auto;scrollbar-width:thin}
+@media (min-width:1000px){nav.tabs{flex-wrap:wrap;overflow:visible}}
+nav.tabs a{flex:0 0 auto;text-decoration:none;color:var(--mute);font-weight:600;font-size:13.5px;padding:8px 13px;border-radius:999px;border:1px solid transparent;white-space:nowrap}
+nav.tabs a:hover{color:var(--ink);border-color:var(--line)}
+nav.tabs a[aria-current="page"]{background:var(--crim);color:#fff}
+main{max-width:1240px;margin:0 auto;padding:22px 24px 60px}
+/* page head */
+.phead{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--crim);border-radius:12px;padding:18px 22px;margin-bottom:18px;box-shadow:var(--shadow)}
+.eyebrow{font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--crim)}
+.phead h2{font-size:26px;margin-top:4px}
+.phead p{margin:6px 0 0;color:var(--mute);max-width:900px}
+/* cards */
+.sec{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin-bottom:16px;box-shadow:var(--shadow)}
+.sec h3{font-size:19px}
+.why{color:var(--mute);margin:4px 0 14px;font-size:14px;max-width:900px}
+.grid{display:grid;gap:12px}
+.g4{grid-template-columns:repeat(4,minmax(0,1fr))}.g3{grid-template-columns:repeat(3,minmax(0,1fr))}.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media (max-width:980px){.g4{grid-template-columns:repeat(2,minmax(0,1fr))}.g3{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:640px){.g4,.g3,.g2{grid-template-columns:1fr}.topin,nav.tabs,main{padding-left:16px;padding-right:16px}.phead h2{font-size:22px}}
+.kpi{border:1px solid var(--line);border-radius:10px;padding:13px 14px;background:var(--card);position:relative;min-width:0}
+.kpi .k{display:flex;justify-content:space-between;gap:8px;align-items:flex-start;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:var(--mute)}
+.kpi .v{font:700 27px/1.15 var(--serif);margin-top:6px;font-variant-numeric:tabular-nums}
+.kpi small{display:block;color:var(--mute);font-size:12.5px;margin-top:4px}
+.kpi.click{cursor:pointer}.kpi.click:hover{border-color:var(--crim)}
+/* provenance chips */
+.tag{display:inline-block;font:700 10px/1 var(--sans);letter-spacing:.08em;text-transform:uppercase;padding:4px 6px;border-radius:4px;border:1px solid;white-space:nowrap;vertical-align:middle}
+.t-pub{background:#e7f4ec;color:#15803d;border-color:#bfe3cc}
+.t-smp{background:#fff1dc;color:#9a4b07;border-color:#f3cf98}
+.t-mod{background:#f1ebfd;color:#6d28d9;border-color:#d9c9f7}
+.t-asm{background:#eef1f4;color:#475569;border-color:#d7dde3}
+.t-doc{background:#e8effd;color:#1d4ed8;border-color:#c6d6f7}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .tag{filter:saturate(.9) brightness(.92)}}
+.legend{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:13px;color:var(--mute);align-items:center}
+/* tables */
+.tw{overflow-x:auto;border:1px solid var(--line);border-radius:10px}
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+th,td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{background:var(--soft);font-weight:600;color:var(--mute);font-size:12px;letter-spacing:.04em;text-transform:uppercase;position:sticky;top:0}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}
+tr:last-child td{border-bottom:0}
+tbody tr:hover{background:var(--soft)}
+.pill{display:inline-block;padding:2px 8px;border-radius:999px;font-size:12px;font-weight:600;border:1px solid var(--line)}
+.ok{color:var(--green)}.warn{color:var(--amber)}.bad{color:var(--crim)}
+.p-ok{background:#e7f4ec;color:#15803d;border-color:#bfe3cc}.p-warn{background:#fff1dc;color:#9a4b07;border-color:#f3cf98}.p-bad{background:#fbe9ec;color:#9d2235;border-color:#f1c2ca}
+/* charts */
+svg.ch{width:100%;height:auto;display:block}
+svg.ch text{font-family:var(--sans);fill:var(--mute);font-size:11px}
+svg.ch .lab{font-weight:600;font-size:12px}
+.cap{font-size:12.5px;color:var(--mute);margin-top:8px}
+/* controls */
+.ctrls{display:flex;flex-wrap:wrap;gap:14px 22px;align-items:flex-end;margin-bottom:14px}
+.ctrl label{display:block;font-size:12px;font-weight:600;color:var(--mute);margin-bottom:4px}
+.ctrl input[type=number],.ctrl select{border:1px solid var(--line);background:var(--card);border-radius:8px;padding:7px 10px;min-width:120px}
+.ctrl input[type=range]{width:200px;accent-color:var(--crim)}
+.ctrl output{font-weight:700;margin-left:6px;font-variant-numeric:tabular-nums}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden}
+.seg button{border:0;background:var(--card);padding:7px 13px;font-size:13px;font-weight:600;cursor:pointer;color:var(--mute)}
+.seg button[aria-pressed="true"]{background:var(--crim);color:#fff}
+/* map cards */
+.map a{display:block;text-decoration:none;color:inherit;border:1px solid var(--line);border-radius:10px;padding:14px;background:var(--card);transition:border-color .15s}
+.map a:hover,.map a:focus-visible{border-color:var(--crim)}
+.map b{font-family:var(--serif);font-size:16.5px;display:block}
+.map span{display:block;font-size:13px;color:var(--mute);margin-top:3px}
+.map i{font-style:normal;font-size:11px;font-weight:700;letter-spacing:.1em;color:var(--crim)}
+.note{border-left:4px solid var(--amber);background:var(--soft);padding:10px 14px;border-radius:6px;font-size:13.5px;margin:0 0 14px}
+.note.blue{border-color:var(--blue)}
+.callout{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@media (max-width:640px){.callout{grid-template-columns:1fr}}
+.mis{border:1px solid #f1c2ca;background:#fbf2f4;border-radius:10px;padding:12px 14px}
+.best{border:1px solid #c6d6f7;background:#f1f6fd;border-radius:10px;padding:12px 14px}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .mis{background:#2a1a1f;border-color:#5a2a33}:root:not([data-theme="light"]) .best{background:#17243a;border-color:#2d4a72}}
+.mis b{color:var(--crim)}.best b{color:var(--blue)}
+.small{font-size:13px}.muted{color:var(--mute)}
+.list{margin:6px 0 0;padding-left:18px}.list li{margin:3px 0}
+.foot{max-width:1240px;margin:0 auto;padding:0 24px 40px;color:var(--mute);font-size:12.5px}
+.cal{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px}
+@media (max-width:980px){.cal{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:640px){.cal{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.mo{border:1px solid var(--line);border-radius:10px;padding:10px;min-height:120px;background:var(--card)}
+.mo h4{margin:0 0 6px;font:700 13px/1.2 var(--sans);color:var(--mute);letter-spacing:.06em;text-transform:uppercase}
+.mo.now{border-color:var(--crim);box-shadow:inset 0 0 0 1px var(--crim)}
+.ev{font-size:12px;padding:4px 6px;border-radius:6px;margin-bottom:4px;background:var(--soft);border-left:3px solid var(--blue)}
+.ev.nih{border-left-color:var(--crim)}.ev.rep{border-left-color:var(--teal)}.ev.pol{border-left-color:var(--violet)}
+.dlg{position:fixed;inset:0;background:rgba(10,18,24,.5);display:none;align-items:center;justify-content:center;z-index:60;padding:16px}
+.dlg.on{display:flex}
+.dlg .box{background:var(--card);border-radius:12px;max-width:640px;width:100%;max-height:85vh;overflow:auto;padding:20px 22px;border:1px solid var(--line)}
+.dlg .box h3{font-size:20px;margin-bottom:6px}
+.close{float:right}
+:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+main:focus,main:focus-visible{outline:none}
+@media print{header.top,nav.tabs,.toplinks{display:none}.sec,.phead{box-shadow:none;break-inside:avoid}}
+.t-usr{background:#e0f2f1;color:#0f766e;border-color:#a7d9d4}
+nav.tabs a .tn{display:inline-grid;place-items:center;width:18px;height:18px;border-radius:50%;background:var(--soft);color:var(--mute);font-size:10.5px;margin-right:6px}
+nav.tabs a[aria-current="page"] .tn{background:rgba(255,255,255,.25);color:#fff}
+code{background:var(--soft);padding:1px 5px;border-radius:4px;font-size:12.5px}
+.pslinks{display:flex;flex-wrap:wrap;gap:6px}.pslinks a{font-size:12.5px;padding:4px 9px;border:1px solid var(--line,#D5DAE0);border-radius:999px;text-decoration:none;color:inherit;max-width:100%}.pslinks a:hover,.pslinks a:focus-visible{border-color:#0F766E;color:#0F766E}
+.grid>*{min-width:0}
+.ibtn{border:1px solid var(--line);background:var(--soft);border-radius:999px;padding:2px 10px;font-size:12px;font-weight:600;cursor:pointer;color:var(--blue);vertical-align:middle;margin-left:6px}.ibtn:hover{border-color:var(--blue)}
+.dlg .box{max-width:720px}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <div class="topin">
+    <div class="logo" aria-hidden="true">HMS</div>
+    <div class="brand"><h1>HMS Advancement</h1><small>Harvard Medical School · advancement operations in 13 sections, with predictive models (demo)</small></div>
+    <div class="toplinks">
+      <a class="btn" href="https://narissa-pgm.github.io/HMS_DBMI/HMS_DBMI_Development.html#command" target="_blank" rel="noopener">DBMI Gift &amp; Development ↗</a>
+      <a class="btn" href="https://narissa-pgm.github.io/HMS_DBMI/DBMI_Operating_Plan.html" target="_blank" rel="noopener">Operating plan ↗</a>
+      <button class="btn" id="theme" type="button" aria-label="Switch light or dark theme">◐ Theme</button>
+    </div>
+  </div>
+  <nav class="tabs" aria-label="Pages" id="tabs"></nav>
+</header>
+<main id="main" tabindex="-1"></main>
+<div class="foot" id="foot"></div>
+<div class="dlg" id="dlg" role="dialog" aria-modal="true" aria-labelledby="dlgt"><div class="box"><button class="btn close" type="button" data-close>Close</button><h3 id="dlgt"></h3><div id="dlgb"></div></div></div>
+<script>
+
+'use strict';
+/* =====================================================================
+   HMS Advancement Operations (demo) · school-level, DBMI as one unit
+   Layers: PUBLISHED (quoted with a source) · SAMPLE (invented, calibrated to published totals)
+           MODEL (computed from stated inputs) · ASSUMPTION (an input you can change)
+   No donor names, no HMS internal data, no API keys. Constituents appear only as codes.
+   ===================================================================== */
+const SRC={
+ dr24:['Dean’s Report FY24: fundraising update','Harvard Medical School','FY2024','https://hms.harvard.edu/about-hms/office-dean/deans-report/fundraising-update','In FY24, 3,546 alumni, friends, faculty, staff, foundations and corporations gave nearly $118 million to HMS.'],
+ crim25:['HMS donations after the federal funding cuts','The Harvard Crimson','19 Jul 2025','https://www.thecrimson.com/article/2025/7/19/hms-donations-blavatnik-trump/','About 4,000 alumni and other donors gave in FY2025, including 700 first-time donors after April; more than $8 million supported MD-PhD students and $4.4 million postdoctoral fellows; one gift of $18.86 million included $5.75 million for junior faculty doing basic research on the Quad.'],
+ endow:['Fact and fiction about the HMS endowment','Harvard Medical School','31 Mar 2025','https://hms.harvard.edu/news/fact-fiction-about-hms-endowment','HMS endowment about $5.4 billion from roughly 1,400 gifts; about 90% restricted by donors (about 80% University-wide); endowment income 27% of HMS operating revenue in FY2024; annual payout rates 4.2% to 6.1% from 2007 to 2024; roughly one-third of HMS gifts must be used at affiliated hospitals.'],
+ alum26:['Your giving impact: HMS alumni','HMS Office of Alumni Affairs and Development','FY2026','https://impact.hms.harvard.edu/alumni','In FY2026, 1,964 alumni gave more than $19 million. On average 22% of alumni give each year, against 7% at peer institutions. Leadership donors gave 93% of annual funds raised; nearly 600 MD donors gave at the Dean’s Council level.'],
+ alum25:['Alumni rally for HMS and each other','HMS Pulse','FY2025','https://pulseimpact.hms.harvard.edu/news/alumni-rally-hms-each-other','Gifts from MD alumni totaled $11 million in FY2025.'],
+ honor25:['Honor Roll of Donors, fiscal year 2025','HMS Alumni','FY2025','https://alumni.hms.harvard.edu/give/honor-roll-donors','In fiscal year 2025, 2,339 alumni gave to HMS.'],
+ aad:['Contact Alumni Affairs and Development','Harvard Medical School','accessed 26 Oct 2026','https://hms.harvard.edu/departments/giving/contact-aad','AAD includes principal and major gifts, gift planning, donor relations and stewardship, development communications, development services and operations, development technology, development research, alumni engagement, and the Board of Fellows.'],
+ hufy26:['Harvard University Financial Overview, FY2026','Harvard Financial Administration','Oct 2026','https://finance.harvard.edu/fy26-financial-overview','Total gifts more than $1.5 billion; current-use gifts $684 million (a record, up 9%); gifts to the endowment more than $525 million; endowment about $68 billion; distribution $2.6 billion; philanthropy 48% of operating revenue.'],
+ hmag26:['Harvard stabilizes finances with strong endowment returns, philanthropy (FY2026)','Harvard Magazine','15 Oct 2026','https://www.harvardmagazine.com/university-finances/fy26-annual-financial-report','The endowment tax rises from 1.4% to 8% from FY2027 (about $300 million a year); the FY2027 endowment distribution is flat.'],
+ sos26:['HMS Dean outlines strategic plan amid federal funding cuts','The Harvard Crimson','17 Sep 2026','https://www.thecrimson.com/article/2026/9/17/hms-dean-strategic-plan/','HMS federal revenue fell 17% in FY2026; the plan includes an “AI-enabled campus” and deeper industry partnerships.'],
+ vse25:['CASE Insights on Voluntary Support of Education, FY2025','CASE','14 Apr 2026','https://www.case.org/resources/insights-voluntary-support-education-2025','Giving to U.S. colleges and universities reached an estimated $78.8 billion in FY2025, up 4%; 81% of contributions designated for specific uses.'],
+ gusa25:['Giving USA 2025: giving hit $592.5 billion in 2024','The NonProfit Times','24 Jun 2025','https://thenonprofittimes.com/?p=214806','Total U.S. giving $592.5 billion in 2024, up 6.3% (3.3% after inflation). Individuals $392.45 billion (66%), foundations $109.81 billion (19%), bequests $45.84 billion (8%), corporations 7%. Education third, $2.83 billion behind human services ($91.15 billion).'],
+ fep25:['AFP Fundraising Effectiveness Project, Q4 2025 (summary)','DonorPerfect, summarizing the FEP','17 Jul 2026','https://www.donorperfect.com/nonprofit-technology-blog/fundraising-software/afp-fep-q4-2025/','Overall donor retention 43.3% in 2025 (43.1% in 2024); dollars up about 5.0%; donors down about 3.6%. All U.S. nonprofits.'],
+ aem:['CASE Insights on Alumni Engagement','CASE','current page','https://case.org/resources/alumni-engagement-metrics-2019','Measures alumni engagement in four modes: philanthropic, volunteer, experiential and communications; results can support a single measure such as the share of alumni engaged in at least one mode.'],
+ irs:['Charitable contributions: written acknowledgments','IRS','current page','https://www.irs.gov/charities-non-profits/charitable-organizations/charitable-contributions-written-acknowledgments','A gift of $250 or more needs a written acknowledgment with the amount (or description of property) and whether goods or services were provided, with a good-faith estimate of their value.'],
+ p1771:['Publication 1771','IRS','current edition','https://www.irs.gov/pub/irs-pdf/p1771.pdf','Payments over $75 that are partly for goods or services need a written disclosure; the $250 acknowledgment is due by the earlier of the filing date or return due date; separate gifts under $250 are not aggregated.'],
+ s117:['Section 117 of the Higher Education Act','Congressional Research Service','25 Mar 2026','https://www.everycrsreport.com/files/2026-03-25_IF12927_9e4e5e294f0adad0cb71eb69f92bbb9dca10fd61.html','Foreign gifts and contracts of $250,000 or more from one source in a calendar year are reported by January 31 or July 31; the DETERRENT Act (not law) would lower the threshold to $50,000.'],
+ giftpol:['Gift vs. Sponsored Research Policy: quick reference','Harvard Office for Sponsored Programs','current page','https://osp.finance.harvard.edu/gift-vs-sponsored-research-policy-quick-reference-policy-summary.md','Gifts have no deliverables, no period of performance and are documented by a letter of intent; sponsored awards implement a specific plan with deliverables and a binding agreement.'],
+ hmsai:['AI tools at HMS','HMS IT','accessed 25 Oct 2026','https://it.hms.harvard.edu/service/ai-tools','Claude, ChatGPT Edu and Copilot Premium for eligible Quad-based employees after training; Level 3 data and below, never Level 4 or 5; meeting assistants only up to Level 2.'],
+ nist:['AI Risk Management Framework (NIST AI 100-1)','NIST','26 Jan 2023','https://www.nist.gov/itl/ai-risk-management-framework','Govern, map, measure, manage.']
+};
+
+/* ---------------- utilities ---------------- */
+const $=s=>document.querySelector(s);
+const E=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fm=(v,d=1)=>(v<0?'−':'')+'$'+Math.abs(v).toFixed(d)+'M';
+const fk=v=>(v<0?'−':'')+'$'+Math.round(Math.abs(v)).toLocaleString()+'K';
+const fK=v=>Math.abs(v)>=1000000?'$'+(v/1000000).toFixed(2)+'B':Math.abs(v)>=1000?fm(v/1000,Math.abs(v)>=100000?0:1):fk(v); /* v in $K */
+const pc=(v,d=0)=>(v*100).toFixed(d)+'%';
+const nf=v=>Math.round(v).toLocaleString();
+const TAG={usr:['Your data','t-usr'],pub:['Published','t-pub'],smp:['Sample','t-smp'],mod:['Model','t-mod'],asm:['Assumption','t-asm'],doc:['Document','t-doc']};
+const tag=t=>`<span class="tag ${TAG[t][1]}" title="${E({usr:'Uploaded in Sources & setup; stays in this browser.',pub:'Quoted from a published source; open Sources for the citation.',smp:'Invented to show the shape of the report, calibrated to published HMS totals where noted. Not HMS data.',mod:'Calculated from the stated inputs. Not a count and not a decision.',asm:'An input you can change.',doc:'Rule or date taken from a policy page.'}[t])}">${TAG[t][0]}</span>`;
+const sc=(k,label)=>{const s=SRC[k];return s?`<a href="${E(s[3])}" target="_blank" rel="noopener">${E(label||s[1]+', '+s[2])}</a>`:''};
+const kpi=(k,v,t,note,act)=>`<div class="kpi${act?' click':''}"${act?` role="button" tabindex="0" data-go="${act}"`:''}><div class="k"><span>${E(k)}</span>${tag(t)}</div><div class="v">${v}</div><small>${note}</small></div>`;
+function rng(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function norm(r){let u=0,v=0;while(!u)u=r();while(!v)v=r();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v)}
+const sig=z=>1/(1+Math.exp(-z));
+const LS={get(k,d){try{const v=localStorage.getItem('hmsadv_'+k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{if(v==null)localStorage.removeItem('hmsadv_'+k);else localStorage.setItem('hmsadv_'+k,JSON.stringify(v))}catch(e){}}};
+const TODAY=new Date(2026,9,26);
+const FY=d=>d.getMonth()>=6?d.getFullYear()+1:d.getFullYear();
+const CURFY=FY(TODAY);
+const YRS=[2022,2023,2024,2025,2026];
+const dfmt=d=>d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+const days=d=>Math.round((d-TODAY)/864e5);
+const wpick=(r,arr)=>{const t=arr.reduce((s,a)=>s+a[1],0);let x=r()*t;for(const a of arr){x-=a[1];if(x<=0)return a[0]}return arr[arr.length-1][0]};
+const sum=(a,f)=>a.reduce((s,x)=>s+f(x),0);
+const q=(a,p)=>{const s=a.slice().sort((x,z)=>x-z);return s[Math.min(s.length-1,Math.max(0,Math.floor(p*s.length)))]};
+
+/* ---------------- priorities and units ---------------- */
+const PRI=[['aid','Financial aid (MD, MD-PhD)','#9d2235'],['dean','Dean’s flexible funds','#152430'],['quad','Quad basic science departments','#2b5c8a'],['fac','Faculty support and professorships','#6d28d9'],['init','Research centers and initiatives','#0f766e'],['train','Postdocs, education and global health','#b45309']];
+const PRIN=Object.fromEntries(PRI.map(p=>[p[0],p[1]])),PRIC=Object.fromEntries(PRI.map(p=>[p[0],p[2]]));
+const UNITS=['Biomedical Informatics (DBMI)','Quad department B','Quad department C','Quad department D','Quad department E','Quad department F','Quad department G','Quad department H','Quad department I','Quad department J','Quad department K'];
+const STREAMS=[['af','Annual and leadership giving','#9d2235'],['mg','Major and principal gifts','#2b5c8a'],['pg','Planned gifts realized','#6d28d9'],['fd','Foundations','#0f766e'],['co','Corporations','#b45309']];
+const STC=Object.fromEntries(STREAMS.map(s=>[s[0],s[2]])),STN=Object.fromEntries(STREAMS.map(s=>[s[0],s[1]]));
+
+/* ---------------- sample constituents and giving (calibrated) ---------------- */
+const TYPES=[['MD alumni',7000],['PhD and other alumni',2000],['Grateful patients and friends',6000],['Faculty and staff',1500],['Foundations',300],['Corporations',200]];
+const TADJ={'MD alumni':-0.25,'PhD and other alumni':-0.65,'Grateful patients and friends':-0.3,'Faculty and staff':-0.35,'Foundations':-0.6,'Corporations':-1.0};
+function buildPeople(){
+ const r=rng(2027),P=[];let k=0;
+ TYPES.forEach(([t,n])=>{for(let i=0;i<n;i++){const alum=/alumni/.test(t),org=t==='Foundations'||t==='Corporations';
+  let w=wpick(r,[[1,40],[2,30],[3,18],[4,9],[5,3]]);if(org)w=Math.min(5,w+1);
+  P.push({id:'C-'+String(++k).padStart(5,'0'),type:t,alum,org,cls:alum?1960+Math.floor(r()*62):null,w,ev:alum||t==='Faculty and staff'?Math.min(5,Math.floor(Math.pow(r(),2.2)*6)):0,vol:alum&&r()<0.07,em:org?0:r(),a:norm(r),local:r()<0.35,g:{},p:{},unit:r()<0.09?0:1+Math.floor(r()*10)})}});
+ return P;
+}
+const PEOPLE=buildPeople();
+const reunion=(p,fy)=>p.alum&&((fy-p.cls)%5===0);
+function logitGive(p,fy,b0,prev){return b0+0.9*p.a+0.32*p.ev+0.9*(p.vol?1:0)+1.4*(p.em-0.5)+0.14*p.w+(reunion(p,fy)?0.55:0)+TADJ[p.type]+(prev?1.55:0)+(fy===2025&&!prev?0.32:0)}
+function simGiving(b0,upto,write){
+ const r=rng(77),cnt={};
+ PEOPLE.forEach(p=>{let prev=false;for(let fy=2021;fy<=upto;fy++){const gave=r()<sig(logitGive(p,fy,b0,prev));if(fy>=2022){if(gave)cnt[fy]=(cnt[fy]||0)+1;if(write){if(gave){p.g[fy]=1}else delete p.g[fy]}}prev=gave}});
+ return cnt;
+}
+/* calibrate the intercept so FY2024 donors match the published 3,546 */
+const B0=(function(){let lo=-8,hi=2;for(let i=0;i<22;i++){const m=(lo+hi)/2,c=simGiving(m,2024,false)[2024]||0;if(c>3546)hi=m;else lo=m}return (lo+hi)/2})();
+simGiving(B0,CURFY,true);
+/* amounts, purposes and streams */
+(function(){
+ const r=rng(91);
+ PEOPLE.forEach(p=>{Object.keys(p.g).forEach(k=>{const fy=+k;let amt,st;
+  if(p.type==='Foundations'){amt=Math.exp(Math.log(220)+norm(r)*1.0);st='fd'}
+  else if(p.type==='Corporations'){amt=Math.exp(Math.log(110)+norm(r)*1.0);st='co'}
+  else{amt=Math.exp(Math.log(0.4*Math.pow(p.w,2.0))+norm(r)*1.0);st='af';
+   if(p.w>=4&&r()<0.06){amt=Math.exp(Math.log(p.w===5?2000:500)+norm(r)*0.8);st=r()<0.14?'pg':'mg'}}
+  p.g[fy]=amt;p.p[fy]=st+'|'+wpick(r,st==='af'?[['dean',35],['aid',30],['quad',10],['train',15],['fac',5],['init',5]]:[['aid',20],['quad',18],['fac',22],['init',25],['train',10],['dean',5]]);});
+ });
+ /* scale so FY2024 matches the published "nearly $118 million" */
+ const raw=sum(PEOPLE,p=>p.g[2024]||0),s=118000/raw;PEOPLE.forEach(p=>Object.keys(p.g).forEach(k=>p.g[k]*=s));
+ /* gift dates; the current year keeps only gifts dated before today */
+ const r2=rng(13);PEOPLE.forEach(p=>{p.d={};Object.keys(p.g).forEach(k=>{const fy=+k,m=wpick(r2,[[6,6],[7,5],[8,6],[9,8],[10,9],[11,20],[0,7],[1,6],[2,7],[3,7],[4,8],[5,16]]),d=new Date(m>=6?fy-1:fy,m,1+Math.floor(r2()*28));if(fy===CURFY&&d>TODAY){delete p.g[k];delete p.p[k]}else p.d[k]=d})});
+})();
+let USERG=false;
+/* rolled-up views */
+function fyTotal(fy,f){return sum(PEOPLE,p=>p.g[fy]&&(!f||f(p,fy))?p.g[fy]:0)}
+function fyDonors(fy,f){return PEOPLE.filter(p=>p.g[fy]&&(!f||f(p,fy))).length}
+const stOf=(p,fy)=>(p.p[fy]||'af|dean').split('|')[0],prOf=(p,fy)=>(p.p[fy]||'af|dean').split('|')[1];
+let OVR=null; /* uploaded totals by FY and stream */
+
+/* ---------------- propensity model (logistic regression, trained in the browser) ---------------- */
+const FEAT=[['Years given, last four',p=>(p.f4||0)/4],['Gave last year',p=>p.fl?1:0],['Events attended',p=>p.ev/5],['Volunteer',p=>p.vol?1:0],['Email engagement',p=>p.em],['Wealth band',p=>(p.w-1)/4],['Reunion year',p=>p.ru?1:0],['Alumnus or alumna',p=>p.alum?1:0]];
+function featurize(target){ /* features use years before the target year */
+ PEOPLE.forEach(p=>{p.f4=[1,2,3,4].filter(k=>p.g[target-k]).length;p.fl=!!p.g[target-1];p.ru=reunion(p,target)});
+ return PEOPLE.map(p=>[1].concat(FEAT.map(f=>f[1](p))));
+}
+const MODEL=(function(){
+ const X=featurize(2026),Y=PEOPLE.map(p=>p.g[2026]?1:0),r=rng(5),idx=PEOPLE.map((_,i)=>i).sort(()=>r()-0.5),ntr=Math.floor(PEOPLE.length*0.7),tr=idx.slice(0,ntr),te=idx.slice(ntr);
+ let w=Array(X[0].length).fill(0);
+ for(let it=0;it<220;it++){const gr=Array(w.length).fill(0);tr.forEach(i=>{const e=sig(X[i].reduce((s,x,j)=>s+x*w[j],0))-Y[i];X[i].forEach((x,j)=>gr[j]+=e*x)});w=w.map((v,j)=>v-2.2*gr[j]/tr.length)}
+ const score=i=>sig(X[i].reduce((s,x,j)=>s+x*w[j],0));
+ const T=te.map(i=>[score(i),Y[i]]).sort((a,b)=>b[0]-a[0]),P1=sum(T,t=>t[1]),N0=T.length-P1;
+ let tp=0,fp=0;const roc=[[0,0]];T.forEach(t=>{if(t[1])tp++;else fp++;roc.push([fp/N0,tp/P1])});
+ let auc=0;for(let i=1;i<roc.length;i++)auc+=(roc[i][0]-roc[i-1][0])*(roc[i][1]+roc[i-1][1])/2;
+ const base=P1/T.length,dec=Array.from({length:10},(_,d)=>{const s=T.slice(Math.floor(d*T.length/10),Math.floor((d+1)*T.length/10));return sum(s,t=>t[1])/s.length/base});
+ const Xn=featurize(2027);PEOPLE.forEach((p,i)=>p.ps=sig(Xn[i].reduce((s,x,j)=>s+x*w[j],0)));
+ /* thin the ROC curve for drawing */
+ const step=Math.max(1,Math.floor(roc.length/120)),rocT=roc.filter((_,i)=>i%step===0).concat([[1,1]]);
+ return {w,auc,dec,roc:rocT,base,ntr,nte:te.length};
+})();
+
+/* ---------------- major gift prospects and officers ---------------- */
+const STAGES=['Qualify','Cultivate','Solicit','Steward'];
+const STP={Qualify:0.08,Cultivate:0.2,Solicit:0.45,Steward:0.3};
+const PROS=(function(){const r=rng(41);return PEOPLE.filter(p=>(p.w===5)||(p.w===4&&(p.f4>=1||p.ev>=2))||(p.org&&p.w>=4)).map(p=>{const st=wpick(r,[['Qualify',30],['Cultivate',38+p.ps*20],['Solicit',12+p.ps*20],['Steward',p.f4>=2?25:6]]);
+ const ask=Math.round((p.org?Math.exp(Math.log(400)+norm(r)*0.8):p.w===5?Math.exp(Math.log(3000)+norm(r)*0.8):Math.exp(Math.log(500)+norm(r)*0.7))/25)*25;
+ return {p,id:p.id,st,ask,ev:ask*STP[st]*(0.6+p.ps*0.8)}}).sort((a,b)=>b.ev-a.ev)})();
+
+/* ---------------- gift processing queue and pledges (sample) ---------------- */
+const QUEUE=(function(){const r=rng(66),Q=[];for(let i=0;i<320;i++){const rec=new Date(TODAY.getTime()-Math.floor(r()*60)*864e5),bd=Math.max(0,Math.round(Math.exp(Math.log(1.6)+norm(r)*0.65))),done=(TODAY-rec)/864e5>bd+1||r()<0.6;
+ Q.push({id:'R-'+String(i+1).padStart(4,'0'),rec,amt:Math.exp(Math.log(0.8)+norm(r)*1.6),ack:done?bd:null,stage:done?'Acknowledged':wpick(r,[['Received',3],['Deposited',3],['Entered',4]]),type:wpick(r,[['Check',30],['Online card',35],['Stock',8],['Wire/ACH',15],['Donor-advised fund',12]])})}return Q})();
+const PLEDGES=(function(){const r=rng(88),L=[];for(let i=0;i<150;i++){const tot=Math.round(Math.exp(Math.log(250)+norm(r)*1.1)),yrs=2+Math.floor(r()*4),paid=Math.round(tot*Math.min(0.95,r()*0.9)),next=new Date(TODAY.getTime()+Math.round(-260+r()*560)*864e5);
+ L.push({id:'PL-'+String(i+1).padStart(3,'0'),tot,yrs,paid,next,bal:tot-paid,pri:wpick(r,[['aid',22],['fac',22],['init',25],['quad',15],['train',10],['dean',6]])})}return L})();
+
+/* ---------------- chart helpers ---------------- */
+function niceStep(range,n){const s=Math.pow(10,Math.floor(Math.log10(range/n)));for(const m of [1,2,2.5,5,10])if(range/(s*m)<=n)return s*m;return s*10}
+function bars(groups,o={}){ /* groups:[{l,parts:[[name,v,color]]}] stacked */
+ const W=o.w||720,H=o.h||260,l=54,r=14,t=16,b=40,n=groups.length;
+ const mx=o.max||Math.max(1,...groups.map(g=>g.parts.reduce((a,p)=>a+Math.max(0,p[1]),0)))*1.1;
+ const st=niceStep(mx,4),top=Math.ceil(mx/st)*st,Y=v=>t+(1-v/top)*(H-t-b),bw=(W-l-r)/n*0.62;let g='';
+ for(let v=0;v<=top+1e-9;v+=st)g+=`<line x1="${l}" x2="${W-r}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--line)"/><text x="${l-6}" y="${Y(v)+4}" text-anchor="end">${o.fmt?o.fmt(v):Math.round(v)}</text>`;
+ groups.forEach((gr,i)=>{const x=l+(i+.5)*(W-l-r)/n-bw/2;let acc=0;gr.parts.forEach(p=>{if(p[1]<=0)return;const y0=Y(acc),y1=Y(acc+p[1]);g+=`<rect x="${x.toFixed(1)}" y="${y1.toFixed(1)}" width="${bw.toFixed(1)}" height="${(y0-y1).toFixed(1)}" fill="${p[2]}" rx="2"><title>${E(gr.l+' · '+p[0]+': '+(o.fmt?o.fmt(p[1]):p[1]))}</title></rect>`;acc+=p[1]});
+  g+=`<text x="${(x+bw/2).toFixed(1)}" y="${H-b+16}" text-anchor="middle">${E(gr.l)}</text>`;
+  if(o.total)g+=`<text x="${(x+bw/2).toFixed(1)}" y="${(Y(acc)-5).toFixed(1)}" text-anchor="middle" class="lab">${o.fmt?o.fmt(acc):Math.round(acc)}</text>`;});
+ if(o.ref!=null)g+=`<line x1="${l}" x2="${W-r}" y1="${Y(o.ref)}" y2="${Y(o.ref)}" stroke="var(--amber)" stroke-width="2" stroke-dasharray="6 4"/><text x="${W-r}" y="${Y(o.ref)-6}" text-anchor="end" style="fill:var(--amber);font-weight:700">${E(o.refLab||'')} ${o.fmt?o.fmt(o.ref):o.ref}</text>`;
+ return `<svg class="ch" viewBox="0 0 ${W} ${H}" role="img" aria-label="${E(o.label||'Bar chart')}">${g}</svg>`;
+}
+function hbars(rows,o={}){ /* rows:[label,value,color,note] */
+ const W=o.w||720,rh=30,H=rows.length*rh+10,l=o.l||230,r=90,mx=Math.max(1,...rows.map(x=>x[1]));let g='';
+ rows.forEach((x,i)=>{const y=i*rh+4,w=(W-l-r)*x[1]/mx;g+=`<text x="${l-8}" y="${y+18}" text-anchor="end">${E(x[0])}</text><rect x="${l}" y="${y+5}" width="${Math.max(1,w).toFixed(1)}" height="18" rx="3" fill="${x[2]||'var(--blue)'}"><title>${E(x[0]+': '+(o.fmt?o.fmt(x[1]):x[1])+(x[3]?' · '+x[3]:''))}</title></rect><text x="${l+w+6}" y="${y+18}" class="lab">${o.fmt?o.fmt(x[1]):x[1]}</text>`});
+ return `<svg class="ch" viewBox="0 0 ${W} ${H}" role="img" aria-label="${E(o.label||'Bar chart')}">${g}</svg>`;
+}
+function lines(labels,series,o={}){ /* series:[{n,c,v,lo,hi,dash}] */
+ const W=o.w||900,H=o.h||300,l=60,r=190,t=18,b=34,n=labels.length;
+ const vals=[];series.forEach(s=>{s.v.forEach(v=>v!=null&&vals.push(v));(s.lo||[]).forEach(v=>v!=null&&vals.push(v));(s.hi||[]).forEach(v=>v!=null&&vals.push(v))});
+ if(o.ref!=null)vals.push(o.ref);
+ let mn=o.min!=null?o.min:Math.min(...vals),mx=Math.max(...vals);const st=niceStep((mx-mn)||1,5);mn=o.min!=null?o.min:Math.floor(mn/st)*st;mx=Math.ceil(mx/st)*st;
+ const X=i=>l+i/(n-1)*(W-l-r),Y=v=>t+(mx-v)/((mx-mn)||1)*(H-t-b);let g='';
+ for(let v=mn;v<=mx+1e-9;v+=st)g+=`<line x1="${l}" x2="${W-r}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--line)"/><text x="${l-6}" y="${Y(v)+4}" text-anchor="end">${o.fmt?o.fmt(v):Math.round(v)}</text>`;
+ if(o.split!=null){const x=X(o.split);g+=`<rect x="${x}" y="${t}" width="${W-r-x}" height="${H-t-b}" fill="var(--soft)"/><text x="${x+6}" y="${t+12}">model</text>`}
+ if(o.ref!=null)g+=`<line x1="${l}" x2="${W-r}" y1="${Y(o.ref)}" y2="${Y(o.ref)}" stroke="var(--amber)" stroke-dasharray="5 4"/><text x="${W-r+6}" y="${Y(o.ref)+4}" fill="var(--amber)">${E(o.refLab||'')}</text>`;
+ series.forEach(s=>{if(s.lo&&s.hi){let d='',idx=[];s.hi.forEach((v,i)=>v!=null&&idx.push(i));idx.forEach((i,z)=>d+=(z?'L':'M')+X(i).toFixed(1)+' '+Y(s.hi[i]).toFixed(1));for(let z=idx.length-1;z>=0;z--)d+='L'+X(idx[z]).toFixed(1)+' '+Y(s.lo[idx[z]]).toFixed(1);g+=`<path d="${d}Z" fill="${s.c}" opacity=".15"/>`}
+  let d='';s.v.forEach((v,i)=>{if(v==null)return;d+=(d?'L':'M')+X(i).toFixed(1)+' '+Y(v).toFixed(1)});g+=`<path d="${d}" fill="none" stroke="${s.c}" stroke-width="2.4"${s.dash?' stroke-dasharray="6 4"':''}/>`;
+  s.v.forEach((v,i)=>{if(v!=null)g+=`<circle cx="${X(i)}" cy="${Y(v)}" r="3" fill="${s.c}"><title>${E(s.n+' · '+labels[i]+': '+(o.fmt?o.fmt(v):v)+(s.lo&&s.lo[i]!=null?' (80% range '+(o.fmt?o.fmt(s.lo[i]):s.lo[i])+'–'+(o.fmt?o.fmt(s.hi[i]):s.hi[i])+')':''))}</title></circle>`});
+  const li=s.v.length-1-[...s.v].reverse().findIndex(v=>v!=null);if(!s.nolab&&li>=0&&li<s.v.length)g+=`<text x="${X(li)+8}" y="${Y(s.v[li])+4}" class="lab" fill="${s.c}">${E(s.n)} ${o.fmt?o.fmt(s.v[li]):s.v[li]}</text>`});
+ labels.forEach((lb,i)=>{if(n<=12||i%2===0)g+=`<text x="${X(i)}" y="${H-12}" text-anchor="middle">${E(lb)}</text>`});
+ return `<svg class="ch" viewBox="0 0 ${W} ${H}" role="img" aria-label="${E(o.label||'Line chart')}">${g}</svg>`;
+}
+
+
+/* ---------------- more chart helpers ---------------- */
+function xyChart(series,o={}){ /* series:[{n,c,pts:[[x,y]],dash}] on 0..1 axes */
+ const W=o.w||460,H=o.h||360,l=46,r=14,t=14,b=40,X=v=>l+v*(W-l-r),Y=v=>t+(1-v)*(H-t-b);let g='';
+ [0,.25,.5,.75,1].forEach(v=>{g+=`<line x1="${X(v)}" x2="${X(v)}" y1="${t}" y2="${H-b}" stroke="var(--line)"/><line x1="${l}" x2="${W-r}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--line)"/><text x="${X(v)}" y="${H-b+15}" text-anchor="middle">${v}</text><text x="${l-6}" y="${Y(v)+4}" text-anchor="end">${v}</text>`});
+ series.forEach(s=>{g+=`<path d="${s.pts.map((p,i)=>(i?'L':'M')+X(p[0]).toFixed(1)+' '+Y(p[1]).toFixed(1)).join('')}" fill="none" stroke="${s.c}" stroke-width="${s.dash?1.5:2.6}"${s.dash?' stroke-dasharray="5 4"':''}/>`});
+ g+=`<text x="${(l+W-r)/2}" y="${H-6}" text-anchor="middle">${E(o.xl||'')}</text><text transform="translate(12 ${(t+H-b)/2}) rotate(-90)" text-anchor="middle">${E(o.yl||'')}</text>`;
+ return `<svg class="ch" viewBox="0 0 ${W} ${H}" role="img" aria-label="${E(o.label||'Chart')}">${g}</svg>`;
+}
+function waterfall(steps,o={}){ /* steps:[label,value,kind('base'|'+'|'-'|'end')] */
+ const W=o.w||720,H=o.h||280,l=60,r=10,t=20,b=44,n=steps.length;let run=0,mx=0;const bars=steps.map(s=>{let y0,y1;if(s[2]==='base'||s[2]==='end'){y0=0;y1=s[1];run=s[1]}else if(s[2]==='+'){y0=run;y1=run+s[1];run=y1}else{y0=run-s[1];y1=run;run=y0}mx=Math.max(mx,y1);return [s,y0,y1]});
+ const top=mx*1.12,Y=v=>t+(1-v/top)*(H-t-b),bw=(W-l-r)/n*0.62;let g='';
+ bars.forEach(([s,y0,y1],i)=>{const x=l+(i+.5)*(W-l-r)/n-bw/2,c=s[2]==='+'?'#2f7d4f':s[2]==='-'?'#9d2235':'#2b5c8a';g+=`<rect x="${x}" y="${Y(y1)}" width="${bw}" height="${Math.max(1,Y(y0)-Y(y1))}" fill="${c}" rx="2"><title>${E(s[0]+': '+(o.fmt?o.fmt(s[1]):s[1]))}</title></rect><text x="${x+bw/2}" y="${Y(y1)-5}" text-anchor="middle" class="lab">${s[2]==='-'?'−':s[2]==='+'?'+':''}${o.fmt?o.fmt(s[1]):s[1]}</text><text x="${x+bw/2}" y="${H-b+16}" text-anchor="middle">${E(s[0])}</text>`});
+ return `<svg class="ch" viewBox="0 0 ${W} ${H}" role="img" aria-label="${E(o.label||'Waterfall')}">${g}</svg>`;
+}
+function gauge(v,o={}){ /* v 0..100 */
+ const W=300,H=200,cx=150,cy=140,R=110,arc=(a0,a1,c)=>{const p=a=>[cx+R*Math.cos(Math.PI*(1-a)),cy-R*Math.sin(Math.PI*(1-a))];const [x0,y0]=p(a0),[x1,y1]=p(a1);return `<path d="M${x0} ${y0} A${R} ${R} 0 0 1 ${x1} ${y1}" fill="none" stroke="${c}" stroke-width="22"/>`};
+ const a=Math.max(0,Math.min(1,v/100)),nx=cx+(R-30)*Math.cos(Math.PI*(1-a)),ny=cy-(R-30)*Math.sin(Math.PI*(1-a));
+ return `<svg class="ch" viewBox="0 0 ${W} ${H}" role="img" aria-label="${E(o.label||'Gauge')}" style="max-width:340px">${arc(0,.5,'#f1c2ca')}${arc(.5,.75,'#f3cf98')}${arc(.75,1,'#bfe3cc')}<line x1="${cx}" y1="${cy}" x2="${nx}" y2="${ny}" stroke="var(--ink)" stroke-width="4" stroke-linecap="round"/><circle cx="${cx}" cy="${cy}" r="8" fill="var(--ink)"/><text x="${cx}" y="${cy+46}" text-anchor="middle" style="font:700 30px var(--serif);fill:var(--ink)">${Math.round(v)}</text><text x="40" y="${cy+22}" text-anchor="middle">0</text><text x="260" y="${cy+22}" text-anchor="middle">100</text></svg>`;
+}
+function radar(D,o={}){ /* D:[label,value 1..5] */
+ const W=o.w||420,H=o.h||360,cx=W/2,cy=H/2+4,R0=Math.min(W,H)/2-56,n=D.length,pt=(i,v)=>{const a=-Math.PI/2+i*2*Math.PI/n;return [cx+Math.cos(a)*R0*v/5,cy+Math.sin(a)*R0*v/5]};let g='';
+ [1,2,3,4,5].forEach(v=>g+=`<polygon points="${D.map((d,i)=>pt(i,v).map(z=>z.toFixed(1)).join(',')).join(' ')}" fill="none" stroke="var(--line)"/>`);
+ D.forEach((d,i)=>{const e=pt(i,5),l=pt(i,6.1);g+=`<line x1="${cx}" y1="${cy}" x2="${e[0]}" y2="${e[1]}" stroke="var(--line)"/><text x="${l[0]}" y="${l[1]+4}" text-anchor="middle" class="lab" style="font-size:11px">${E(d[0])}</text>`});
+ g+=`<polygon points="${D.map((d,i)=>pt(i,d[1]).map(z=>z.toFixed(1)).join(',')).join(' ')}" fill="var(--crim)" fill-opacity=".22" stroke="var(--crim)" stroke-width="2"/>`;
+ return `<svg class="ch" viewBox="0 0 ${W} ${H}" role="img" aria-label="${E(o.label||'Radar')}">${g}</svg>`;
+}
+function tornado(rows,o={}){ /* rows:[label,low,high] around 0 */
+ const W=o.w||1000,rh=34,H=rows.length*rh+30,l=260,mx=Math.max(...rows.map(r=>Math.max(Math.abs(r[1]),Math.abs(r[2]))))||1,cx=l+(W-l-20)/2,sx=v=>cx+v/mx*((W-l-30)/2-90);let g=`<line x1="${cx}" x2="${cx}" y1="4" y2="${H-20}" stroke="var(--grey)"/>`;
+ rows.forEach((r,i)=>{const y=6+i*rh;g+=`<text x="${l-10}" y="${y+18}" text-anchor="end">${E(r[0])}</text><rect x="${Math.min(sx(r[1]),cx)}" y="${y+4}" width="${Math.abs(sx(r[1])-cx)}" height="20" fill="#9d2235" rx="3"/><rect x="${cx}" y="${y+4}" width="${Math.abs(sx(r[2])-cx)}" height="20" fill="#2f7d4f" rx="3"/><text x="${sx(r[2])+6}" y="${y+18}" class="lab">+${o.fmt?o.fmt(r[2]):r[2]}</text><text x="${sx(r[1])-6}" y="${y+18}" text-anchor="end" class="lab">${o.fmt?o.fmt(r[1]):r[1]}</text>`});
+ g+=`<text x="${cx}" y="${H-4}" text-anchor="middle">change in five-year gift income against the base case</text>`;
+ return `<svg class="ch" viewBox="0 0 ${W} ${H}" role="img" aria-label="${E(o.label||'Sensitivity')}">${g}</svg>`;
+}
+function funnel(rows,o={}){ /* rows:[label,value,color] */
+ const W=o.w||520,rh=44,H=rows.length*rh+8,mx=Math.max(...rows.map(r=>r[1]))||1;let g='';
+ rows.forEach((r,i)=>{const w=Math.max(60,(W-40)*r[1]/mx),x=(W-w)/2,y=4+i*rh;g+=`<rect x="${x}" y="${y}" width="${w}" height="${rh-8}" rx="6" fill="${r[2]}"><title>${E(r[0]+': '+r[1])}</title></rect><text x="${W/2}" y="${y+rh/2+1}" text-anchor="middle" style="fill:#fff;font-weight:700;font-size:12.5px">${E(r[0])} · ${o.fmt?o.fmt(r[1]):r[1]}</text>`});
+ return `<svg class="ch" viewBox="0 0 ${W} ${H}" role="img" aria-label="${E(o.label||'Funnel')}">${g}</svg>`;
+}
+
+/* ---------------- page furniture and popups ---------------- */
+const PAGES=[['command','Command center'],['charter','Charter & strategy'],['inventory','Inventory & scoring'],['funding','Funding & allocation'],['lifecycle','Gift lifecycle'],['scorecard','Benefits & scorecard'],['risk','Risk & compliance'],['capacity','Capacity & dependency'],['roadmap','Roadmap & reviews'],['governance','Governance & comms'],['ai','AI/ML readiness'],['setup','Sources & setup'],['published','Published data & forecast']];
+const head=(eb,t,p)=>`<div class="phead"><div class="eyebrow">${eb}</div><h2>${t}</h2><p>${p}</p></div>`;
+const mistake=(m,b)=>`<div class="callout" style="margin-top:12px"><div class="mis"><b>Common mistake</b><p class="small" style="margin:4px 0 0">${m}</p></div><div class="best"><b>Best practice</b><p class="small" style="margin:4px 0 0">${b}</p></div></div>`;
+const t2=(h,rows)=>`<div class="tw"><table><thead><tr>${h.map(x=>`<th>${x}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+const pill=(t,c)=>`<span class="pill ${c}">${E(t)}</span>`;
+const PROPOSED=`<span class="tag t-asm" title="The author's proposal, for HMS Alumni Affairs and Development leadership to agree.">Proposed</span>`;
+const info=k=>`<button type="button" class="ibtn" data-pop="${k}" aria-label="How this works">ⓘ How it works</button>`;
+const POPS={
+ prop:['Propensity model',`<p>A logistic regression trained here, in your browser, on ${nf(MODEL.ntr)} sample constituents to predict who gives in a year from what was known the year before; tested on ${nf(MODEL.nte)} it never saw. The curve shows how well it ranks donors above non-donors (AUC ${MODEL.auc.toFixed(2)}; 0.5 is a coin toss).</p>`,'Treating a high score as a reason to solicit, or using the score to judge a person’s worth.','Use the score to order outreach, check it against what officers know, and retrain each year; never use protected characteristics as inputs.'],
+ surv:['Retention by first-gift cohort','<p>Each line follows donors from the year of their first gift: what share gave again one, two and three years later. Steep early drops are normal; the second-gift conversion is where most programs lose donors.</p>','Comparing one year’s overall retention with another without looking at the mix of new and loyal donors.','Track second-gift conversion for new donors separately; thank and report to first-time donors within weeks.'],
+ cap:['Officer capacity model',`<p>Qualified prospects are ranked by expected value. Each officer carries up to the portfolio size; covered prospects get visits, and close odds rise with visits a year but with diminishing returns (1 − e<sup>−v</sup>). The chart adds officers one at a time and compares the extra expected dollars with the officer’s loaded cost.</p>`,'Adding officers without adding qualified prospects, so portfolios fill with names that will never give at that level.','Grow research and qualification first; add an officer when uncovered expected value exceeds several times the officer’s cost.'],
+ camp:['Campaign simulation',`<p>Each run draws annual commitments from three sources: leadership gifts closing from the pipeline at stage odds with uncertain size and timing, a small chance of transformational gifts, and annual and mid-level giving that grows with participation. The fan shows the 10th to 90th percentile of cumulative commitments.</p>`,'Announcing a goal that needs every top prospect to say yes at full ask.','Set the public goal only when the middle path reaches it with the lead gifts already committed in the quiet phase.'],
+ pyr:['Gift range chart','<p>The classic chart: the lead gift is a share of the goal, each lower level halves the gift size and roughly doubles the number of gifts, and each gift needs several qualified prospects. The ratios are assumptions you can change; the right-hand bars show how many sample prospects exist in each capacity range.</p>','Building a gift chart from wishes, with no names behind the top rows.','Fill the top three rows with named, qualified prospects before the quiet phase begins.'],
+ ready:['Campaign readiness index','<p>Six conditions scored 1 to 5 and weighted; 75 or more suggests readiness for a public phase, 50 to 75 a quiet phase, below 50 more groundwork. The weights and thresholds are assumptions.</p>','Launching on the calendar rather than on readiness.','Score readiness each quarter with leadership; launch publicly when the index and the lead-gift commitments both say yes.'],
+ fc:['Gift income forecast',`<p>Annual and leadership giving follows donors with the retention, new-donor and average-gift inputs (new donors default to replacing those lost at today’s retention); major gifts vary around their recent level, scaled by the close-rate input, with extra lift in year one from proposals already out; planned gifts arrive as a random number of realizations a year; foundation and corporate giving vary around their recent level. Six hundred runs; shaded band is the 80% range.</p>`,'Budgeting on the best year, when one or two large gifts made it.','Budget near the middle path and treat the upside as pipeline to work.'],
+ sla:['Gift processing service level','<p>Days from receipt to acknowledgment, counted in business days. Gifts of $250 or more need a written acknowledgment with the IRS wording; the platform also tracks gifts waiting at each stage.</p>','Batching acknowledgments weekly so donors wait, and checks sit undeposited.','Deposit daily, enter within one day, acknowledge within two business days, and report exceptions every morning.']
+};
+
+/* ---------------- 1. command center ---------------- */
+const SECDESC={charter:'Purpose, objectives, strategy map, campaign priorities.',inventory:'Propensity model, capacity and the prospect portfolio.',funding:'Streams, endowment payout, gift range chart, allocation.',lifecycle:'Moves management, gift processing, pledges and the rules.',scorecard:'Retention cohorts, donor flows, sensitivity and targets.',risk:'Risk register, compliance rules and the calendar.',capacity:'Officer capacity optimizer and the offices involved.',roadmap:'Campaign phases, readiness index and campaign simulation.',governance:'Gift acceptance, naming, RACI and communications.',ai:'Model card, use cases and the guardrails for donor data.',setup:'Upload gift totals; data architecture and sources.',published:'Published HMS, Harvard and national data, and forecasts.'};
+function exceptions(){
+ const L=[];
+ QUEUE.filter(g=>g.ack==null&&(TODAY-g.rec)/864e5>3).forEach(g=>L.push([1,'Acknowledgment late',g.id+' · '+fK(g.amt)+' · received '+dfmt(g.rec)+' · at '+g.stage,'lifecycle','bad']));
+ PLEDGES.filter(p=>p.next<TODAY&&p.bal>0&&days(p.next)>-180).sort((a,b)=>a.next-b.next).forEach(p=>L.push([5,'Pledge payment overdue',p.id+' · '+fK(Math.round(p.tot/p.yrs))+' due '+dfmt(p.next)+' · '+PRIN[p.pri],'lifecycle',days(p.next)<-90?'bad':'warn']));
+ PROS.filter(x=>x.st==='Solicit').slice(0,6).forEach(x=>L.push([20,'Proposal out',x.id+' · ask '+fK(x.ask)+' · expected '+fK(x.ev),'inventory','warn']));
+ return L.sort((a,b)=>a[0]-b[0]);
+}
+function pCommand(){
+ const fy=CURFY,ytd=fyTotal(fy),ly=sum(PEOPLE,p=>p.g[fy-1]&&p.d[fy-1]&&p.d[fy-1]<=new Date(TODAY.getFullYear()-1,TODAY.getMonth(),TODAY.getDate())?p.g[fy-1]:0);
+ const alumN=PEOPLE.filter(p=>p.alum).length,part=fyDonors(2026,p=>p.alum)/alumN,X=exceptions(),R=simulateCampaign(state.camp,300);
+ const months=['Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar','Apr','May','Jun'],cum=fy0=>{let s=0;return months.map((m,i)=>{const mi=(i+6)%12;s+=sum(PEOPLE,p=>p.g[fy0]&&p.d[fy0].getMonth()===mi?p.g[fy0]:0);return s})};
+ const c26=cum(2026),c25=cum(2025),c27=cum(2027).map((v,i)=>i<=((TODAY.getMonth()+6)%12)?v:null);
+ const units=UNITS.map((u,i)=>[u,fyTotal(2026,(p,f)=>p.unit===i&&prOf(p,f)==='quad'),i===0?'#9d2235':'#94a3b8']);
+ return head('Command center','HMS advancement on one screen','Gifts against last year, participation, the campaign outlook and the exceptions that need someone today. Built for HMS Alumni Affairs and Development (AAD); department views, DBMI among them, roll up underneath.')
+ +`<div class="grid g4" style="margin-bottom:16px">${kpi('FY'+fy+' gifts to date',fK(ytd),'smp','same point last year '+fK(ly),'funding')}${kpi('FY2024 raised','≈ $118M','pub','3,546 donors ('+sc('dr24','Dean’s Report')+')','published')}${kpi('Alumni participation, FY2026',pc(part,1),'smp','published average 22%, peers 7% ('+sc('alum26','AAD')+')','scorecard')}${kpi('Campaign: chance of goal',pc(R.pGoal),'mod','goal '+fK(state.camp.goal)+' by FY'+(2024+state.camp.yrs),'roadmap')}</div>`
+ +`<div class="grid g2"><div class="sec"><h3>Cumulative gifts by month</h3>${lines(months,[{n:'FY2025',c:'#94a3b8',v:c25},{n:'FY2026',c:'#2b5c8a',v:c26},{n:'FY2027',c:'#9d2235',v:c27}],{fmt:fK,label:'Cumulative gifts by month',w:620,h:300,min:0})}<p class="cap">${tag('smp')} calibrated so FY2024 matches the published total. December and June carry the most gifts.</p></div>
+ <div class="sec"><h3>Exceptions</h3><div class="tw" style="max-height:330px"><table><thead><tr><th>Type</th><th>What</th><th></th></tr></thead><tbody>${X.slice(0,14).map(x=>`<tr><td>${pill(x[1],x[4]==='bad'?'p-bad':'p-warn')}</td><td class="small">${E(x[2])}</td><td><a href="#${x[3]}">Open</a></td></tr>`).join('')}</tbody></table></div><p class="cap">${X.length} open; generated from the processing queue, pledges and proposals (${tag('smp')}).</p></div></div>`
+ +`<div class="grid g2"><div class="sec"><h3>Quad departments: gifts to department funds, FY2026</h3>${hbars(units,{fmt:fK,label:'Gifts to Quad department funds',w:620,l:220})}<p class="cap">${tag('smp')} DBMI is highlighted; the other departments are coded, not named, because these values are invented. <a href="https://narissa-pgm.github.io/HMS_DBMI/HMS_DBMI_Development.html#command" target="_blank" rel="noopener">DBMI’s own Gift &amp; Development platform ↗</a></p></div>
+ <div class="sec"><h3>Gifts by priority, FY2026</h3>${hbars(PRI.map(p=>[p[1],fyTotal(2026,(x,f)=>prOf(x,f)===p[0]),p[2]]),{fmt:fK,label:'Gifts by priority',w:620,l:240})}<p class="cap">${tag('smp')} Published context: in FY2025 more than $8M went to MD-PhD students and $4.4M to postdoctoral fellows (${sc('crim25','Crimson')}).</p></div></div>`
+ +`<div class="sec"><h3>Every section</h3><div class="grid g4 map">${PAGES.slice(1).map((p,i)=>`<a href="#${p[0]}"><i>${String(i+2).padStart(2,'0')}</i><b>${p[1]}</b><span>${E(SECDESC[p[0]])}</span></a>`).join('')}</div></div>`
+ +`<div class="sec"><h3>How to read the labels</h3><div class="legend">${tag('pub')} quoted, with a source ${tag('smp')} invented, calibrated to published totals ${tag('usr')} uploaded ${tag('mod')} calculated ${tag('asm')} an input you can change ${tag('doc')} a rule from a policy page ${PROPOSED} the author’s proposal · ${info('prop')} buttons explain each model</div>${mistake('Quoting a sample month or a model probability as HMS’s real fundraising.','Quote only Published figures; load AAD’s gift totals in Sources & setup and the views recalculate.')}</div>`;
+}
+
+/* ---------------- 2. charter & strategy ---------------- */
+function pCharter(){
+ const OBJ=[['Grow philanthropy as federal funding falls','Raise more flexible and research support while federal revenue is down 17%.','Total raised; flexible share','#9d2235'],['Keep alumni giving strong','Hold participation near HMS’s 22% average and convert first-time donors.','Participation; second-gift conversion','#2f7d4f'],['Steward every donor','Prompt thanks, accurate records, reports on time.','Acknowledgment time; report timeliness; retention','#2b5c8a'],['Run on evidence','One gift record, models that are tested, decisions logged.','Model AUC; data-quality checks passed','#b45309']];
+ const W=900,H=300;let g='';const layers=[['Outcome','Philanthropy that lasts'],['Donors','Engaged and renewing'],['Process','Prompt and accurate'],['Capability','People, data, models']];
+ layers.forEach((l,i)=>{const y=12+i*72;g+=`<rect x="6" y="${y}" width="150" height="60" rx="8" fill="var(--soft)" stroke="var(--line)"/><text x="16" y="${y+26}" class="lab" style="fill:var(--ink)">${l[0]}</text><text x="16" y="${y+44}" style="font-size:10.5px">${E(l[1])}</text>`});
+ const nodes=[[0,['More flexible and research support'],[600]],[1,['Leadership gifts closed','Alumni who give again'],[420,760]],[2,['Prioritized portfolios','Two-day acknowledgment','Reports on time'],[300,520,760]],[3,['Propensity and capacity models','Officer capacity planned','One gift record','Clear gift policies'],[250,450,640,820]]];
+ const pos={};nodes.forEach(([lv,ns,xs])=>ns.forEach((n,i)=>{pos[n]=[xs[i],12+lv*72+30]}));
+ [['Leadership gifts closed','More flexible and research support'],['Alumni who give again','More flexible and research support'],['Prioritized portfolios','Leadership gifts closed'],['Two-day acknowledgment','Alumni who give again'],['Reports on time','Alumni who give again'],['Propensity and capacity models','Prioritized portfolios'],['Officer capacity planned','Prioritized portfolios'],['One gift record','Two-day acknowledgment'],['One gift record','Reports on time'],['Clear gift policies','Reports on time']].forEach(([a,b])=>{const p=pos[a],q2=pos[b];g+=`<line x1="${p[0]}" y1="${p[1]-14}" x2="${q2[0]}" y2="${q2[1]+16}" stroke="var(--grey)" stroke-width="1.2" marker-end="url(#ar)"/>`});
+ Object.entries(pos).forEach(([n,[x,y]])=>{const w=Math.max(150,n.length*7.1);g+=`<rect x="${x-w/2}" y="${y-16}" width="${w}" height="32" rx="16" fill="var(--card)" stroke="var(--crim)"/><text x="${x}" y="${y+4}" text-anchor="middle" class="lab" style="fill:var(--ink);font-size:11.5px">${E(n)}</text>`});
+ return head('Charter & strategy','What advancement operations are for, and how they get there','A charter for the advancement operation, four objectives, the strategy map and the priorities gifts are raised for. The charter and objectives are the author’s proposal; the context is published.')
+ +`<div class="grid g2"><div class="sec"><h3>Charter ${PROPOSED}</h3>${t2(['Field','Proposal'],[
+  ['<b>Purpose</b>','Raise and steward philanthropy for HMS priorities on accurate records and tested evidence.'],
+  ['<b>Scope</b>','Annual and leadership giving, major and principal gifts, gift planning, foundations and corporations, donor relations, development services and data ('+sc('aad','AAD units')+').'],
+  ['<b>Out of scope</b>','Sponsored research agreements (research administration); naming decisions above AAD.'],
+  ['<b>Departments</b>','Department plans, such as DBMI’s, feed the case for support and the prospect lists; AAD makes the asks.'],
+  ['<b>Success at 12 months</b>','Gifts acknowledged in two business days; a tested propensity model in use; officer portfolios sized to qualified prospects; a campaign readiness score agreed.']])}</div>
+ <div class="sec"><h3>Four objectives ${PROPOSED}</h3>${OBJ.map(o=>`<div class="kpi" style="margin-bottom:10px;border-left:5px solid ${o[3]}"><div class="k"><span>${o[0]}</span></div><p class="small" style="margin:6px 0 2px;color:var(--ink)">${o[1]}</p><small>Measure: ${o[2]}</small></div>`).join('')}</div></div>`
+ +`<div class="sec"><h3>Strategy map</h3><svg class="ch" viewBox="0 0 ${W} ${H}" role="img" aria-label="Strategy map"><defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10z" fill="var(--grey)"/></marker></defs>${g}</svg><p class="cap">Context: HMS federal revenue fell 17% in FY2026 (${sc('sos26','Crimson')}); about 4,000 donors gave in FY2025, 700 of them first-time after April (${sc('crim25','Crimson')}).</p>
+ ${mistake('A strategy that counts activity: calls made, events held, letters mailed.','Count dollars by priority, donors who give again and leadership gifts closed, against the strategy map.')}</div>`
+ +`<div class="sec"><h3>Priorities gifts are raised for</h3><div class="grid g3">${PRI.map(p=>`<div class="kpi" style="border-top:4px solid ${p[2]}"><div class="k"><span>${E(p[1])}</span></div><small>${E({aid:'MD and MD-PhD students; more than $8M for MD-PhD students in FY2025 (published).',dean:'Flexible funds the Dean can deploy; most MD alumni giving goes to flexible funds, aid and research (published).',quad:'The eleven Quad departments, DBMI among them; junior faculty in basic research received a $5.75M designation in FY2025 (published).',fac:'Professorships and recruitment packages.',init:'Centers and initiatives, including the AI-enabled campus in the Dean’s plan (published).',train:'Postdoctoral fellows ($4.4M raised for FY2026, published), education and global health.'}[p[0]])}</small></div>`).join('')}</div></div>`;
+}
+
+/* ---------------- 3. inventory & scoring ---------------- */
+function pInventory(){
+ const M=MODEL,S=state.inv,thr=S.thr,ranked=PEOPLE.slice().sort((a,b)=>b.ps-a.ps),sel=ranked.filter(p=>p.ps>=thr),expDon=sum(sel,p=>p.ps);
+ const roc=xyChart([{n:'Model',c:'#9d2235',pts:M.roc},{n:'Chance',c:'#94a3b8',pts:[[0,0],[1,1]],dash:true}],{xl:'false positive rate',yl:'true positive rate',label:'ROC curve'});
+ const lift=bars(M.dec.map((v,i)=>({l:'D'+(i+1),parts:[['Lift',v,i<2?'#9d2235':'#94a3b8']]})),{fmt:v=>v.toFixed(1)+'×',total:true,label:'Lift by decile',w:460,h:300,ref:1,refLab:'average'});
+ const coef=hbars(FEAT.map((f,i)=>[f[0],Math.abs(M.w[i+1]),M.w[i+1]>=0?'#2f7d4f':'#9d2235',M.w[i+1]>=0?'raises':'lowers']).sort((a,b)=>b[1]-a[1]),{fmt:v=>v.toFixed(2),label:'Model weights',w:520,l:190});
+ /* capacity x propensity quadrant */
+ const W=900,H=340,l=56,r=20,t=14,b=40,X=v=>l+v*(W-l-r),Y=v=>t+(5.5-v)/3*(H-t-b);let g='';const jit=rng(3);
+ g+=`<rect x="${X(.5)}" y="${Y(5.5)}" width="${X(1)-X(.5)}" height="${Y(3.5)-Y(5.5)}" fill="var(--green)" opacity=".07"/><text x="${X(1)-6}" y="${Y(3.5)-6}" text-anchor="end">assign to an officer</text><text x="${X(0)+6}" y="${Y(2.5)-6}">research and engage first</text>`;
+ [3,4,5].forEach(v=>g+=`<line x1="${l}" x2="${W-r}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--line)"/><text x="${l-8}" y="${Y(v)+4}" text-anchor="end">${v}</text>`);[0,.25,.5,.75,1].forEach(v=>g+=`<line x1="${X(v)}" x2="${X(v)}" y1="${t}" y2="${H-b}" stroke="var(--line)"/><text x="${X(v)}" y="${H-b+15}" text-anchor="middle">${v}</text>`);
+ PEOPLE.filter((p,i)=>p.w>=3&&(p.w>=4||i%3===0)&&p.ps>0.06).forEach(p=>{g+=`<circle cx="${X(p.ps).toFixed(1)}" cy="${(Y(p.w)+(jit()-.5)*40).toFixed(1)}" r="3" fill="${p.org?'#0f766e':p.alum?'#2b5c8a':'#b45309'}" fill-opacity=".45"/>`});
+ g+=`<text x="${(l+W-r)/2}" y="${H-6}" text-anchor="middle">propensity to give next year (model)</text><text transform="translate(14 ${(t+H-b)/2}) rotate(-90)" text-anchor="middle">capacity band</text>`;
+ return head('Inventory & scoring','Who is likely to give, and who could give most','A propensity model trained in the browser on sample constituents, tested on records it never saw, then combined with capacity bands to sort the portfolio. Every number is model output on sample data.')
+ +`<div class="grid g3" style="margin-bottom:16px">${kpi('Model AUC (test set)',M.auc.toFixed(2),'mod','0.5 is chance; above 0.75 is useful')}${kpi('Top-decile lift',M.dec[0].toFixed(1)+'×','mod','donor rate in the top 10% vs average')}${kpi('Constituents scored',nf(PEOPLE.length),'smp','codes only; '+TYPES.map(t=>t[0].split(' ')[0]).join(', ').toLowerCase())}</div>`
+ +`<div class="grid g3"><div class="sec"><h3>ROC curve ${info('prop')}</h3>${roc}<p class="cap">${tag('mod')} ${nf(M.nte)} held-out records.</p></div><div class="sec"><h3>Lift by decile</h3>${lift}<p class="cap">${tag('mod')} D1 = the 10% with the highest scores.</p></div><div class="sec"><h3>What drives the score</h3>${coef}<p class="cap">${tag('mod')} Standardized logistic weights. No protected characteristics are used.</p></div></div>`
+ +`<div class="sec"><h3>Annual-giving outreach list</h3><div class="ctrls"><div class="ctrl"><label for="ithr">Score threshold</label><input id="ithr" type="range" min="0.05" max="0.9" step="0.01" value="${thr}"><output>${thr.toFixed(2)}</output></div></div>
+ <div class="grid g3">${kpi('Constituents above threshold',nf(sel.length),'mod','to contact this year')}${kpi('Expected donors among them',nf(expDon),'mod','sum of probabilities')}${kpi('Expected response rate',sel.length?pc(expDon/sel.length):'–','mod','versus '+pc(MODEL.base)+' for everyone')}</div>
+ ${mistake('Mailing everyone the same appeal, or only those who gave last year.','Order outreach by score, keep a random control group to measure lift, and personalize the top deciles.')}</div>`
+ +`<div class="sec"><h3>Capacity × propensity</h3><p class="why">Bands 3–5 only; band 3 thinned to one in three, and the lowest scores left out, so the chart stays readable.</p><div class="legend"><span style="color:#2b5c8a">● alumni</span><span style="color:#b45309">● patients and friends</span><span style="color:#0f766e">● foundations and corporations</span></div><svg class="ch" viewBox="0 0 ${W} ${H}" role="img" aria-label="Capacity and propensity">${g}</svg>
+ ${t2(['#','Prospect','Type','Capacity band','Propensity','Stage','Ask','Expected value'],PROS.slice(0,12).map((x,i)=>[String(i+1),'<b>'+x.id+'</b>',E(x.p.type),String(x.p.w),pc(x.p.ps),pill(x.st,x.st==='Solicit'?'p-bad':x.st==='Cultivate'?'p-warn':'p-ok'),fK(x.ask),'<b>'+fK(x.ev)+'</b>']))}<p class="cap">${tag('smp')} ${PROS.length} major-gift prospects; expected value = ask × stage odds × propensity adjustment (${tag('asm')}).</p></div>`;
+}
+
+/* ---------------- 4. funding & allocation ---------------- */
+function giftChart(goal,lead,ratio){const rows=[];let amt=goal*lead,n=1,cum=0;const bands=[[25000,Infinity],[10000,25000],[5000,10000],[2500,5000],[1000,2500],[500,1000],[250,500],[100,250]];
+ while(cum<goal*0.92&&rows.length<12){const t=amt*n;rows.push({amt,n,tot:t,pros:Math.ceil(n*ratio)});cum+=t;amt/=2;n*=2}
+ rows.push({amt:null,n:null,tot:Math.max(0,goal-cum),pros:null});return rows}
+function pFunding(){
+ const yrs=YRS.concat([CURFY]),groups=yrs.map(fy=>({l:'FY'+String(fy).slice(2)+(fy===CURFY?' YTD':''),parts:STREAMS.map(s=>[s[1],OVR&&OVR[fy]?(OVR[fy][s[0]]||0):fyTotal(fy,(p,f)=>stOf(p,f)===s[0]),s[2]])}));
+ const en=state.en,payout=5.4e6*en.rate;
+ const G=state.gc,rows=giftChart(G.goal,G.lead,G.ratio),capN=b=>PROS.filter(x=>x.ask>=b).length;
+ const W=900,rh=30,H=rows.length*rh+30;let g='';const mxn=Math.max(...rows.filter(r=>r.n).map(r=>r.n));
+ rows.forEach((r,i)=>{const y=20+i*rh;if(!r.n){g+=`<text x="10" y="${y+18}" class="lab" style="fill:var(--ink)">Gifts below ${fK(rows[i-1].amt/2)}</text><text x="${W-10}" y="${y+18}" text-anchor="end" class="lab">${fK(r.tot)}</text>`;return}
+  const w=Math.max(8,(W/2-250)*Math.log2(r.n+1)/Math.log2(mxn+1));g+=`<rect x="${W/2-w}" y="${y+3}" width="${w*2}" height="${rh-8}" rx="4" fill="#9d2235" fill-opacity="${.9-i*.06}"><title>${r.n} gift(s) of ${fK(r.amt)} = ${fK(r.tot)}; ${r.pros} prospects needed</title></rect><text x="10" y="${y+18}" class="lab" style="fill:var(--ink)">${fK(r.amt)}</text><text x="${W/2}" y="${y+18}" text-anchor="middle" style="fill:#fff;font-weight:700;font-size:11px">${r.n} gift${r.n>1?'s':''}</text><text x="${W-10}" y="${y+18}" text-anchor="end">${fK(r.tot)} · ${r.pros} prospects · ${capN(r.amt*0.5)>=r.pros?'✓':'gap '+(r.pros-capN(r.amt*0.5))}</text>`});
+ g+=`<text x="10" y="12" class="lab" style="fill:var(--crim)">GIFT SIZE</text><text x="${W-10}" y="12" text-anchor="end" class="lab" style="fill:var(--crim)">TOTAL · PROSPECTS NEEDED · SAMPLE COVERAGE</text>`;
+ const S=state.al,ws=PRI.map(p=>S.w[p[0]]),wt=ws.reduce((a,b)=>a+b,0)||1;
+ return head('Funding & allocation','Where gifts come from, what the endowment pays, and the gift chart a campaign needs','Gift streams by year, the endowment payout on HMS’s published endowment, a gift range chart for any goal with sample prospect coverage, and how flexible gifts could be split.')
+ +`<div class="sec"><h3>Gifts by stream</h3>${bars(groups,{fmt:fK,total:true,label:'Gifts by stream',w:960,h:300})}<div class="legend">${STREAMS.map(s=>`<span><span style="display:inline-block;width:10px;height:10px;background:${s[2]};margin-right:5px"></span>${s[1]}</span>`).join('')}</div><p class="cap">${tag(OVR?'usr':'smp')} FY2024 calibrated to the published “nearly $118 million” (${sc('dr24','Dean’s Report')}). Single large gifts make years uneven; the FY2025 total included one gift of $18.86M (${sc('crim25','Crimson')}).</p></div>`
+ +`<div class="grid g2"><div class="sec"><h3>The endowment and its payout</h3><div class="ctrls"><div class="ctrl"><label for="erate">Payout rate</label><input id="erate" type="range" min="0.042" max="0.061" step="0.001" value="${en.rate}"><output>${pc(en.rate,1)}</output></div></div>
+  <div class="grid g2">${kpi('HMS endowment','≈ $5.4B','pub','about 1,400 gifts; about 90% restricted ('+sc('endow','HMS')+')')}${kpi('Annual payout at this rate',fK(payout),'mod','endowment × payout rate')}${kpi('Endowment income','27%','pub','of HMS operating revenue, FY2024')}${kpi('Payout range, 2007–2024','4.2–6.1%','pub','the slider stays inside it')}</div>
+  <p class="cap">The FY2027 distribution is flat and the endowment tax rises to 8% (${sc('hmag26','Harvard Magazine')}). About one-third of HMS gifts must be used at affiliated hospitals (${sc('endow','HMS')}).</p></div>
+ <div class="sec"><h3>Allocate flexible gifts ${PROPOSED}</h3><div class="ctrls"><div class="ctrl"><label for="apool">Flexible gifts this year ($K)</label><input id="apool" type="range" min="1000" max="40000" step="500" value="${S.pool}"><output>${fK(S.pool)}</output></div>${PRI.map(p=>`<div class="ctrl"><label for="aw_${p[0]}">${E(p[1])}</label><input id="aw_${p[0]}" type="range" min="0" max="5" step="1" value="${S.w[p[0]]}"><output>${S.w[p[0]]}</output></div>`).join('')}</div>${hbars(PRI.map((p,i)=>[p[1],S.pool*ws[i]/wt,p[2],pc(ws[i]/wt)]),{fmt:fK,label:'Flexible gift allocation',w:560,l:230})}<p class="cap">${tag('asm')} weights; the Dean decides. The split is an input, not a published rule.</p></div></div>`
+ +`<div class="sec"><h3>Gift range chart ${info('pyr')}</h3><div class="ctrls"><div class="ctrl"><label for="ggoal">Campaign goal ($K)</label><input id="ggoal" type="range" min="100000" max="3000000" step="50000" value="${G.goal}"><output>${fK(G.goal)}</output></div><div class="ctrl"><label for="glead">Lead gift share of goal</label><input id="glead" type="range" min="0.05" max="0.25" step="0.01" value="${G.lead}"><output>${pc(G.lead)}</output></div><div class="ctrl"><label for="gratio">Prospects per gift</label><input id="gratio" type="range" min="2" max="6" step="0.5" value="${G.ratio}"><output>${G.ratio}</output></div></div>
+ <svg class="ch" viewBox="0 0 ${W} ${H}" role="img" aria-label="Gift range chart">${g}</svg><p class="cap">${tag('mod')} on ${tag('asm')} ratios. Coverage counts sample prospects whose ask is at least half the gift size. The goal is an input, not an HMS goal.</p>
+ ${mistake('A gift chart with no names behind the top rows.','Name and qualify the prospects for the top three rows before setting a public goal.')}</div>`;
+}
+
+/* ---------------- 5. gift lifecycle ---------------- */
+function pLifecycle(){
+ const stc={Qualify:'#6b8bb0',Cultivate:'#2b5c8a',Solicit:'#9d2235',Steward:'#2f7d4f'};
+ const fun=funnel(STAGES.map(s=>[s,PROS.filter(x=>x.st===s).length,stc[s]]),{label:'Prospects by stage'});
+ const qs=['Received','Deposited','Entered','Acknowledged'],back=qs.slice(0,3).map(s=>[s,QUEUE.filter(x=>x.stage===s).length]);
+ const done=QUEUE.filter(x=>x.ack!=null),hist=[0,1,2,3,4,5,6,7].map(d=>({l:d===7?'7+':String(d),parts:[['Gifts',done.filter(x=>d===7?x.ack>=7:x.ack===d).length,d<=2?'#2f7d4f':d<=4?'#b45309':'#9d2235']]})),sla=done.filter(x=>x.ack<=2).length/done.length;
+ const ag=[['Not yet due',p=>p.next>=TODAY],['1–30 days',p=>p.next<TODAY&&days(p.next)>=-30],['31–90 days',p=>days(p.next)<-30&&days(p.next)>=-90],['91–180 days',p=>days(p.next)<-90&&days(p.next)>=-180],['Over 180 days',p=>days(p.next)<-180]].map(([l,f])=>({l,parts:[['Balance',sum(PLEDGES.filter(p=>p.bal>0&&f(p)),p=>p.bal),l==='Not yet due'?'#2b5c8a':l==='Over 180 days'?'#9d2235':'#b45309']]}));
+ const openBal=sum(PLEDGES,p=>p.bal),allow=openBal*state.wo;
+ return head('Gift lifecycle','From prospect to stewardship, and from receipt to thank-you','Moves management for major gifts, the gift processing line with its service level, pledge aging and the rules every gift passes through. Rules are published; the queue, prospects and pledges are a sample.')
+ +`<div class="grid g2"><div class="sec"><h3>Major-gift pipeline</h3>${fun}<p class="cap">${tag('smp')} ${PROS.length} prospects; stage odds ${Object.entries(STP).map(([k,v])=>k+' '+pc(v)).join(', ')} (${tag('asm')}).</p></div>
+ <div class="sec"><h3>Processing service level ${info('sla')}</h3><div class="grid g2">${kpi('Acknowledged in ≤2 business days',pc(sla),'smp','last 60 days, '+done.length+' gifts')}${kpi('Waiting in the line',String(sum(back,b=>b[1])),'smp',back.map(b=>b[0]+' '+b[1]).join(' · '))}</div>${bars(hist,{label:'Days to acknowledgment',w:520,h:220,total:true})}<p class="cap">Business days from receipt to acknowledgment. Target ${PROPOSED}: two.</p></div></div>`
+ +`<div class="grid g2"><div class="sec"><h3>Pledge aging</h3><div class="ctrls"><div class="ctrl"><label for="wo">Write-off allowance</label><input id="wo" type="range" min="0" max="0.15" step="0.01" value="${state.wo}"><output>${pc(state.wo)}</output></div></div>${bars(ag,{fmt:fK,total:true,label:'Pledge balances by age',w:560,h:260})}<p class="cap">${tag('smp')} ${PLEDGES.length} open pledges, balance ${fK(openBal)}; allowance ${fK(allow)} at ${pc(state.wo)} (${tag('asm')}).</p></div>
+ <div class="sec"><h3>Rules every gift passes through</h3>${t2(['Rule','Requirement','Source'],[['Acknowledgment','Gifts of $250 or more: written acknowledgment with amount and goods-or-services statement','<span class="tag t-doc">Document</span> '+sc('irs','IRS')],['Quid pro quo','Payments over $75 partly for goods or services need a disclosure','<span class="tag t-doc">Document</span> '+sc('p1771','IRS Pub 1771')],['Gift or sponsored?','Deliverables, required reports or a binding agreement make it sponsored research','<span class="tag t-doc">Document</span> '+sc('giftpol','Harvard OSP')],['Foreign sources','$250,000 or more from one source in a calendar year: report by Jan 31 or Jul 31','<span class="tag t-doc">Document</span> '+sc('s117','CRS')],['Restrictions','About 90% of the HMS endowment is donor-restricted; spend only as the donor intended','<span class="tag t-pub">Published</span> '+sc('endow','HMS')]].map(r=>[E(r[0]),E(r[1]),r[2]]))}</div></div>`
+ +`<div class="sec"><h3>Moves management stages ${PROPOSED}</h3>${t2(['Stage','Owner','What moves it forward','Exit test'],[['Identify','Development research','Wealth and affinity screening, faculty referrals','A capacity band and a reason to care'],['Qualify','Gift officer','A first visit','Interest confirmed and a priority that fits'],['Cultivate','Gift officer with faculty','Briefings, lab visits, the Dean','A proposal the prospect expects'],['Solicit','Gift officer and leadership','A written proposal','A yes, a no or a revised ask'],['Steward','Donor relations','Thanks, reports, impact stories','A renewal conversation']].map(r=>r.map(E)))}</div>`;
+}
+
+/* ---------------- 6. benefits & scorecard ---------------- */
+function cohorts(){return [2022,2023,2024,2025].map(c=>{const first=PEOPLE.filter(p=>p.g[c]&&!Object.keys(p.g).some(k=>+k<c));const v=[1];for(let k=1;c+k<=2026;k++)v.push(first.length?first.filter(p=>p.g[c+k]).length/first.length:0);return {c,n:first.length,v}})}
+function pScorecard(){
+ const C=cohorts(),labs=['First year','+1','+2','+3','+4'],cols=['#94a3b8','#6b8bb0','#2b5c8a','#9d2235'];
+ const surv=lines(labs,C.map((c,i)=>({n:'FY'+String(c.c).slice(2)+' cohort',c:cols[i],nolab:true,v:labs.map((_,k)=>c.v[k]!=null?+(c.v[k]*100).toFixed(1):null)})),{fmt:v=>Math.round(v)+'%',label:'Retention by first-gift cohort',min:0,w:700,h:300});
+ const d25=new Set(PEOPLE.filter(p=>p.g[2025]).map(p=>p.id)),kept=PEOPLE.filter(p=>p.g[2026]&&d25.has(p.id)).length,back=PEOPLE.filter(p=>p.g[2026]&&!d25.has(p.id)&&Object.keys(p.g).some(k=>+k<2025)).length,nw=PEOPLE.filter(p=>p.g[2026]&&!Object.keys(p.g).some(k=>+k<2026)).length,lost=d25.size-kept;
+ const wf=waterfall([['FY2025 donors',d25.size,'base'],['Lapsed',lost,'-'],['Reactivated',back,'+'],['New',nw,'+'],['FY2026 donors',kept+back+nw,'end']],{fmt:nf,label:'Donor flows FY2025 to FY2026'});
+ const ret=kept/d25.size,base5=sumF(state.fcs),sens=[['Donor retention ±5 points',{ret:-0.05},{ret:0.05}],['New donors a year ±20%',{newM:0.8},{newM:1.2}],['Average annual gift ±10%',{avgM:0.9},{avgM:1.1}],['Major-gift close rate ±20%',{closeM:0.8},{closeM:1.2}],['Planned-gift realizations ±1 a year',{pg:-1},{pg:1}]].map(([l,lo,hi])=>[l,sumF(Object.assign({},state.fcs,mod(state.fcs,lo)))-base5,sumF(Object.assign({},state.fcs,mod(state.fcs,hi)))-base5]).sort((a,b)=>(b[2]-b[1])-(a[2]-a[1]));
+ const K=[['Donor retention',pc(ret),'50%',ret>=0.5],['Alumni participation',pc(fyDonors(2026,p=>p.alum)/PEOPLE.filter(p=>p.alum).length,1),'22% (HMS average)',fyDonors(2026,p=>p.alum)/PEOPLE.filter(p=>p.alum).length>=0.22],['Acknowledged in ≤2 business days',pc(QUEUE.filter(x=>x.ack!=null&&x.ack<=2).length/QUEUE.filter(x=>x.ack!=null).length),'95%',false],['Second-gift conversion (FY2025 new donors)',pc(C[3].v[1]||0),'35%',(C[3].v[1]||0)>=0.35],['Model AUC',MODEL.auc.toFixed(2),'0.75',MODEL.auc>=0.75],['Pledges more than 90 days overdue',fK(sum(PLEDGES.filter(p=>days(p.next)<-90&&p.bal>0),p=>p.bal)),'under 5% of balances',false]];
+ return head('Benefits & scorecard','Are donors staying, and what moves the numbers most?','Retention by first-gift cohort, donor flows from one year to the next, a sensitivity analysis of five levers on five-year gift income, and the scorecard. Computed from the sample; benchmarks are published.')
+ +`<div class="grid g4" style="margin-bottom:16px">${kpi('Donor retention FY2026',pc(ret),'smp','national: 43.3% ('+sc('fep25','FEP summary')+')')}${kpi('Donors FY2024','3,546','pub','published ('+sc('dr24','Dean’s Report')+')')}${kpi('Donors FY2025','≈ 4,000','pub','incl. 700 first-time ('+sc('crim25','Crimson')+')')}${kpi('Alumni participation','22%','pub','HMS average; peers 7% ('+sc('alum26','AAD')+')')}</div>`
+ +`<div class="grid g2"><div class="sec"><h3>Retention by first-gift cohort ${info('surv')}</h3>${surv}<div class="legend">${C.map((c,i)=>`<span><span style="display:inline-block;width:14px;height:3px;background:${cols[i]};margin-right:5px;vertical-align:middle"></span>FY${String(c.c).slice(2)} cohort (${nf(c.n)}): ${pc(c.v[1]||0)} gave again</span>`).join('')}</div><p class="cap">${tag('smp')} Share of each first-gift cohort giving again in later years.</p></div><div class="sec"><h3>Donor flows, FY2025 to FY2026</h3>${wf}<p class="cap">${tag('smp')} Reactivated: gave before FY2025, skipped it, returned.</p></div></div>`
+ +`<div class="sec"><h3>What moves five-year gift income most</h3>${tornado(sens,{fmt:fK,label:'Sensitivity of five-year gift income'})}<p class="cap">${tag('mod')} Each bar changes one lever in the forecast model and holds the rest at base (five-year base ${fK(base5)}).</p>${mistake('Spreading effort evenly across every lever.','Work the longest bars first. Close rates on leadership gifts usually lead; retention matters next because it compounds year after year.')}</div>`
+ +`<div class="sec"><h3>Scorecard ${PROPOSED}</h3>${t2(['Measure','Now','Target','Status'],K.map(k=>[E(k[0]),k[1],E(k[2]),k[3]?pill('On target','p-ok'):pill('Watch','p-warn')]))}</div>`;
+}
+
+/* ---------------- 7. risk & compliance ---------------- */
+const RISKS=[['Federal cuts push more need onto philanthropy than donors can meet','Dean · AAD leadership',4,4,'Federal revenue down again','Prioritize flexible gifts; plan on the middle path','pub'],['Concentration: a few gifts make the year','AAD leadership',4,4,'Top 10 gifts above 50% of total','Widen the leadership base; budget on the middle path','smp'],['Donor data exposed or misused','Development technology',2,5,'Records in unapproved tools','Approved systems only; AI within HMS data levels','doc'],['Restricted gifts used off-purpose','Development services · Finance',2,5,'Spending against the wrong fund','Fund-use review each quarter','pub'],['Sponsored agreement booked as a gift','Development services',2,4,'Deliverables or IP terms in a corporate letter','Harvard gift-vs-sponsored test','doc'],['Foreign gifts not reported','Development services',2,4,'One source near $250K in a calendar year','Source-level tracking; Section 117 calendar','doc'],['Pledge write-offs rise','Gift officers',3,3,'Balances more than 90 days overdue','Officer call at 30 days; allowance reviewed','smp'],['Propensity model drifts or is unfair','Development research',2,3,'AUC falls or scores skew by group','Annual retrain, fairness check, model card','smp'],['Officer turnover breaks relationships','AAD leadership',3,4,'Portfolio without contact for 120 days','Two contacts per top prospect; handover notes','smp'],['Endowment distribution flat; 8% tax','Dean',4,2,'FY2027 distribution flat','Pair endowed gifts with current-use support','pub']];
+function pRisk(){
+ const W=520,H=420,l=60,b=50,c=(W-l-10)/5,rr=(H-b-10)/5;let g='';
+ for(let L=1;L<=5;L++)for(let I=1;I<=5;I++){const s=L*I,x=l+(I-1)*c,y=10+(5-L)*rr;g+=`<rect x="${x}" y="${y}" width="${c-2}" height="${rr-2}" rx="4" fill="${s>=15?'#9d2235':s>=8?'#b45309':'#2f7d4f'}" opacity="${s>=15?.22:s>=8?.18:.12}"/>`}
+ RISKS.forEach((k,i)=>{const x=l+(k[3]-1)*c+c/2+((i%3)-1)*14,y=10+(5-k[2])*rr+rr/2+(Math.floor(i/3)%2?10:-6);g+=`<circle cx="${x}" cy="${y}" r="11" fill="var(--card)" stroke="var(--crim)"/><text x="${x}" y="${y+4}" text-anchor="middle" class="lab" style="fill:var(--ink)">${i+1}</text><title>${E((i+1)+'. '+k[0])}</title>`});
+ [1,2,3,4,5].forEach(v=>{g+=`<text x="${l+(v-1)*c+c/2}" y="${H-b+18}" text-anchor="middle">${v}</text><text x="${l-10}" y="${10+(5-v)*rr+rr/2+4}" text-anchor="end">${v}</text>`});
+ g+=`<text x="${l+(W-l)/2}" y="${H-12}" text-anchor="middle">impact</text><text transform="translate(16 ${(H-b)/2}) rotate(-90)" text-anchor="middle">likelihood</text>`;
+ const months=[];for(let i=0;i<12;i++)months.push(new Date(TODAY.getFullYear(),TODAY.getMonth()+i,1));
+ const EV=m=>{const k=m.getMonth(),o=[];if(k===11)o.push(['Calendar year-end giving peak','nih']);if(k===0)o.push(['Section 117 report due Jan 31','pol']);if(k===6)o.push(['Section 117 report due Jul 31','pol'],['New fiscal year: close FY totals','rep']);if(k===5)o.push(['Fiscal year ends Jun 30','nih']);if(k===8||k===9)o.push(['Stewardship reports season','rep']);if(k===2)o.push(['Model retrain and fairness check','pol']);if(k%3===0)o.push(['Quarterly fund-use review','rep']);return o};
+ return head('Risk & compliance','What could go wrong, who owns it, and what is due','The advancement risk register on a heat map and the twelve-month compliance calendar. Policy rules cite their source; ratings are the author’s.')
+ +`<div class="grid g2"><div class="sec"><h3>Heat map</h3><svg class="ch" viewBox="0 0 ${W} ${H}" role="img" aria-label="Risk heat map">${g}</svg></div><div class="sec"><h3>Compliance anchors</h3><ul class="list small"><li>Acknowledgment for gifts of $250 or more (${sc('irs','IRS')}); disclosure over $75 for quid pro quo (${sc('p1771','IRS Pub 1771')}).</li><li>Gift or sponsored research (${sc('giftpol','Harvard OSP')}).</li><li>Section 117: $250,000 per foreign source per calendar year; Jan 31 and Jul 31 (${sc('s117','CRS')}).</li><li>About 90% of the HMS endowment is donor-restricted (${sc('endow','HMS')}).</li><li>AI tools only within HMS data levels (${sc('hmsai','HMS IT')}).</li></ul></div></div>`
+ +`<div class="sec"><h3>Risk register ${PROPOSED}</h3>${t2(['#','Risk','Owner','L','I','Score','Trigger','Response','Basis'],RISKS.map((k,i)=>[String(i+1),E(k[0]),E(k[1]),k[2],k[3],pill(String(k[2]*k[3]),k[2]*k[3]>=15?'p-bad':k[2]*k[3]>=8?'p-warn':'p-ok'),E(k[4]),E(k[5]),tag(k[6])]))}</div>`
+ +`<div class="sec"><h3>Twelve-month calendar</h3><div class="cal">${months.map((m,i)=>`<div class="mo${i===0?' now':''}"><h4>${m.toLocaleDateString('en-US',{month:'short',year:'numeric'})}</h4>${EV(m).map(e=>`<div class="ev ${e[1]}">${E(e[0])}</div>`).join('')}</div>`).join('')}</div></div>`;
+}
+
+/* ---------------- 8. capacity & dependency ---------------- */
+function capModel(o,officers){
+ const Q=PROS.filter(x=>x.p.ps>=o.qmin),cover=Math.min(Q.length,officers*o.port),cov=Q.slice(0,cover),v=cover?officers*o.visits/cover:0,lift=1-Math.exp(-v);
+ return {Q:Q.length,cover,v,dollars:sum(cov,x=>x.ask*STP[x.st]*(0.6+x.p.ps*0.8))*lift/3,unc:sum(Q.slice(cover),x=>x.ev)/3};
+}
+function pCapacity(){
+ const o=state.cap,cur=capModel(o,o.off),xs=[];for(let n=2;n<=40;n+=2)xs.push(n);
+ const ys=xs.map(n=>capModel(o,n).dollars),marg=xs.map((n,i)=>i?(ys[i]-ys[i-1])/2:null),cost=o.cost;
+ let best=xs[0];xs.forEach((n,i)=>{if(i&&marg[i]>=cost*o.roi)best=n});
+ const ch=lines(xs.map(String),[{n:'Expected dollars a year',c:'#2b5c8a',v:ys.map(v=>Math.round(v))}],{fmt:fK,label:'Expected major-gift dollars a year by number of officers',w:620,h:300,min:0});
+ const mc=lines(xs.map(String),[{n:'Marginal $ per officer',c:'#9d2235',v:marg.map(v=>v==null?null:Math.round(v))},{n:'Cost × target return',c:'#b45309',v:xs.map(()=>cost*o.roi),dash:true}],{fmt:fK,label:'Marginal dollars per officer',w:620,h:300,min:0});
+ const DEP=[['Development research','Capacity bands, profiles, screening','Officers visit without context','Research request two weeks ahead'],['Development services','Processing, receipts, acknowledgments','Late thanks; donor complaints','Daily queue report'],['Donor relations','Stewardship reports, recognition','Donors not told what gifts did','Shared stewardship calendar'],['Development technology','CRM, data quality, security','Bad records and broken lists','Monthly data-quality checks'],['HMS Finance','Fund setup, statements, endowment','Gifts unspent or misposted','Fund set up on gift notice'],['Departments and faculty','Case content, visits, lab tours','No science story for donors','Faculty champions per priority'],['Harvard University offices','Gift policies, naming, Section 117','Policy breaches','Policy checklist at agreement'],['Alumni engagement','Reunions, volunteers, events','Lower participation','Shared engagement plan']];
+ const W=980,H=330,cx=490,cy=165;let g='';DEP.forEach((d,i)=>{const a=-Math.PI/2+i*2*Math.PI/DEP.length,x=cx+Math.cos(a)*330,y=cy+Math.sin(a)*125;g+=`<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="var(--grey)"/><rect x="${x-120}" y="${y-18}" width="240" height="36" rx="18" fill="var(--card)" stroke="var(--blue)"/><text x="${x}" y="${y+4}" text-anchor="middle" class="lab" style="fill:var(--ink);font-size:11px">${E(d[0])}</text>`});
+ g+=`<circle cx="${cx}" cy="${cy}" r="54" fill="var(--crim)"/><text x="${cx}" y="${cy-2}" text-anchor="middle" style="fill:#fff;font-weight:700;font-size:13px">Gift officers</text><text x="${cx}" y="${cy+15}" text-anchor="middle" style="fill:#fff;font-size:11px">and leadership</text>`;
+ return head('Capacity & dependency','How many gift officers, and who they depend on','An optimizer that adds gift officers one at a time and compares the extra expected dollars with their cost, using the sample prospect pool and the propensity model; then the offices officers rely on. Every input is an assumption.')
+ +`<div class="sec"><h3>Officer capacity optimizer ${info('cap')}</h3><div class="ctrls">${[['coff','Gift officers today',o.off,4,40,1],['cport','Portfolio size',o.port,40,200,5],['cvis','Visits per officer a year',o.visits,40,250,5],['cq','Minimum propensity to qualify',o.qmin,0,0.6,0.01],['ccost','Loaded cost per officer ($K)',o.cost,100,400,10],['croi','Target return (× cost)',o.roi,1,10,0.5]].map(x=>`<div class="ctrl"><label for="${x[0]}">${x[1]}</label><input id="${x[0]}" type="range" min="${x[3]}" max="${x[4]}" step="${x[5]}" value="${x[2]}"><output>${x[2]}</output></div>`).join('')}</div>
+ <div class="grid g4">${kpi('Qualified prospects',nf(cur.Q),'mod','above the propensity floor')}${kpi('Covered today',pc(cur.Q?cur.cover/cur.Q:0),'mod',nf(cur.cover)+' in portfolios; '+cur.v.toFixed(1)+' visits each a year')}${kpi('Uncovered expected value',fK(cur.unc),'mod','a year, prospects with no officer')}${kpi('Suggested officers',String(best),'mod','last officer still returns '+o.roi+'× cost')}</div>
+ <div class="grid g2" style="margin-top:12px"><div>${ch}</div><div>${mc}</div></div><p class="cap">${tag('mod')} on ${tag('smp')} prospects; all inputs ${tag('asm')}.</p>${mistake('Hiring officers before there are qualified prospects to give them.','Add research and qualification first; hire when uncovered expected value is several times an officer’s cost.')}</div>`
+ +`<div class="sec"><h3>Dependency map</h3><svg class="ch" viewBox="0 0 ${W} ${H}" role="img" aria-label="Dependency map">${g}</svg>${t2(['Depends on','What they provide','If late','Safeguard'],DEP.map(d=>d.map(E)))}<p class="cap">Office names follow the AAD contact page (${sc('aad','HMS AAD')}).</p></div>`;
+}
+
+/* ---------------- 9. roadmap & reviews (campaign) ---------------- */
+function simulateCampaign(o,runs){
+ const r=rng(2468),Y=o.yrs,base=sum(PEOPLE,p=>p.g[2026]&&stOf(p,2026)==='af'?p.g[2026]:0),fd=fdBase(),out=Array.from({length:Y},()=>[]);let hit=0;
+ for(let k=0;k<runs;k++){let cum=0;const y=Array(Y).fill(0);
+  for(let i=0;i<Y;i++)y[i]+=base*Math.pow(1+o.afg,i)*Math.exp(norm(r)*0.06);
+  PROS.forEach(x=>{const pr=Math.min(0.9,STP[x.st]*o.close*1.6);if(r()<pr){const t=Math.min(Y-1,({Qualify:2,Cultivate:1,Solicit:0,Steward:1})[x.st]+Math.floor(r()*3));y[t]+=x.ask*Math.exp(norm(r)*0.5-0.12)}});
+  for(let i=0;i<Y;i++){if(r()<o.trans)y[i]+=Math.exp(Math.log(40000)+norm(r)*0.6);y[i]+=fd*Math.exp(norm(r)*0.25)}
+  y.forEach((v,i)=>{cum+=v;out[i].push(cum)});if(cum>=o.goal)hit++}
+ return {p10:out.map(a=>q(a,.1)),p50:out.map(a=>q(a,.5)),p90:out.map(a=>q(a,.9)),pGoal:hit/runs};
+}
+let _fd=null;function fdBase(){if(_fd!=null&&!OVR)return _fd;return _fd= (fyTotal(2025,(p,f)=>/fd|co/.test(stOf(p,f)))+fyTotal(2026,(p,f)=>/fd|co/.test(stOf(p,f))))/2}
+function pRoadmap(){
+ const o=state.camp,R=simulateCampaign(o,500),labs=Array.from({length:o.yrs},(_,i)=>'FY'+String(2025+i).slice(2));
+ const ch=lines(labs,[{n:'Middle path',c:'#9d2235',v:R.p50.map(Math.round),lo:R.p10.map(Math.round),hi:R.p90.map(Math.round)}],{fmt:fK,label:'Cumulative campaign commitments',ref:o.goal,refLab:'',min:0});
+ const D=state.ready,DL=[['case','Case for support'],['lead','Leadership and volunteers'],['pipe','Prospect pipeline depth'],['staff','Staff capacity'],['data','Data and systems'],['stew','Stewardship record']],wsum=DL.reduce((s,d)=>s+D.w[d[0]],0)||1,idx=DL.reduce((s,d)=>s+(D.s[d[0]]-1)/4*D.w[d[0]],0)/wsum*100;
+ const PH=[['Planning and feasibility',0,12,'#4a6272',['Case and gift chart','Case, priorities, feasibility interviews, gift chart']],['Quiet phase',12,36,'#9d2235',['Lead gifts first','Lead gifts committed before any announcement']],['Public phase',36,72,'#2b5c8a',['Launch on readiness','Launch when readiness and lead gifts allow; broad appeals and events']],['Close and steward',72,84,'#2f7d4f',['Report to donors','Final reports to every campaign donor']]];
+ const W=980,H=60+PH.length*58,l=190,r2=20,X=m=>l+m/84*(W-l-r2);let g='';[0,12,24,36,48,60,72,84].forEach(m=>g+=`<line x1="${X(m)}" x2="${X(m)}" y1="20" y2="${H-10}" stroke="var(--line)"/><text x="${X(m)}" y="14" text-anchor="middle">M${m}</text>`);
+ PH.forEach((p,i)=>{const y=30+i*58;g+=`<text x="${l-10}" y="${y+22}" text-anchor="end" class="lab" style="fill:var(--ink)">${E(p[0])}</text><rect x="${X(p[1])}" y="${y+6}" width="${X(p[2])-X(p[1])}" height="26" rx="6" fill="${p[3]}" opacity=".85"/><text x="${X(p[1])+8}" y="${y+24}" style="fill:#fff;font-size:11px;font-weight:600">${E(p[4][0])}</text>`});
+ return head('Roadmap & reviews','A campaign roadmap, a readiness score and the odds of reaching the goal','Campaign phases, a readiness index you can score, and a simulation of cumulative commitments against any goal. The goal and every input are assumptions; HMS has announced no campaign here.')
+ +`<div class="sec"><h3>Campaign phases ${PROPOSED}</h3><svg class="ch" viewBox="0 0 ${W} ${H}" role="img" aria-label="Campaign phases">${g}</svg>${t2(['Phase','Months','What happens'],PH.map(p=>['<b>'+E(p[0])+'</b>','M'+p[1]+'–M'+p[2],E(p[4][1])]))}</div>`
+ +`<div class="grid g2"><div class="sec"><h3>Readiness index ${info('ready')}</h3><div style="display:flex;gap:16px;flex-wrap:wrap;align-items:center">${gauge(idx,{label:'Readiness index'})}<div><b style="font-family:var(--serif);font-size:18px">${idx>=75?'Ready for a public phase':idx>=50?'Ready for a quiet phase':'More groundwork first'}</b><p class="small muted">75+ public phase · 50–75 quiet phase · under 50 groundwork (${tag('asm')})</p></div></div>
+ <div class="ctrls">${DL.map(d=>`<div class="ctrl"><label for="rs_${d[0]}">${d[1]} (score)</label><input id="rs_${d[0]}" type="range" min="1" max="5" step="1" value="${D.s[d[0]]}"><output>${D.s[d[0]]}</output></div>`).join('')}</div></div>
+ <div class="sec"><h3>Readiness profile</h3>${radar(DL.map(d=>[d[1],D.s[d[0]]]),{label:'Readiness profile'})}<p class="cap">Scores are ${PROPOSED} starting points to agree with AAD leadership.</p></div></div>`
+ +`<div class="sec"><h3>Campaign simulation ${info('camp')}</h3><div class="ctrls">${[['kgoal','Goal ($K)',o.goal,200000,3000000,50000],['kyrs','Years (from FY2025)',o.yrs,4,9,1],['kclose','Close-rate multiplier',o.close,0.5,1.5,0.05],['ktrans','Chance of a transformational gift each year',o.trans,0,0.5,0.01],['kafg','Annual-giving growth',o.afg,-0.05,0.1,0.005]].map(x=>`<div class="ctrl"><label for="${x[0]}">${x[1]}</label><input id="${x[0]}" type="range" min="${x[3]}" max="${x[4]}" step="${x[5]}" value="${x[2]}"><output>${x[0]==='kgoal'?fK(x[2]):x[0]==='ktrans'||x[0]==='kafg'?pc(x[2],1):x[2]}</output></div>`).join('')}</div>
+ <div class="grid g3">${kpi('Chance of reaching the goal',pc(R.pGoal),'mod','share of 500 runs')}${kpi('Middle path at the end',fK(R.p50[o.yrs-1]),'mod','80% range '+fK(R.p10[o.yrs-1])+'–'+fK(R.p90[o.yrs-1]))}${kpi('Lead gift for the goal',fK(o.goal*state.gc.lead),'mod','from the gift range chart')}</div>${ch}<p class="cap">Dashed line: the goal. ${tag('mod')} on the ${tag('smp')} pipeline. For scale: HMS raised nearly $118M in FY2024 (${sc('dr24','Dean’s Report')}).</p></div>`
+ +`<div class="sec"><h3>Review cadence ${PROPOSED}</h3>${t2(['Review','When','Who','Decides'],[['Daily queue','Every morning','Development services','Exceptions cleared today'],['Weekly pipeline','Every week','Gift officers and directors','Next moves, proposals'],['Monthly dashboard','Monthly','AAD leadership','Resourcing, priorities'],['Quarterly readiness','Each quarter','Dean and AAD leadership','Campaign phase and goal'],['Annual model review','Each spring','Development research','Retrain, fairness check, model card']].map(r=>r.map(E)))}</div>`;
+}
+
+/* ---------------- 10. governance & communications ---------------- */
+function pGovernance(){
+ const roles=['Dean','AAD leadership','Gift officer','Gift acceptance review','Development services','Donor relations','Department'];
+ const ACT=[['Set priorities and the case',['A','R','C','','','','C']],['Approve campaign goal and phase',['A','R','I','','','','I']],['Solicit a leadership gift',['R','C','A','','','','C']],['Accept a gift with unusual terms',['I','A','C','R','C','','C']],['Approve a naming',['A','R','C','C','','','C']],['Process and acknowledge',['','I','I','','A','','']],['Report to the donor',['','I','C','','C','A','R']],['Retrain the propensity model',['','A','C','','','','']]];
+ const cls={A:'background:#152430;color:#fff',R:'background:#9d2235;color:#fff',C:'background:#e7f4ec;color:#15803d',I:'border:1px solid var(--line)'};
+ const flow=['Proposal drafted','Terms checked','Gift or sponsored?','Restrictions reviewed','Naming approved','Agreement signed','Fund set up'];
+ const W=980,H=120,w=(W-20)/flow.length;let g='';flow.forEach((s,i)=>{const x=10+i*w;g+=`<path d="M${x+2} 30 h${w-18} l14 26 l-14 26 h-${w-18} l14 -26z" fill="${i===2?'#b45309':i===4?'#6d28d9':'#2b5c8a'}" opacity=".88"/>`;wrapT(s,13).forEach((t,j)=>g+=`<text x="${x+w/2+4}" y="${(wrapT(s,13).length>1?52:60)+j*14}" text-anchor="middle" style="fill:#fff;font-weight:700;font-size:11.5px">${E(t)}</text>`)});
+ return head('Governance & communications','Who decides, who asks, and who hears what','A RACI for advancement decisions, the gift acceptance flow and a communications plan by audience. All are proposals to agree with AAD leadership.')
+ +`<div class="sec"><h3>Gift acceptance flow ${PROPOSED}</h3><svg class="ch" viewBox="0 0 ${W} ${H}" role="img" aria-label="Gift acceptance flow">${g}</svg><p class="cap">The gift-or-sponsored check follows Harvard policy (${sc('giftpol','Harvard OSP')}); naming is approved above AAD.</p></div>`
+ +`<div class="sec"><h3>RACI ${PROPOSED}</h3><div class="tw"><table><thead><tr><th>Decision</th>${roles.map(r=>`<th style="text-align:center">${E(r)}</th>`).join('')}</tr></thead><tbody>${ACT.map(a=>`<tr><td>${E(a[0])}</td>${a[1].map(v=>`<td style="text-align:center">${v?`<span class="pill" style="${cls[v]}">${v}</span>`:''}</td>`).join('')}</tr>`).join('')}</tbody></table></div></div>`
+ +`<div class="sec"><h3>Communications plan ${PROPOSED}</h3>${t2(['Audience','Message','Channel and cadence','Owner'],[['Leadership donors','What their gifts did; the Dean’s priorities','Personal report each fall; Dean’s briefings','Donor relations with gift officers'],['Alumni','Class news, reunion, ways to give','Class notes, reunion, year-end appeal','Alumni engagement'],['First-time donors','Thanks and a story within weeks','Email and a short report','Donor relations'],['Departments','Their gifts, funds and prospects','Quarterly department report','Gift officers'],['Dean','Totals, pipeline, campaign readiness','Monthly dashboard','AAD leadership'],['Faculty champions','Visit briefs, donor interests','Before each visit','Gift officers']].map(r=>r.map(E)))}${mistake('Asking a donor for the next gift before telling them what the last one did.','Report first, then ask; and let alumni hear about priorities through classmates and reunions, not only appeals.')}</div>`;
+}
+function wrapT(s,n){const w=String(s).split(' '),o=[];let c='';w.forEach(x=>{if((c+' '+x).trim().length>n){if(c)o.push(c);c=x}else c=(c+' '+x).trim()});if(c)o.push(c);return o.slice(0,3)}
+
+/* ---------------- 11. AI/ML readiness ---------------- */
+function pAI(){
+ const D=[['Data',3],['Policy and guardrails',3],['People and skills',2],['Tools and security',4],['Models in production',2]];
+ const UC=[['Annual-giving propensity (this page’s model)','High','Pilot','Aggregate CRM fields, in approved systems','Model card; random control group; yearly fairness check'],['Major-gift capacity and affinity ranking','High','Pilot','With development research, in approved systems','Officer review before any assignment'],['Gift processing: matching, coding, duplicate checks','High','Ready','Level 3 in approved systems','A person approves every posting'],['Stewardship report first drafts from fund statements','Medium','Pilot','Level 3','A person checks every figure'],['Visit briefs from public sources','Medium','Pilot','Public information','No donor records pasted into tools'],['Meeting notes','Medium','Limited','Level 2 only','No donor details: meeting assistants only to Level 2'],['Uploading donor files to personal AI accounts','—','Never','—','Approved HMS tools only']];
+ return head('AI/ML readiness','Models that help advancement, and the rules around donor data','A readiness assessment, a model card for the propensity model on this platform, the use cases and the guardrails. Scores are the author’s; HMS rules are published.')
+ +`<div class="grid g2"><div class="sec"><h3>Readiness ${PROPOSED}</h3>${radar(D,{label:'AI readiness'})}</div><div class="sec"><h3>Model card: annual-giving propensity</h3>${t2(['Field','Value'],[['Purpose','Order annual-giving outreach; not to judge any person'],['Inputs',FEAT.map(f=>f[0]).join('; ')],['Excluded','Age, gender, race, ethnicity and other protected characteristics'],['Training',nf(MODEL.ntr)+' sample records, logistic regression, trained in the browser'],['Test result','AUC '+MODEL.auc.toFixed(2)+'; top-decile lift '+MODEL.dec[0].toFixed(1)+'×'],['Limits','Sample data; retrain on real CRM data with AAD; scores drift as giving patterns change'],['Review','Each spring, with a fairness check by segment']].map(r=>['<b>'+E(r[0])+'</b>',E(r[1])]))}</div></div>`
+ +`<div class="sec"><h3>Use cases</h3>${t2(['Use case','Value','Readiness','Data','Guardrail'],UC.map(u=>[E(u[0]),E(u[1]),pill(u[2],u[2]==='Ready'?'p-ok':u[2]==='Never'?'p-bad':'p-warn'),E(u[3]),E(u[4])]))}</div>`
+ +`<div class="sec"><h3>Rules that apply</h3><ul class="list small"><li>HMS tools (Claude, ChatGPT Edu, Copilot Premium) for eligible Quad-based employees after training; Level 3 data and below, never Level 4 or 5; meeting assistants only to Level 2 (${sc('hmsai','HMS IT')}). Confirm the classification of donor data before any use.</li><li>Frame every model with the NIST AI RMF: govern, map, measure, manage (${sc('nist','NIST')}).</li><li>No model output reaches a donor or decides an assignment without a person.</li></ul>${mistake('A propensity score used as a verdict on a person, or built on characteristics that should never drive outreach.','Publish a model card, exclude protected characteristics, hold out a control group and check results by segment every year.')}</div>`;
+}
+
+/* ---------------- 12. sources & setup ---------------- */
+function pSetup(){
+ const nodes=[['Advancement CRM','Constituents, gifts, pledges, contacts',120,70],['Gift processing','Receipts, deposits, acknowledgments',120,200],['Harvard financials','Funds, statements, endowment',490,250],['Events and email','Attendance, engagement',860,70],['Data warehouse','Joined, cleaned, governed',490,140],['This platform','Dashboards, models, forecasts',860,200]];
+ const W=980,H=290;let g='';const ln=[[0,4],[1,4],[2,4],[3,4],[4,5],[1,0]];ln.forEach(([a,b])=>{const A=nodes[a],B=nodes[b];g+=`<line x1="${A[2]}" y1="${A[3]}" x2="${B[2]}" y2="${B[3]}" stroke="var(--grey)" stroke-width="1.5" marker-end="url(#ar2)"/>`});
+ nodes.forEach(n=>{g+=`<rect x="${n[2]-110}" y="${n[3]-26}" width="220" height="52" rx="10" fill="var(--card)" stroke="${n[0]==='This platform'?'var(--crim)':'var(--blue)'}" stroke-width="1.5"/><text x="${n[2]}" y="${n[3]-4}" text-anchor="middle" class="lab" style="fill:var(--ink)">${E(n[0])}</text><text x="${n[2]}" y="${n[3]+13}" text-anchor="middle" style="font-size:10.5px">${E(n[1])}</text>`});
+ return head('Sources & setup','Load gift totals, see the data architecture, and every source','Upload gift totals by fiscal year and stream to replace the sample in the funding view. Below are the data flows a live version would use and every citation.')
+ +`<div class="sec"><h3>Load gift totals</h3><p class="why">${OVR?tag('usr')+' Your totals are loaded.':tag('smp')+' Sample totals are in use.'}</p><div class="ctrls"><div class="ctrl"><label for="csvin">CSV file</label><input id="csvin" type="file" accept=".csv,text/csv"></div><button class="btn" type="button" data-tpl>Download the template</button><button class="btn" type="button" data-csv>Download current totals</button>${OVR?'<button class="btn" type="button" data-resetled>Return to the sample</button>':''}</div><p class="small">Columns: <code>fiscal_year, stream, amount_k</code>. Streams: ${STREAMS.map(s=>s[0]+' ('+s[1]+')').join(', ')}. Totals only: no donor records.</p><div id="csvmsg" class="small"></div></div>`
+ +`<div class="sec"><h3>Data architecture for a live version</h3><svg class="ch" viewBox="0 0 ${W} ${H}" role="img" aria-label="Data architecture"><defs><marker id="ar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10z" fill="var(--grey)"/></marker></defs>${g}</svg>${mistake('Building dashboards straight off the CRM, so every report counts gifts a little differently.','Define gifts, donors and credit rules once in the warehouse; every view, model and export reads from there.')}</div>`
+ +`<div class="sec"><h3>Sources</h3>${t2(['Source','Publisher','Date','What it supports'],Object.values(SRC).map(s=>[`<a href="${E(s[3])}" target="_blank" rel="noopener">${E(s[0])}</a>`,E(s[1]),E(s[2]),'<span class="small">'+E(s[4])+'</span>']))}</div>`;
+}
+
+/* ---------------- 13. published data & forecast ---------------- */
+const SCN={base:['Base','Retention and close rates near today’s',{ret:0.6,newM:1,avgM:1,closeM:1,pg:3}],down:['Downturn','Donors pull back',{ret:0.54,newM:0.85,avgM:0.93,closeM:0.8,pg:2}],push:['Campaign push','More officers working the pipeline',{ret:0.64,newM:1.15,avgM:1.04,closeM:1.2,pg:4}]};
+function mod(o,d){const x={};Object.entries(d).forEach(([k,v])=>{if(k==='ret'||k==='pg')x[k]=o[k]+v;else x[k]=o[k]*v});return x}
+function histMajor(){return [2024,2025,2026].map(fy=>fyTotal(fy,(p,f)=>stOf(p,f)==='mg')).sort((a,b)=>a-b)[1]}
+function forecast(o,runs){
+ const r=rng(1357),N=5,out=Array.from({length:N},()=>[]),af=PEOPLE.filter(p=>p.g[2026]&&stOf(p,2026)==='af'),d0=af.length,avg=d0?sum(af,p=>p.g[2026])/d0:1;
+ const prevAf=new Set(PEOPLE.filter(p=>p.g[2025]&&stOf(p,2025)==='af').map(p=>p.id)),ret0=prevAf.size?af.filter(p=>prevAf.has(p.id)).length/prevAf.size:0.6,newBase=d0*(1-ret0),fd=fdBase(),mg=histMajor();
+ for(let k=0;k<runs;k++){const y=Array(N).fill(0);let d=d0;
+  for(let i=0;i<N;i++){d=d*o.ret+newBase*o.newM;y[i]+=d*avg*o.avgM*Math.exp(norm(r)*0.05)+fd*Math.exp(norm(r)*0.2)+mg*o.closeM*Math.exp(norm(r)*0.35-0.06)}
+  PROS.filter(x=>x.st==='Solicit').forEach(x=>{if(r()<Math.min(0.9,0.45*o.closeM)&&r()<0.1)y[0]+=x.ask*Math.exp(norm(r)*0.4-0.08)}); /* proposals out now: extra lift in year one */
+  for(let i=0;i<N;i++){let n=0;const L=Math.max(0,o.pg);let pz=Math.exp(-L),pp=pz,u=r();while(u>pp&&n<20){n++;pz*=L/n;pp+=pz}for(let j=0;j<n;j++)y[i]+=Math.exp(Math.log(1500)+norm(r)*0.9)}
+  y.forEach((v,i)=>out[i].push(v))}
+ return {p10:out.map(a=>q(a,.1)),p50:out.map(a=>q(a,.5)),p90:out.map(a=>q(a,.9)),ret0};
+}
+function sumF(o){const R=forecast(o,160);return R.p50.reduce((a,b)=>a+b,0)}
+function pPublished(){
+ const hms=bars([{l:'FY2024',parts:[['Raised',118,'#9d2235']]}],{fmt:v=>'$'+v+'M',total:true,label:'HMS raised FY2024',w:300,h:220});
+ const don=bars([{l:'FY2024',parts:[['Donors',3546,'#94a3b8']]},{l:'FY2025',parts:[['Donors',4000,'#9d2235']]}],{fmt:nf,total:true,label:'HMS donors',w:340,h:220});
+ const alum=bars([{l:'FY2025',parts:[['MD alumni giving',11,'#94a3b8']]},{l:'FY2026',parts:[['Alumni giving',19,'#9d2235']]}],{fmt:v=>'$'+v+'M',total:true,label:'HMS alumni giving',w:340,h:220});
+ const usa=hbars([['Individuals',392.45,'#9d2235'],['Foundations',109.81,'#2b5c8a'],['Bequests',45.84,'#6d28d9'],['Corporations (≈7%)',44.5,'#b45309']],{fmt:v=>'$'+v.toFixed(1)+'B',label:'U.S. giving by source 2024',w:560,l:170});
+ const S=state.fc,o=Object.assign({},SCN[S.k][2],S.over),R=forecast(o,600),hist=[2024,2025,2026].map(fy=>fyTotal(fy));
+ const labs=['FY24','FY25','FY26','FY27','FY28','FY29','FY30','FY31'];
+ const ch=lines(labs,[{n:'Middle path',c:'#9d2235',v:[null,null,hist[2]].concat(R.p50.map(Math.round)),lo:[null,null,hist[2]].concat(R.p10.map(Math.round)),hi:[null,null,hist[2]].concat(R.p90.map(Math.round))},{n:'Sample history',c:'#152430',v:hist.map(Math.round).concat([null,null,null,null,null]),nolab:true}],{fmt:fK,label:'Gift income forecast',split:2,min:0});
+ const alumN=PEOPLE.filter(p=>p.alum).length,partH=YRS.map(fy=>fyDonors(fy,p=>p.alum)/alumN*100);
+ return head('Published data & forecast','What the public numbers say, and where gift income could go','HMS, Harvard and national giving as published, then a forecast of HMS gift income from the sample: donors by retention, the major-gift pipeline, planned-gift realizations and foundations. Published points link to their source.')
+ +`<div class="grid g3"><div class="sec"><h3>HMS raised, FY2024</h3>${hms}<p class="cap">${tag('pub')} Nearly $118M from 3,546 donors (${sc('dr24','Dean’s Report')}). Later totals are not published here.</p></div><div class="sec"><h3>HMS donors</h3>${don}<p class="cap">${tag('pub')} FY2025 “about 4,000,” including 700 first-time donors after April (${sc('crim25','Crimson')}).</p></div><div class="sec"><h3>HMS alumni giving</h3>${alum}<p class="cap">${tag('pub')} MD alumni $11M in FY2025 (${sc('alum25','HMS Pulse')}); 1,964 alumni gave more than $19M in FY2026 (${sc('alum26','AAD')}). Definitions may differ.</p></div></div>`
+ +`<div class="grid g2"><div class="sec"><h3>Who gives in the U.S.</h3>${usa}<p class="cap">${tag('pub')} 2024 total $592.5B, up 6.3% (${sc('gusa25','Giving USA via NonProfit Times')}); corporations shown at 7% of the total. Education about $88.3B (${tag('mod')} derived: $2.83B behind human services at $91.15B).</p></div>
+ <div class="sec"><h3>Benchmarks</h3><div class="grid g2">${kpi('U.S. higher-ed giving FY2025','$78.8B','pub','up 4% ('+sc('vse25','CASE')+')')}${kpi('Harvard gifts FY2026','> $1.5B','pub','current use $684M ('+sc('hufy26','Harvard')+')')}${kpi('Donor retention 2025','43.3%','pub','all U.S. nonprofits ('+sc('fep25','FEP')+')')}${kpi('HMS endowment','≈ $5.4B','pub','27% of revenue ('+sc('endow','HMS')+')')}</div></div></div>`
+ +`<div class="sec"><h3>HMS gift income: sample history and forecast ${info('fc')}</h3><div class="ctrls"><div class="seg" role="group" aria-label="Scenario">${Object.entries(SCN).map(([k,s])=>`<button type="button" data-scn="${k}" aria-pressed="${S.k===k}">${s[0]}</button>`).join('')}</div>
+ <div class="ctrl"><label for="fret">Annual-donor retention</label><input id="fret" type="range" min="0.4" max="0.8" step="0.01" value="${o.ret}"><output>${pc(o.ret)}</output></div>
+ <div class="ctrl"><label for="fnew">New donors (× today)</label><input id="fnew" type="range" min="0.5" max="1.5" step="0.05" value="${o.newM}"><output>${o.newM.toFixed(2)}×</output></div>
+ <div class="ctrl"><label for="fclose">Major-gift close rate (×)</label><input id="fclose" type="range" min="0.5" max="1.5" step="0.05" value="${o.closeM}"><output>${o.closeM.toFixed(2)}×</output></div>
+ <div class="ctrl"><label for="fpg">Planned gifts a year</label><input id="fpg" type="range" min="0" max="8" step="1" value="${o.pg}"><output>${o.pg}</output></div></div>
+ ${ch}${t2(['Fiscal year','Low (10th)','Middle path','High (90th)'],R.p10.map((v,i)=>['FY'+(2027+i),fK(v),'<b>'+fK(R.p50[i])+'</b>',fK(R.p90[i])]))}
+ <p class="cap">${tag('mod')} on the ${tag('smp')} ledger calibrated to FY2024’s published total. ${E(SCN[S.k][1])}. All inputs ${tag('asm')}.</p></div>`
+ +`<div class="sec"><h3>Alumni participation, sample history</h3>${lines(YRS.map(y=>'FY'+String(y).slice(2)),[{n:'Sample',c:'#2b5c8a',v:partH.map(v=>+v.toFixed(1))}],{fmt:v=>v.toFixed(0)+'%',label:'Alumni participation',ref:22,refLab:'HMS average 22%',min:0,w:900,h:260})}<p class="cap">${tag('smp')} line; ${tag('pub')} reference: 22% average, against 7% at peers (${sc('alum26','AAD')}).</p></div>`;
+}
+
+/* ---------------- uploaded totals ---------------- */
+function parseCSV(t){const rows=[];let row=[],f='',qq=false;for(let i=0;i<t.length;i++){const c=t[i];if(qq){if(c==='"'){if(t[i+1]==='"'){f+='"';i++}else qq=false}else f+=c}else if(c==='"')qq=true;else if(c===','){row.push(f);f=''}else if(c==='\n'||c==='\r'){if(c==='\r'&&t[i+1]==='\n')i++;row.push(f);f='';if(row.some(x=>x!==''))rows.push(row);row=[]}else f+=c}row.push(f);if(row.some(x=>x!==''))rows.push(row);return rows}
+function totalsFromRows(rows){const h=rows[0].map(x=>x.trim().toLowerCase()),ix=k=>h.indexOf(k),miss=['fiscal_year','stream','amount_k'].filter(k=>ix(k)<0);if(miss.length)throw new Error('Missing columns: '+miss.join(', '));
+ const o={};rows.slice(1).forEach((r,n)=>{const fy=parseInt(r[ix('fiscal_year')],10),st=String(r[ix('stream')]||'').trim().toLowerCase(),a=parseFloat(r[ix('amount_k')]);if(!isFinite(fy)||!isFinite(a))throw new Error('Row '+(n+2)+': fiscal_year and amount_k must be numbers');if(!STN[st])throw new Error('Row '+(n+2)+': stream must be one of '+Object.keys(STN).join(', '));o[fy]=o[fy]||{};o[fy][st]=(o[fy][st]||0)+a});
+ if(!Object.keys(o).length)throw new Error('No rows found');return o}
+(function(){const u=LS.get('totals',null);if(u&&typeof u==='object'&&Object.keys(u).length){OVR=u;USERG=true}})();
+
+/* ---------------- state, routing, events ---------------- */
+const state={inv:{thr:0.5},al:{pool:12000,w:{aid:3,dean:2,quad:3,fac:2,init:2,train:2}},en:{rate:0.05},gc:{goal:1250000,lead:0.12,ratio:3},wo:0.05,
+ cap:{off:10,port:80,visits:110,qmin:0.15,cost:180,roi:3},camp:{goal:1250000,yrs:7,close:1,trans:0.12,afg:0.03},
+ ready:{s:{case:3,lead:3,pipe:3,staff:2,data:3,stew:4},w:{case:2,lead:2,pipe:3,staff:1,data:1,stew:1}},fc:{k:'base',over:{}},fcs:null};
+state.fcs=Object.assign({},SCN.base[2]);
+const RENDER={command:pCommand,charter:pCharter,inventory:pInventory,funding:pFunding,lifecycle:pLifecycle,scorecard:pScorecard,risk:pRisk,capacity:pCapacity,roadmap:pRoadmap,governance:pGovernance,ai:pAI,setup:pSetup,published:pPublished};
+const ALIAS={index:'command',campaign:'roadmap',models:'inventory',forecast:'published',compliance:'risk',sources:'setup'};
+function page(){const h=location.hash.slice(1);return RENDER[h]?h:(ALIAS[h]||'command')}
+const OFAMAP={command:'index',charter:'charter',inventory:'inventory',funding:'funding',lifecycle:'lifecycle',scorecard:'kpi',risk:'mitigate',capacity:'capacity',roadmap:'calendar',governance:'comms',ai:'aiready',setup:'setup',published:'forecast'};
+const PLANMAP={command:['1','Executive summary'],charter:['54','Development & Advancement plan'],inventory:['54','Development & Advancement plan'],funding:['22','Funding sources'],lifecycle:['54','Development & Advancement plan'],scorecard:['28','Scorecard'],risk:['26','Risks'],capacity:['38','Resource capacity'],roadmap:['15','Roadmap'],governance:['58','Communications plan'],ai:['57','AI/ML readiness'],setup:['31','Sources'],published:['59','Published data & forecast']};
+const lk=(u,t)=>`<a href="${u}" target="_blank" rel="noopener">${E(t)} ↗</a>`;
+const planStrip=p=>{const nm=PAGES.find(x=>x[0]===p)[1],B='https://narissa-pgm.github.io/HMS_DBMI/';
+ return `<div class="sec planstrip"><h3>Same section in the companion platforms</h3><p class="small" style="margin:0 0 8px">The DBMI Operating Plan and the four platforms share these 13 sections (each opens in a new tab).</p><div class="pslinks">${lk(B+'HMS_DBMI_Development.html#'+p,'DBMI Gift & Development · '+nm)}${lk(B+'HMS_DBMI_Research.html#'+p,'Research & Grants · '+nm.replace('Gift lifecycle','Grant lifecycle'))}${lk(B+'HMS_OFA.html#'+OFAMAP[p],'Faculty Affairs')}${lk(B+'DBMI_Operating_Plan.html#/m/'+PLANMAP[p][0],'Plan '+PLANMAP[p][0]+' · '+PLANMAP[p][1])}</div></div>`};
+function paint(keepScroll){
+ const p=page(),y=window.scrollY;
+ $('#tabs').innerHTML=PAGES.map(([k,n],i)=>`<a href="#${k}"${k===p?' aria-current="page"':''}><span class="tn">${i+1}</span>${n}</a>`).join('');
+ try{$('#main').innerHTML=RENDER[p]()+planStrip(p)}catch(e){$('#main').innerHTML='<div class="sec">This page failed to render: '+E(e.message)+'</div>';console.error(e)}
+ document.title=(p==='command'?'':PAGES.find(x=>x[0]===p)[1]+' · ')+'HMS Advancement';
+ if(keepScroll)window.scrollTo(0,y);
+ const cur=document.querySelector('#tabs a[aria-current]');if(cur&&!keepScroll)try{cur.scrollIntoView({block:'nearest',inline:'center'})}catch(e){}
+}
+$('#foot').innerHTML='Demo build by Narissa Khomkhai, as of '+TODAY.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'})+'. Not an official Harvard system. Published figures carry their source; sample data is invented and calibrated only where stated; models run in your browser on that sample; proposals are the author’s. No donor names and no HMS internal data are included.';
+window.addEventListener('hashchange',()=>{paint(false);window.scrollTo(0,0);$('#main').focus({preventScroll:true})});
+function dl(name,rows){const csv=rows.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500)}
+function openPop(k){const P=POPS[k];if(!P)return;$('#dlgt').textContent=P[0];$('#dlgb').innerHTML=P[1]+mistake(P[2],P[3]);$('#dlg').classList.add('on');const c=$('#dlg [data-close]');if(c)c.focus()}
+document.addEventListener('click',e=>{
+ const t=e.target.closest('[data-scn],[data-go],[data-csv],[data-tpl],[data-resetled],[data-pop],[data-close]');if(!t){if(e.target.id==='dlg')$('#dlg').classList.remove('on');return}
+ if(t.dataset.scn){state.fc={k:t.dataset.scn,over:{}};paint(true)}
+ else if(t.dataset.go){location.hash=t.dataset.go}
+ else if(t.dataset.pop){openPop(t.dataset.pop)}
+ else if(t.hasAttribute('data-close')){$('#dlg').classList.remove('on')}
+ else if(t.hasAttribute('data-csv')){const rows=[['fiscal_year','stream','amount_k','layer']];YRS.concat([CURFY]).forEach(fy=>STREAMS.forEach(s=>rows.push([fy,s[0],Math.round(OVR&&OVR[fy]?(OVR[fy][s[0]]||0):fyTotal(fy,(p,f)=>stOf(p,f)===s[0])),OVR?'YOUR DATA':'SAMPLE'])));dl('HMS_gift_totals.csv',rows)}
+ else if(t.hasAttribute('data-tpl')){dl('HMS_gift_totals_template.csv',[['fiscal_year','stream','amount_k'],['2025','af','30000'],['2025','mg','55000'],['2025','pg','9000'],['2025','fd','15000'],['2025','co','8000']])}
+ else if(t.hasAttribute('data-resetled')){OVR=null;USERG=false;LS.set('totals',null);paint(true)}
+});
+document.addEventListener('change',e=>{if(e.target.id!=='csvin')return;const f=e.target.files&&e.target.files[0];if(!f)return;const rd=new FileReader();rd.onload=()=>{try{const o=totalsFromRows(parseCSV(String(rd.result)));OVR=o;USERG=true;LS.set('totals',o);paint(true);const m=$('#csvmsg');if(m)m.innerHTML='<span class="ok">Loaded totals for '+Object.keys(o).length+' fiscal years. Funding & allocation now uses them.</span>'}catch(err){const m=$('#csvmsg');if(m)m.innerHTML='<span class="bad">Could not load: '+E(err.message)+'</span>'}};rd.readAsText(f)});
+document.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.dataset&&e.target.dataset.go){e.preventDefault();location.hash=e.target.dataset.go}if(e.key==='Escape')$('#dlg').classList.remove('on')});
+let tmr=null;
+const SETS={ithr:v=>state.inv.thr=v,erate:v=>state.en.rate=v,apool:v=>state.al.pool=v,ggoal:v=>state.gc.goal=v,glead:v=>state.gc.lead=v,gratio:v=>state.gc.ratio=v,wo:v=>state.wo=v,
+ coff:v=>state.cap.off=v,cport:v=>state.cap.port=v,cvis:v=>state.cap.visits=v,cq:v=>state.cap.qmin=v,ccost:v=>state.cap.cost=v,croi:v=>state.cap.roi=v,
+ kgoal:v=>state.camp.goal=v,kyrs:v=>state.camp.yrs=v,kclose:v=>state.camp.close=v,ktrans:v=>state.camp.trans=v,kafg:v=>state.camp.afg=v,
+ fret:v=>state.fc.over.ret=v,fnew:v=>state.fc.over.newM=v,fclose:v=>state.fc.over.closeM=v,fpg:v=>state.fc.over.pg=v};
+PRI.forEach(p=>SETS['aw_'+p[0]]=v=>state.al.w[p[0]]=v);
+['case','lead','pipe','staff','data','stew'].forEach(k=>SETS['rs_'+k]=v=>state.ready.s[k]=v);
+const FMT={ithr:v=>v.toFixed(2),erate:v=>pc(v,1),apool:fK,ggoal:fK,glead:v=>pc(v),wo:v=>pc(v),cq:v=>v.toFixed(2),kgoal:fK,ktrans:v=>pc(v,1),kafg:v=>pc(v,1),fret:v=>pc(v),fnew:v=>v.toFixed(2)+'×',fclose:v=>v.toFixed(2)+'×'};
+document.addEventListener('input',e=>{
+ const id=e.target.id,v=parseFloat(e.target.value),out=e.target.parentNode.querySelector('output');
+ if(!SETS[id])return; if(out)out.textContent=FMT[id]?FMT[id](v):v;
+ clearTimeout(tmr);tmr=setTimeout(()=>{SETS[id](v);paint(true);const el=document.getElementById(id);if(el)el.focus()},180);
+});
+(function theme(){const k='hmsadv_theme';let t=null;try{t=localStorage.getItem(k)}catch(e){}if(t)document.documentElement.setAttribute('data-theme',t);
+ $('#theme').addEventListener('click',()=>{const cur=document.documentElement.getAttribute('data-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'),nx=cur==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',nx);try{localStorage.setItem(k,nx)}catch(e){}})})();
+paint(false);
+
+</script>
+</body>
+</html>
