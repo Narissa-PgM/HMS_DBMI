@@ -189,6 +189,10 @@ h1 span{display:block;color:var(--slate);font-weight:400;font-size:.52em;letter-
   content:"";position:absolute;inset:-7px;border-radius:50%;
   border:1px dashed var(--crimson-m);opacity:.55;
 }
+.portrait{position:relative;width:84px;height:84px;border-radius:50%;flex:none;background:#eef1f4;box-shadow:0 0 0 3px #fff,0 0 0 4px var(--line),0 10px 20px -12px rgba(117,20,34,.8)}
+.portrait img{display:block;width:100%;height:100%;border-radius:50%;object-fit:cover;object-position:50% 22%}
+.portrait::after{content:"";position:absolute;inset:-7px;border-radius:50%;border:1px dashed var(--crimson-m);opacity:.55}
+.portrait.monogram{width:62px;height:62px}
 .idcard h2{font-size:16px;margin:0 0 2px}
 .idcard .idrole{font-size:12.5px;color:var(--muted);margin:0}
 .idcard-row{padding:12px 0;border-top:1px solid var(--line)}
@@ -775,7 +779,7 @@ a.arch-node:hover{box-shadow:var(--shadow-sm);transform:translateY(-2px);color:v
       <p class="eyebrow">Executive profile · Twenty years in academic medicine and higher education</p>
       <h1 id="hero-name">Narissara Khomkhai</h1>
       <p class="roleline">Academic operations · Financial stewardship · One Harvard coordination · Responsible AI</p>
-      <p class="lede">Academic operations and data-modernization professional with twenty years at Harvard University, an academic medical center and Phillips Academy, and an independent data and AI consulting practice since November 2025. I connect <strong>institutional data, faculty affairs, financial stewardship, and practical workflow improvement</strong> to protect research time and support accountable decisions. The accompanying DBMI Operating Plan is a proposed application of this experience, not an assertion of HMS authority or an implemented departmental system.</p>
+      <p class="lede">Academic operations and data-modernization professional with twenty years at Harvard University, an academic medical center and Phillips Academy, and an independent data and AI practice since November 2025. I connect <strong>institutional data, faculty affairs, financial stewardship, and practical workflow improvement</strong> to protect research time and support accountable decisions. The accompanying DBMI Operating Plan is a proposed application of this experience, not an assertion of HMS authority or an implemented departmental system.</p>
       <ul class="hero-chips">
         <li class="chip" style="--cc:var(--crimson)">Faculty affairs data ownership</li>
         <li class="chip" style="--cc:var(--blue)">Advancement operations</li>
@@ -798,19 +802,19 @@ a.arch-node:hover{box-shadow:var(--shadow-sm);transform:translateY(-2px);color:v
     </div>
     <aside class="idcard" aria-label="Profile at a glance">
       <div class="idcard-top">
-        <div class="monogram" aria-hidden="true">NK</div>
+        <div class="portrait"><img src="https://narissa-pgm.github.io/HMS_DBMI/profile-pic.jpg" alt="Narissara Khomkhai" width="84" height="84" loading="eager" onerror="this.parentNode.className='portrait monogram';this.parentNode.textContent='NK'"></div>
         <div>
           <h2>At a glance</h2>
           <p class="idrole">Cambridge, MA · open to academic operations leadership</p>
         </div>
       </div>
       <div class="idcard-row">
-        <p class="idcard-k">Now</p>
-        <p class="idcard-v">Data &amp; AI Transformation Consultant<small>Independent, remote · November 2025 – present. Advancement technology consulting since 2008.</small></p>
-      </div>
-      <div class="idcard-row">
         <p class="idcard-k">Most recent institutional role</p>
         <p class="idcard-v">Faculty Affairs Data Owner, Harvard<small>FAS Office for Faculty Affairs · April 2019 – November 2025</small></p>
+      </div>
+      <div class="idcard-row">
+        <p class="idcard-k">Now</p>
+        <p class="idcard-v">Data &amp; AI Transformation Practitioner<small>Independent practice, remote · since November 2025. Advancement technology practice since 2008.</small></p>
       </div>
       <div class="idcard-row" style="padding-bottom:0">
         <p class="idcard-k">Focus</p>
@@ -873,7 +877,7 @@ a.arch-node:hover{box-shadow:var(--shadow-sm);transform:translateY(-2px);color:v
             <div class="ach-stat"><b>50+</b><span>Department chairs advised, with materials for FAS deans, visiting committees, and the Office of the Governing Boards.</span></div>
             <div class="ach-stat"><b>67–75%</b><span>Fewer one-off requests. At least 67% if the earlier year was 300, and 75% if it was 400. The later volume was under 100.</span></div>
           </div>
-          <p>I piloted <strong>FAS DataHub (Oracle BI / HART)</strong> — a team effort that used my faculty-affairs reports as its blueprint. It joined seven sources inside a <strong>$1.8&nbsp;billion</strong> operating environment with more than twenty years of longitudinal data.</p>
+          <p>I piloted <strong>FAS DataHub (Oracle BI / HART)</strong> — a team effort that used my faculty-affairs reports as its blueprint. It joined seven sources inside a <strong>$1.8&nbsp;billion</strong> operating environment with more than twenty years of longitudinal data, and served FAS Finance, the Office of the Governing Boards, the Graduate School and Harvard College as well as Faculty Affairs.</p>
           <p>Reusable dashboards replaced the ad-hoc request queue, so the same questions stopped arriving as bespoke asks.</p>
         </article>
 
@@ -900,7 +904,7 @@ a.arch-node:hover{box-shadow:var(--shadow-sm);transform:translateY(-2px);color:v
             <h3>How the records connect</h3>
             <p class="dek">Two views of the same method: keep each system with its owner, then join deliberately. Select a view.</p>
           </div>
-          <div class="viz-stat"><strong>7 → 1 → 3</strong><span>sources, join, decisions served</span></div>
+          <div class="viz-stat"><strong>7 → 1 → 7</strong><span>sources, hub, offices and uses served</span></div>
         </div>
         <div class="tablist" role="tablist" aria-label="Record relationship views">
           <button type="button" role="tab" id="tab-datahub" aria-controls="panel-datahub" aria-selected="true">
@@ -931,8 +935,12 @@ a.arch-node:hover{box-shadow:var(--shadow-sm);transform:translateY(-2px);color:v
               <span>Oracle BI / HART</span>
             </div>
             <div class="net-col net-uses">
-              <p class="net-label">What the join served</p>
-              <div class="node" style="--nc:#2B5C8A"><span>Chairs and deans<small>50+ chairs, FAS deans, visiting committees, Governing Boards</small></span></div>
+              <p class="net-label">Who the DataHub served</p>
+              <div class="node" style="--nc:#2B5C8A"><span>Chairs and deans<small>50+ chairs, FAS deans, visiting committees</small></span></div>
+              <div class="node" style="--nc:#2B5C8A"><span>Office of the Governing Boards<small>Board and governance meeting materials</small></span></div>
+              <div class="node" style="--nc:#2B5C8A"><span>FAS Finance<small>Finance reporting on the same governed data</small></span></div>
+              <div class="node" style="--nc:#2B5C8A"><span>Graduate School (GSAS)<small>Graduate School of Arts and Sciences</small></span></div>
+              <div class="node" style="--nc:#2B5C8A"><span>Harvard College<small>Undergraduate college of FAS</small></span></div>
               <div class="node" style="--nc:#2B5C8A"><span>Appointments and promotions<small>Searches, offer letters, review workflows</small></span></div>
               <div class="node" style="--nc:#2B5C8A"><span>Sponsored research<small>GMAS joined to faculty and finance in the same DataHub</small></span></div>
             </div>
@@ -988,7 +996,7 @@ a.arch-node:hover{box-shadow:var(--shadow-sm);transform:translateY(-2px);color:v
       <div class="part-head">
         <p class="part-kicker"><span>02</span> Experience</p>
         <h2 id="experience-title">Twenty years inside academic institutions, now an independent practice</h2>
-        <p class="part-dek">From research and program support in an academic medical center’s College of Medicine, to donor records and gift operations, to faculty affairs data ownership at Harvard — and, since November 2025, independent data and AI consulting. Open any bar or role for its responsibility mix.</p>
+        <p class="part-dek">From research and program support in an academic medical center’s College of Medicine, to donor records and gift operations, to faculty affairs data ownership at Harvard — and, since November 2025, an independent data and AI practice. Open any bar or role for its responsibility mix.</p>
       </div>
 
       <figure class="viz">
@@ -1010,8 +1018,8 @@ a.arch-node:hover{box-shadow:var(--shadow-sm);transform:translateY(-2px);color:v
             <button class="role" type="button" data-job="now" aria-haspopup="dialog" aria-controls="roleDialog" aria-pressed="false" style="--rc:#2F6B4F">
               <span class="role-when">Nov 2025 – Present</span>
               <span>
-                <span class="role-title">Data &amp; AI Transformation Consultant</span>
-                <span class="role-org">Independent consultant, remote · advancement technology consulting since 2008</span>
+                <span class="role-title">Data &amp; AI Transformation Practitioner</span>
+                <span class="role-org">Independent practice, remote · advancement technology practice since 2008</span>
               </span>
               <span class="role-open">Role mix</span>
             </button>
@@ -1172,10 +1180,10 @@ a.arch-node:hover{box-shadow:var(--shadow-sm);transform:translateY(-2px);color:v
         <div class="arch" id="arch">
           <svg class="arch-links" aria-hidden="true" id="archLinks"></svg>
           <div class="arch-row arch-programs">
-            <a class="arch-node" style="--ac:#a51c30" href="research-grants.html#/overview"><b><i>A</i>Research Enterprise Resilience</b><span>A1–A3 · funding · admin · compliance</span></a>
-            <a class="arch-node" style="--ac:#275d87" href="faculty-affairs.html#/overview"><b><i>B</i>Faculty &amp; Talent Pipeline</b><span>B1–B3 · recruitment · advancement</span></a>
-            <a class="arch-node" style="--ac:#246850" href="responsible-ai.html#/overview"><b><i>C</i>Responsible AI &amp; Computing</b><span>C1–C2 · governance · compute</span></a>
-            <a class="arch-node" style="--ac:#9b691c" href="education-impact.html#overview"><b><i>D</i>Education &amp; External Impact</b><span>D1–D3 · education · translation</span></a>
+            <a class="arch-node" style="--ac:#a51c30" href="https://narissa-pgm.github.io/HMS_DBMI/research-grants.html#/overview"><b><i>A</i>Research Enterprise Resilience</b><span>A1–A3 · funding · admin · compliance</span></a>
+            <a class="arch-node" style="--ac:#275d87" href="https://narissa-pgm.github.io/HMS_DBMI/faculty-affairs.html#/overview"><b><i>B</i>Faculty &amp; Talent Pipeline</b><span>B1–B3 · recruitment · advancement</span></a>
+            <a class="arch-node" style="--ac:#246850" href="https://narissa-pgm.github.io/HMS_DBMI/responsible-ai.html#/overview"><b><i>C</i>Responsible AI &amp; Computing</b><span>C1–C2 · governance · compute</span></a>
+            <a class="arch-node" style="--ac:#9b691c" href="https://narissa-pgm.github.io/HMS_DBMI/education-impact.html#overview"><b><i>D</i>Education &amp; External Impact</b><span>D1–D3 · education · translation</span></a>
           </div>
           <div class="arch-hub">
             <div>
@@ -1198,28 +1206,28 @@ a.arch-node:hover{box-shadow:var(--shadow-sm);transform:translateY(-2px);color:v
 
       <p class="section-label" style="margin-top:18px">Four strategic programs · eleven initiatives</p>
       <div class="prog-grid" style="margin-top:0">
-        <a class="prog" style="--pc:#a51c30" href="research-grants.html#/specific">
+        <a class="prog" style="--pc:#a51c30" href="https://narissa-pgm.github.io/HMS_DBMI/research-grants.html#/specific">
           <span class="prog-letter">A</span>
           <h3>Research Enterprise Resilience</h3>
           <p>Funding diversification, research administration, sponsor compliance, and shared research support.</p>
           <span class="prog-codes"><b>A1</b><b>A2</b><b>A3</b></span>
           <span class="prog-link">Open Program A <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span>
         </a>
-        <a class="prog" style="--pc:#275d87" href="faculty-affairs.html#/specific">
+        <a class="prog" style="--pc:#275d87" href="https://narissa-pgm.github.io/HMS_DBMI/faculty-affairs.html#/specific">
           <span class="prog-letter">B</span>
           <h3>Faculty &amp; Talent Pipeline</h3>
           <p>Recruitment, appointments and advancement, staff capacity, and faculty service continuity.</p>
           <span class="prog-codes"><b>B1</b><b>B2</b><b>B3</b></span>
           <span class="prog-link">Open Program B <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span>
         </a>
-        <a class="prog" style="--pc:#246850" href="responsible-ai.html#/specific">
+        <a class="prog" style="--pc:#246850" href="https://narissa-pgm.github.io/HMS_DBMI/responsible-ai.html#/specific">
           <span class="prog-letter">C</span>
           <h3>Responsible AI &amp; Computing</h3>
           <p>Human-governed AI, scalable compute, security and shared computational capability.</p>
           <span class="prog-codes"><b>C1</b><b>C2</b></span>
           <span class="prog-link">Open Program C <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span>
         </a>
-        <a class="prog" style="--pc:#9b691c" href="education-impact.html#specific">
+        <a class="prog" style="--pc:#9b691c" href="https://narissa-pgm.github.io/HMS_DBMI/education-impact.html#specific">
           <span class="prog-letter">D</span>
           <h3>Education &amp; External Impact</h3>
           <p>Education operations, translation and partnerships, and mission-aligned communications.</p>
@@ -1272,37 +1280,37 @@ a.arch-node:hover{box-shadow:var(--shadow-sm);transform:translateY(-2px);color:v
       <p class="section-label" style="margin-top:22px" id="platforms">Six working platforms · coordinated demonstrations</p>
       <p class="note" style="margin:-4px 0 0">These are <strong>enabling platforms</strong> supporting the four programs, not additional strategic programs. The cards below show the proposed operational functions and related demonstrators.</p>
       <div class="demos" style="margin-top:12px">
-        <a class="demo" style="--da:#9b2335" href="faculty-affairs.html#/overview">
+        <a class="demo" style="--da:#9b2335" href="https://narissa-pgm.github.io/HMS_DBMI/faculty-affairs.html#/overview">
           <span class="badge">Platform · B</span>
           <h3>Faculty Affairs</h3>
           <p>Faculty recruitment, appointments, promotion dossiers, shared services and faculty workforce support.</p>
           <span class="open">Open coordinated platform <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span>
         </a>
-        <a class="demo" style="--da:#1f5c8b" href="research-grants.html#/overview">
+        <a class="demo" style="--da:#1f5c8b" href="https://narissa-pgm.github.io/HMS_DBMI/research-grants.html#/overview">
           <span class="badge">Platform · A</span>
           <h3>Research &amp; Grants</h3>
           <p>Proposal-to-award coordination, grant risk, funding sustainability, compliant reporting and administrative workflows.</p>
           <span class="open">Open coordinated platform <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span>
         </a>
-        <a class="demo" style="--da:#2d7b66" href="DBMI_Finance.html#/start" rel="noopener noreferrer" target="_blank">
+        <a class="demo" style="--da:#2d7b66" href="https://narissa-pgm.github.io/HMS_DBMI/DBMI_Finance.html#/start" rel="noopener noreferrer" target="_blank">
           <span class="badge">Platform · A / C</span>
           <h3>Finance &amp; Budget</h3>
           <p>Proposed oversight for research finances, indirect costs, recharge models, forecasts and investment decisions. HMS Finance owns institutional approvals.</p>
           <span class="open">Open external demonstration <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></span>
         </a>
-        <a class="demo" style="--da:#21577d" href="DBMI_RA_Dashboard_Prototype.html#kpi" rel="noopener noreferrer" target="_blank">
+        <a class="demo" style="--da:#21577d" href="https://narissa-pgm.github.io/HMS_DBMI/DBMI_RA_Dashboard_Prototype.html#kpi" rel="noopener noreferrer" target="_blank">
           <span class="badge">Platform · A</span>
           <h3>Research Administration Dashboard</h3>
           <p>Source-validated operational measures, milestones, sponsor reporting, compliance flags and research administration decision support.</p>
           <span class="open">Open external demonstration <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></span>
         </a>
-        <a class="demo" style="--da:#c8701f" href="HMS_Advancement.html#command" rel="noopener noreferrer" target="_blank">
+        <a class="demo" style="--da:#c8701f" href="https://narissa-pgm.github.io/HMS_DBMI/HMS_Advancement.html#command" rel="noopener noreferrer" target="_blank">
           <span class="badge">Platform · D / A</span>
           <h3>HMS Advancement</h3>
           <p>Donor stewardship and institutionally governed fundraising coordination for external impact and philanthropic diversification.</p>
           <span class="open">Open external demonstration <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></span>
         </a>
-        <a class="demo" style="--da:#7b4ba3" href="HMS_DBMI_Development.html#command" rel="noopener noreferrer" target="_blank">
+        <a class="demo" style="--da:#7b4ba3" href="https://narissa-pgm.github.io/HMS_DBMI/HMS_DBMI_Development.html#command" rel="noopener noreferrer" target="_blank">
           <span class="badge">Platform · D / A</span>
           <h3>Gift &amp; Development</h3>
           <p>Illustrative fund and gift workflows, documented stewardship, constituent intelligence and approval-aware reporting.</p>
@@ -1311,15 +1319,15 @@ a.arch-node:hover{box-shadow:var(--shadow-sm);transform:translateY(-2px);color:v
       </div>
       <p class="note" style="margin-top:10px">The four demonstrations are published in the same GitHub Pages folder as this profile (checked 3 November 2026). The five DBMI program files do not depend on them.</p>
       <div class="callout" style="margin-top:14px">
-        <strong>Decision rights:</strong> DBMI coordinates planning, requirements, evidence, and follow-through. Faculty, the Chair, HMS Office for Research Administration, Office for Faculty Affairs, Finance, IT, and Advancement retain their respective academic, budget, security, fundraising, and institutional approval responsibilities. <a href="index.html#/m/25">Open the proposed decision rights →</a> · <a href="index.html#/relevant">RACI →</a>
+        <strong>Decision rights:</strong> DBMI coordinates planning, requirements, evidence, and follow-through. Faculty, the Chair, HMS Office for Research Administration, Office for Faculty Affairs, Finance, IT, and Advancement retain their respective academic, budget, security, fundraising, and institutional approval responsibilities. <a href="https://narissa-pgm.github.io/HMS_DBMI/index.html#/m/25">Open the proposed decision rights →</a> · <a href="https://narissa-pgm.github.io/HMS_DBMI/index.html#/relevant">RACI →</a>
       </div>
       <div class="exec-footnav" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:14px">
-        <a class="btn small" href="index.html#/overview">Master overview</a>
-        <a class="btn small" href="index.html#/specific">Initiatives</a>
-        <a class="btn small" href="index.html#/timebound">Timeline</a>
-        <a class="btn small" href="index.html#/relevant">Governance &amp; RACI</a>
-        <a class="btn small" href="index.html#/measurable">Measure · monitor</a>
-        <a class="btn small" href="index.html#/library">Playbook</a>
+        <a class="btn small" href="https://narissa-pgm.github.io/HMS_DBMI/index.html#/overview">Master overview</a>
+        <a class="btn small" href="https://narissa-pgm.github.io/HMS_DBMI/index.html#/specific">Initiatives</a>
+        <a class="btn small" href="https://narissa-pgm.github.io/HMS_DBMI/index.html#/timebound">Timeline</a>
+        <a class="btn small" href="https://narissa-pgm.github.io/HMS_DBMI/index.html#/relevant">Governance &amp; RACI</a>
+        <a class="btn small" href="https://narissa-pgm.github.io/HMS_DBMI/index.html#/measurable">Measure · monitor</a>
+        <a class="btn small" href="https://narissa-pgm.github.io/HMS_DBMI/index.html#/library">Playbook</a>
       </div>
     </div>
   </section>
@@ -1388,13 +1396,13 @@ a.arch-node:hover{box-shadow:var(--shadow-sm);transform:translateY(-2px);color:v
           <div class="viz-body smarter-ring" id="smarterChart"></div>
           <figcaption class="viz-foot">Specific → Measurable → Attainable → Relevant → Time-bound → Evaluate → Review. Review feeds the next round of Specific, which is why this is a cycle rather than a checklist.</figcaption>
           <nav class="chapter-links" aria-label="SMARTER chapters of the master plan">
-            <a href="index.html#/specific">S · Specific</a>
-            <a href="index.html#/measurable">M · Measurable</a>
-            <a href="index.html#/attainable">A · Attainable</a>
-            <a href="index.html#/relevant">R · Relevant</a>
-            <a href="index.html#/timebound">T · Time-bound</a>
-            <a href="index.html#/evaluate">E · Evaluate</a>
-            <a href="index.html#/review">R · Review</a>
+            <a href="https://narissa-pgm.github.io/HMS_DBMI/index.html#/specific">S · Specific</a>
+            <a href="https://narissa-pgm.github.io/HMS_DBMI/index.html#/measurable">M · Measurable</a>
+            <a href="https://narissa-pgm.github.io/HMS_DBMI/index.html#/attainable">A · Attainable</a>
+            <a href="https://narissa-pgm.github.io/HMS_DBMI/index.html#/relevant">R · Relevant</a>
+            <a href="https://narissa-pgm.github.io/HMS_DBMI/index.html#/timebound">T · Time-bound</a>
+            <a href="https://narissa-pgm.github.io/HMS_DBMI/index.html#/evaluate">E · Evaluate</a>
+            <a href="https://narissa-pgm.github.io/HMS_DBMI/index.html#/review">R · Review</a>
           </nav>
         </figure>
         <div>
@@ -1435,14 +1443,14 @@ a.arch-node:hover{box-shadow:var(--shadow-sm);transform:translateY(-2px);color:v
 
       <p class="section-label" style="margin-top:24px">Open the coordinated program series</p>
       <div class="suite">
-        <a href="index.html#/overview" style="--sc:#a51c30"><span class="letter">0</span><span class="info"><strong>Master DBMI Operating Plan</strong><small>SMARTER · four programs · RACI · budget · Measure · monitor</small></span></a>
-        <a href="research-grants.html#/overview" style="--sc:#a51c30"><span class="letter">A</span><span class="info"><strong>Research &amp; Grants</strong><small>A1–A3 · public projects · sponsor controls · pipeline</small></span></a>
-        <a href="faculty-affairs.html#/overview" style="--sc:#275d87"><span class="letter">B</span><span class="info"><strong>Faculty Affairs</strong><small>B1–B3 · appointment gates · faculty service operations</small></span></a>
-        <a href="responsible-ai.html#/overview" style="--sc:#246850"><span class="letter">C</span><span class="info"><strong>Responsible AI &amp; Computing</strong><small>C1–C2 · AI governance · compute and security</small></span></a>
-        <a href="education-impact.html#overview" style="--sc:#9b691c"><span class="letter">D</span><span class="info"><strong>Education &amp; External Impact</strong><small>D1–D3 · education · partnerships · communications</small></span></a>
-        <a href="infographic.html" style="--sc:#465d75"><span class="letter">i</span><span class="info"><strong>Interactive infographic</strong><small>Visual tour of the record and the proposed plan</small></span></a>
+        <a href="https://narissa-pgm.github.io/HMS_DBMI/index.html#/overview" style="--sc:#a51c30"><span class="letter">0</span><span class="info"><strong>Master DBMI Operating Plan</strong><small>SMARTER · four programs · RACI · budget · Measure · monitor</small></span></a>
+        <a href="https://narissa-pgm.github.io/HMS_DBMI/research-grants.html#/overview" style="--sc:#a51c30"><span class="letter">A</span><span class="info"><strong>Research &amp; Grants</strong><small>A1–A3 · public projects · sponsor controls · pipeline</small></span></a>
+        <a href="https://narissa-pgm.github.io/HMS_DBMI/faculty-affairs.html#/overview" style="--sc:#275d87"><span class="letter">B</span><span class="info"><strong>Faculty Affairs</strong><small>B1–B3 · appointment gates · faculty service operations</small></span></a>
+        <a href="https://narissa-pgm.github.io/HMS_DBMI/responsible-ai.html#/overview" style="--sc:#246850"><span class="letter">C</span><span class="info"><strong>Responsible AI &amp; Computing</strong><small>C1–C2 · AI governance · compute and security</small></span></a>
+        <a href="https://narissa-pgm.github.io/HMS_DBMI/education-impact.html#overview" style="--sc:#9b691c"><span class="letter">D</span><span class="info"><strong>Education &amp; External Impact</strong><small>D1–D3 · education · partnerships · communications</small></span></a>
+        <a href="https://narissa-pgm.github.io/HMS_DBMI/infographic.html" style="--sc:#465d75"><span class="letter">i</span><span class="info"><strong>Interactive infographic</strong><small>Visual tour of the record and the proposed plan</small></span></a>
       </div>
-      <p class="note" style="margin-top:12px">The five DBMI plan files must remain together for the relative links to work offline or on GitHub Pages; the interactive infographic is a separate companion page. The professional experience above is the career record; this alignment and the linked plan are explicitly proposed work samples. Public project references are representative, not a verified internal award ledger.</p>
+      <p class="note" style="margin-top:12px">Every link opens the published plan on GitHub Pages (narissa-pgm.github.io/HMS_DBMI), so this profile works on its own — online, downloaded or attached; the interactive infographic is a separate companion page. The professional experience above is the career record; this alignment and the linked plan are explicitly proposed work samples. Public project references are representative, not a verified internal award ledger.</p>
     </div>
   </section>
 
@@ -1480,7 +1488,7 @@ a.arch-node:hover{box-shadow:var(--shadow-sm);transform:translateY(-2px);color:v
               <tr><td>Associate Director of Donor Records</td><td>May 2008 – Jul 2016</td><td>99 months</td><td>60K profiles; 20K+ transactions annually; controls and online giving</td></tr>
               <tr><td>Assistant Director of Gift Services &amp; Reporting</td><td>Aug 2016 – Apr 2019</td><td>32 months</td><td>$400M campaign analytics; General Ledger bridge; controls</td></tr>
               <tr><td>Faculty Affairs Data Owner</td><td>Apr 2019 – Nov 2025</td><td>79 months</td><td>50+ chairs; piloted the seven-source DataHub; appointments and promotions</td></tr>
-              <tr><td>Data &amp; AI Transformation Consultant</td><td>Nov 2025 – present</td><td>12 months</td><td>Data and AI adoption; advancement technology; report templates</td></tr>
+              <tr><td>Data &amp; AI Transformation Practitioner</td><td>Nov 2025 – present</td><td>12 months</td><td>Data and AI adoption; advancement technology; report templates</td></tr>
             </tbody>
           </table>
           <table style="margin-top:14px">
@@ -1627,7 +1635,7 @@ a.arch-node:hover{box-shadow:var(--shadow-sm);transform:translateY(-2px);color:v
     { id: 'uams', label: 'U of AR Medical Sciences', dates: '2008 – 2016', start: 76, end: 175, color: '#2B5C8A', caption: 'Donor Records', title: 'Associate Director of Donor Records', org: 'U of AR for Medical Sciences, Little Rock · Institutional Advancement' },
     { id: 'andover', label: 'Phillips Academy', dates: '2016 – 2019', start: 175, end: 207, color: '#8A651F', caption: 'Gift Services', title: 'Assistant Director of Gift Services & Reporting', org: 'Phillips Academy, Andover · Office of Academy Resources' },
     { id: 'harvard', label: 'Harvard Faculty Affairs', dates: '2019 – 2025', start: 207, end: 286, color: '#A51C30', caption: 'Faculty Affairs Data Owner', title: 'IT Reporting, Data & Business Analyst · Faculty Affairs Data Owner', org: 'Harvard University · FAS Office for Faculty Affairs' },
-    { id: 'now', label: 'Data & AI consulting', dates: '2025 – present', start: 286, end: 298, color: '#2F6B4F', caption: 'AI consultant', title: 'Data & AI Transformation Consultant', org: 'Independent consultant, remote' }
+    { id: 'now', label: 'Data & AI practice', dates: '2025 – present', start: 286, end: 298, color: '#2F6B4F', caption: 'AI practitioner', title: 'Data & AI Transformation Practitioner', org: 'Independent practice, remote' }
   ];
   var MONTHS = 298;
   var careerHost = document.getElementById('careerChart');
@@ -1642,7 +1650,7 @@ a.arch-node:hover{box-shadow:var(--shadow-sm);transform:translateY(-2px);color:v
       var innerW = Math.max(40, W - padL - padR);
       var xOf = function (m) { return padL + (m / MONTHS) * innerW; };
       var step = innerW < 420 ? 6 : (innerW < 640 ? 3 : 2);
-      var s = el('svg', { viewBox: '0 0 ' + W + ' ' + H, width: W, height: H, class: 'chart', role: 'img', 'aria-label': 'Career timeline, 2002 to present. Six roles: UNCTAD Trade Point Chiang Mai 2002–2005, research and program support at UAMS Colleges of Medicine and Pharmacy 2005–2008, U of AR Medical Sciences Institutional Advancement 2008–2016, Phillips Academy 2016–2019, Harvard Faculty Affairs 2019–2025, independent data and AI consulting 2025–present.' }, careerHost);
+      var s = el('svg', { viewBox: '0 0 ' + W + ' ' + H, width: W, height: H, class: 'chart', role: 'img', 'aria-label': 'Career timeline, 2002 to present. Six roles: UNCTAD Trade Point Chiang Mai 2002–2005, research and program support at UAMS Colleges of Medicine and Pharmacy 2005–2008, U of AR Medical Sciences Institutional Advancement 2008–2016, Phillips Academy 2016–2019, Harvard Faculty Affairs 2019–2025, independent independent data and AI practice 2025–present.' }, careerHost);
 
       /* year grid */
       for (var yr = 2002; yr <= 2026; yr += 1) {
@@ -2110,13 +2118,13 @@ a.arch-node:hover{box-shadow:var(--shadow-sm);transform:translateY(-2px);color:v
      SMARTER RADIAL
      ============================================================ */
   var SMARTER = [
-    { k: 'S', t: 'Specific', d: 'Programs, initiatives, workstreams', href: 'index.html#/specific' },
-    { k: 'M', t: 'Measurable', d: 'Gate 1 baselines, evidence, KPIs', href: 'index.html#/measurable' },
-    { k: 'A', t: 'Attainable', d: 'Staffing, cost, resources, dependencies', href: 'index.html#/attainable' },
-    { k: 'R', t: 'Relevant', d: 'BEACON, governance, RACI', href: 'index.html#/relevant' },
-    { k: 'T', t: 'Time-bound', d: 'Gates, windows, constraints', href: 'index.html#/timebound' },
-    { k: 'E', t: 'Evaluate', d: 'Results, assurance, benefit checks', href: 'index.html#/evaluate' },
-    { k: 'R', t: 'Review', d: 'Decisions, actions, escalation', href: 'index.html#/review' }
+    { k: 'S', t: 'Specific', d: 'Programs, initiatives, workstreams', href: 'https://narissa-pgm.github.io/HMS_DBMI/index.html#/specific' },
+    { k: 'M', t: 'Measurable', d: 'Gate 1 baselines, evidence, KPIs', href: 'https://narissa-pgm.github.io/HMS_DBMI/index.html#/measurable' },
+    { k: 'A', t: 'Attainable', d: 'Staffing, cost, resources, dependencies', href: 'https://narissa-pgm.github.io/HMS_DBMI/index.html#/attainable' },
+    { k: 'R', t: 'Relevant', d: 'BEACON, governance, RACI', href: 'https://narissa-pgm.github.io/HMS_DBMI/index.html#/relevant' },
+    { k: 'T', t: 'Time-bound', d: 'Gates, windows, constraints', href: 'https://narissa-pgm.github.io/HMS_DBMI/index.html#/timebound' },
+    { k: 'E', t: 'Evaluate', d: 'Results, assurance, benefit checks', href: 'https://narissa-pgm.github.io/HMS_DBMI/index.html#/evaluate' },
+    { k: 'R', t: 'Review', d: 'Decisions, actions, escalation', href: 'https://narissa-pgm.github.io/HMS_DBMI/index.html#/review' }
   ];
   (function () {
     var host = document.getElementById('smarterChart');
@@ -2276,8 +2284,8 @@ a.arch-node:hover{box-shadow:var(--shadow-sm);transform:translateY(-2px);color:v
   var JOBS = {
     now: {
       when: 'November 2025 – present',
-      title: 'Data & AI Transformation Consultant',
-      org: 'Independent consultant, remote. Advancement technology consulting since 2008.',
+      title: 'Data & AI Transformation Practitioner',
+      org: 'Independent practice, remote. Advancement technology practice since 2008.',
       months: 12,
       shares: [
         { pct: 40, name: 'Data and AI adoption', color: '#A51C30', text: 'Use-case selection, readiness, rollout, and monitoring.' },
@@ -2293,7 +2301,7 @@ a.arch-node:hover{box-shadow:var(--shadow-sm);transform:translateY(-2px);color:v
       shares: [
         { pct: 35, name: 'Faculty affairs advising', color: '#A51C30', text: 'Reporting for appointments, promotions, and reviews. Primary technical advisor to 50+ department chairs, with materials for FAS deans, visiting committees, and the Office of the Governing Boards.' },
         { pct: 25, name: 'Appointments and promotions', color: '#6E1020', text: 'Redesigned appointment and promotion workflows, and supported faculty searches and offer letters.' },
-        { pct: 25, name: 'DataHub pilot and sponsored research', color: '#2B5C8A', text: 'Piloted the seven-source FAS DataHub (Oracle BI / HART), a team effort that used my reports as its blueprint; GMAS reports joined to faculty and finance, in a $1.8 billion operating environment with 20+ years of longitudinal data. Ad hoc requests fell from about 300–400 a year to under 100.' },
+        { pct: 25, name: 'DataHub pilot and sponsored research', color: '#2B5C8A', text: 'Piloted the seven-source FAS DataHub (Oracle BI / HART), a team effort that used my reports as its blueprint, serving FAS Finance, the Office of the Governing Boards, the Graduate School and Harvard College; GMAS reports joined to faculty and finance, in a $1.8 billion operating environment with 20+ years of longitudinal data. Ad hoc requests fell from about 300–400 a year to under 100.' },
         { pct: 15, name: 'Team leadership', color: '#2F6B4F', text: 'Workflow and quality control across two teams of three, with source-to-target tie-outs and documented assumptions.' }
       ]
     },
@@ -2350,8 +2358,8 @@ a.arch-node:hover{box-shadow:var(--shadow-sm);transform:translateY(-2px);color:v
     var host = document.getElementById('mixChart');
     if (!host) return;
     var tipBox = tip(host);
-    var order = ['unctad', 'early', 'uams', 'andover', 'harvard', 'now'];
-    var shortName = { unctad: 'Trade Point', early: 'UAMS Colleges', uams: 'Donor records', andover: 'Gift services', harvard: 'Faculty affairs', now: 'AI consulting' };
+    var order = ['now', 'harvard', 'andover', 'uams', 'early', 'unctad'];
+    var shortName = { unctad: 'Trade Point', early: 'UAMS Colleges', uams: 'Donor records', andover: 'Gift services', harvard: 'Faculty affairs', now: 'Data & AI practice' };
     responsive(host, function (W) {
       var narrow = W < 520;
       var labW = narrow ? 0 : 112;
@@ -2361,7 +2369,7 @@ a.arch-node:hover{box-shadow:var(--shadow-sm);transform:translateY(-2px);color:v
       var H = top + order.length * (rowH + gap) - gap + 8;
       var s = el('svg', {
         viewBox: '0 0 ' + W + ' ' + H, width: W, height: H, class: 'chart', role: 'img',
-        'aria-label': 'Six roles as 100 percent stacked bars showing the rounded responsibility mix: Trade Point, UAMS Colleges, donor records, gift services, faculty affairs, and AI consulting.'
+        'aria-label': 'Six roles, newest first, as 100 percent stacked bars showing the rounded responsibility mix: data and AI practice, faculty affairs, gift services, donor records, UAMS Colleges, and Trade Point.'
       }, host);
       order.forEach(function (id, i) {
         var job = JOBS[id];
