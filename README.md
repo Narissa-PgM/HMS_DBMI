@@ -1,9 +1,18 @@
-# DBMI Executive Infographic · Interactive popup briefing
+# HMS DBMI · Executive profile and operating plan series
 
-Open `infographic.html` for the interactive executive visual (face-free, image embedded). Open `executive-profile.html` for the original executive career profile, or `index.html` for the DBMI master operating plan.
+Live site: https://narissa-pgm.github.io/HMS_DBMI/
 
-The infographic contains six topical lenses, including Discovery Network, Programs, HMS BEACON, SMARTER, Delivery & Budget, and Governance. Click any highlighted region or card for a detailed pop-up. Close with Escape, the close control, or outside the panel.
+| File | What it is |
+|---|---|
+| `executive-profile.html` | Executive profile and résumé (start here) |
+| `index.html` | DBMI Operating Plan · master (SMARTER chapters, Measure · monitor, status report, ROAM) |
+| `research-grants.html` | Program A · Research & Grants |
+| `faculty-affairs.html` | Program B · Faculty Affairs |
+| `responsible-ai.html` | Program C · Responsible AI & Computing |
+| `education-impact.html` | Program D · Education & External Impact |
+| `infographic.html` | Interactive executive infographic (updated DataHub wording) |
+| `DBMI_Finance.html`, `DBMI_RA_Dashboard_Prototype.html`, `HMS_Advancement.html`, `HMS_DBMI_Development.html` | Working-platform demonstrations linked from the profile |
+| `HMS_OFA.html` | Faculty affairs companion operations playbook |
 
-The revised `executive-profile.html` links to the new infographic. All seven HTML files must remain in one folder for internal cross-platform links to function. No live HMS system access is represented.
-
-The career evidence is taken from the supplied executive profile. The four programs, master initiatives, six platforms, proposed timeline, P50 costs, and BEACON crosswalk are the same as the existing packaged series; estimates, strategic interpretations and institutional approvals are marked accordingly. The infographic's release windows are illustrative first-year ranges based on the master's proposed planning calendar.
+All files sit in one folder; every link between them is relative, so the site also works when opened from a downloaded copy.
+Figures in the plan are P50 planning estimates, not approved HMS funds. BEACON priority names follow the HMS Faculty Council minutes of April 8, 2026; the DBMI crosswalk is the author's proposal.
